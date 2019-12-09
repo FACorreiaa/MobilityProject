@@ -1,2 +1,2 @@
 # MobilityProject
-Node with Typescript, MongoDB and React (Typescript)
+Node with Typescript, MongoDB and Vue (Typescript)
