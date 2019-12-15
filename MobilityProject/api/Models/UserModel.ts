@@ -6,7 +6,7 @@ let Schema = mongoose.Schema;
  * @property {string} id_client - UUID
  * @property {string} username - Fernando
  * @property {string} password - paraque
- * @property {string} typeUser - Client , Admin ,  Employee
+ * @property {string} typeUser - Guest, Client, Employee, Admin
  * @property {Array.<string>} veichles
  */
 let UserSchema = new Schema({
@@ -28,10 +28,10 @@ let UserSchema = new Schema({
     type: [
       {
         type: String,
-        enum: ['Client', 'Admin', 'Employee']
+        enum: ['Guest', 'Client', 'Employee', 'Admin']
       }
     ],
-    default: 'Client'
+    default: 'Guest'
   },
   balance: {
     type: Number,

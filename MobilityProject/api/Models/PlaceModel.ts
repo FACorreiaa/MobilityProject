@@ -5,7 +5,7 @@ let Schema = mongoose.Schema;
  * @typedef PlaceSchema
  * @property {number} floor
  * @property {number} placesNumber
- * @property {string} typePlace - Normal , Reduced Mobility , Pregnant
+ * @property {string} typePlace - Bike, Moto, Scooter
  * @property {string} occupiedBy
  * @property {boolean} occupied
  */
@@ -20,10 +20,10 @@ let PlaceSchema = new Schema({
     type: [
       {
         type: String,
-        enum: ['Normal', 'Mobility', 'Pregnant']
+        enum: ['Bike', 'Moto', 'Scooter']
       }
     ],
-    default: ['Normal']
+    default: ['Bike']
   },
   occupiedBy: {
     type: String,
