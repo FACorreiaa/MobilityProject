@@ -24,6 +24,14 @@ let OcupationSchema = new Schema({
   date_end: {
     type: Date,
     default: null
+  },
+  price: {
+    perMinute: {
+      type: Number
+    },
+    perHour: {
+      type: Number
+    }
   }
 });
 export default mongoose.model('OcupationModel', OcupationSchema);

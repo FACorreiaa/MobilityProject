@@ -6,7 +6,6 @@ let Schema = mongoose.Schema;
  * @typedef ParkSchema
  * @property {string} name
  * @property {number} placesNumber
- * @property {number} floorsNumber
  * @property {string} dateInit
  * @property {string} dateEnd
  * @property {Array.<string>} places  - UUID
