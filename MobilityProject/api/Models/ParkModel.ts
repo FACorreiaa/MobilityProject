@@ -19,9 +19,6 @@ let ParkSchema = new Schema({
   placesNumber: {
     type: Number
   },
-  floorsNumber: {
-    type: Number
-  },
   dateInit: {
     type: Date
   },

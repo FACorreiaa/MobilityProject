@@ -10,9 +10,6 @@ let Schema = mongoose.Schema;
  * @property {boolean} occupied
  */
 let PlaceSchema = new Schema({
-  floor: {
-    type: Number
-  },
   placeNumber: {
     type: Number
   },
