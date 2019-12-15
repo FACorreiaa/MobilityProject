@@ -1,0 +1,13 @@
+Base de dados na Cloud com Mlab.
+
+User: mobilityipca@gmail.com
+Pass: Kats0unam1
+
+Dentro do Mlab,
+user e pass = admin
+
+Compass:
+
+Copy mongodb+srv://admin:<password>@cluster0-krbnl.mongodb.net/test
+User: admin
+Password: admin
