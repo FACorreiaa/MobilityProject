@@ -6,7 +6,7 @@
     "experimentalDecorators": true,
     "importHelpers": false,
     "module": "commonjs",
-    "outDir": "dist",
+    "outDir": "app/dist",
     "removeComments": true,
     "sourceMap": true,
     "strict": true,
