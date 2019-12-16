@@ -8,7 +8,7 @@
     "start:dist": "node -r module-alias/register ./dist",
     "start:dev": "nodemon --config nodemon.json",
     "test": "nodemon --config nodemon.test.json",
-    "clean": "sudo rm -rf ./dist",
+    "clean": "sudo rm -rf ./app/dist",
     "heroku": "npm run clean && npm run build",
     "heroku:prod": "npm run heroku && git push heroku master"
   },
