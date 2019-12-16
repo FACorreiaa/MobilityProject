@@ -1,6 +1,6 @@
 'use strict';
 import mongoose from 'mongoose';
-import PlaceSchema from './Place';
+import PlaceSchema from './PlaceModels';
 let Schema = mongoose.Schema;
 /**
  * @typedef VeichleSchema

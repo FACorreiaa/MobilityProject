@@ -1,6 +1,6 @@
 'use strict';
 import mongoose from 'mongoose';
-import VehicleSchema from './Vehicle';
+import VehicleSchema from './VehicleModel';
 let Schema = mongoose.Schema;
 /**
  * @typedef RentalSchema
