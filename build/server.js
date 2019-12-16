@@ -13,6 +13,8 @@ const mongoose_1 = __importDefault(require("mongoose"));
 const app = express_1.default();
 //BD SETUP
 const MONGO_URI = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0-krbnl.mongodb.net/test?retryWrites=true&w=majority`;
+//mongoose.connect('mongodb://localhost/Mobility');
+mongoose_1.default.Promise = global.Promise;
 mongoose_1.default.connect(MONGO_URI, {
     useNewUrlParser: true,
     useUnifiedTopology: true
