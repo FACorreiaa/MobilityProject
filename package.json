@@ -19,7 +19,6 @@
     "npm": "5.0.3"
   },
   "_moduleAliases": {
-    "@daos": "dist/daos",
     "@entities": "dist/entities",
     "@shared": "dist/shared",
     "@server": "dist/server"
