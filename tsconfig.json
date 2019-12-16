@@ -6,8 +6,8 @@
     "experimentalDecorators": true,
     "importHelpers": false,
     "module": "commonjs",
-    "outDir": "dist",
-    "rootDir": "src",
+    "outDir": "./dist",
+    "rootDir": "./src",
     "removeComments": true,
     "sourceMap": true,
     "strict": true,
@@ -17,5 +17,5 @@
     "typeRoots": ["node_modules/@types"]
   },
   "include": ["src/**/*.ts", "spec/**/*.ts"],
-  "exclude": ["src/public/"]
+  "exclude": ["node_modules"]
 }
