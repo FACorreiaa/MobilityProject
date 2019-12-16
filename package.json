@@ -9,7 +9,7 @@
     "start:dev": "nodemon --config nodemon.json",
     "test": "nodemon --config nodemon.test.json",
     "clean": "sudo rm -rf ./dist",
-    "start:build": "npm run clean && npm run build",
+    "start:build": "npm run clean && npm run build && npm run start:commit",
     "start:commit": "git add . && git commit -m 'auto message' && git push origin master",
     "heroku:prod": "git push heroku master"
   },
@@ -21,7 +21,7 @@
     "@daos": "dist/daos",
     "@entities": "dist/entities",
     "@shared": "dist/shared",
-    "@server": "dist/Server"
+    "@server": "dist/server"
   },
   "dependencies": {
     "command-line-args": "^5.1.1",
