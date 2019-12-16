@@ -10,7 +10,7 @@
     "test": "nodemon --config nodemon.test.json",
     "clean": "sudo rm -rf ./dist",
     "start:build": "npm run clean && npm run build",
-    "start:commit": "func() { npm run build && git add . && git commit -m \"BUILD - $1\"; }; func",
+    "start:commit": "git add . && git commit -m 'auto message'",
     "heroku:prod": "git push heroku master"
   },
   "engines": {
