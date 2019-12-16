@@ -2,7 +2,7 @@
 import mongoose from 'mongoose';
 let Schema = mongoose.Schema;
 /**
- * @typedef VeichleSchema
+ * @typedef UserSchema
  */
 let UserSchema = new Schema({
   username: {
@@ -26,6 +26,13 @@ let UserSchema = new Schema({
     required: true,
     default: 'client',
     enum: ['guest', 'client ', 'employee ', 'admin ']
+  },
+  registerBy: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User'
+  },
+  valid : {
+    type: Boolean
   }
 });
 export default mongoose.model('UserSchema', UserSchema);

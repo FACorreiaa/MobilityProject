@@ -1,9 +1,9 @@
 'use strict';
 import mongoose from 'mongoose';
-import RentalSchema from './Rental';
+
 let Schema = mongoose.Schema;
 /**
- * @typedef VeichleSchema
+ * @typedef ClientSchema
  * @property {string} code.required
  */
 let ClientSchema = new Schema({
@@ -15,13 +15,12 @@ let ClientSchema = new Schema({
     type: String,
     required: 'last name of the person '
   },
-  rentals: [RentalSchema],
+  rentals: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Rental'
+  }],
   balance: {
     type: Number
-  },
-  registerBy: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'User '
   },
   Created_data: {
     type: Date,

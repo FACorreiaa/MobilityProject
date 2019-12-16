@@ -7,24 +7,46 @@ let Schema = mongoose.Schema;
  * @property {string} code.required
  */
 let RentalSchema = new Schema({
-  startDate: {
-    type: Date
-    // default: Date.now
+  start: [{
+    date: {
+      type: Date
+    }
   },
-  endDate: {
-    type: Date
-    // default: Date.now
+  {
+    location:[{
+      type: String,
+      coordinates: [Number],
+      required: true
+    },
+    {
+      range: Number
+    }]
+  }],
+  end: [{
+    date: {
+      type: Date
+    }
   },
-  status: {
+  {
+    location:[{
+      type: String,
+      coordinates: [Number],
+      required: true
+    },
+    {
+      range: Number
+    }]
+  }],
+  /*status: {
     type: String,
     enum: ['confirmed ', 'canceled '],
     default: ['confirmed ']
-  },
+  },*/
   price: {
     type: Number,
     required: true
   },
-  paymentMethod: {
+  rentalMethod: {
     type: String,
     enum: ['minutes ', 'pack '],
     default: ['minutes ']
@@ -33,6 +55,10 @@ let RentalSchema = new Schema({
     type: Number,
     required: true
   },
-  vehicle: [VehicleSchema]
+  vehicle: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Vehicle'
+  }
 });
+
 export default mongoose.model('RentalSchema', RentalSchema);

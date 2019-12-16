@@ -2,15 +2,18 @@
 import mongoose from 'mongoose';
 let Schema = mongoose.Schema;
 /**
- * @typedef VeichleSchema
+ * @typedef PlaceSchema
  * @property {string} code.required
  */
 let PlaceSchema = new Schema({
-  location: {
+  location: [{
     type: String,
     coordinates: [Number],
     required: true
   },
+  {
+    range: Number
+  }],
   capacity: {
     type: Number
   },

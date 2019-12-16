@@ -1,12 +1,13 @@
 'use strict';
 import mongoose from 'mongoose';
-import PlaceSchema from './PlaceModels';
+
+
 let Schema = mongoose.Schema;
 /**
- * @typedef VeichleSchema
+ * @typedef VehicleSchema
  * @property {string} code.required
  */
-let VeichleSchema = new Schema({
+let VehicleSchema = new Schema({
   code: {
     type: Number,
     required: [true, 'code of vehicle']
@@ -14,6 +15,9 @@ let VeichleSchema = new Schema({
   description: {
     type: String
   },
-  place: [PlaceSchema]
+  place: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Place'
+  }
 });
-export default mongoose.model('VeichleModel', VeichleSchema);
+export default mongoose.model('VehicleSchema', VehicleSchema);
