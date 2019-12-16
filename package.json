@@ -1,64 +1,34 @@
 {
   "name": "mobilityproject",
   "version": "0.0.0",
+  "private": true,
   "scripts": {
-    "build": "tsc -p .",
-    "lint": "tslint --project \"tsconfig.json\"",
-    "start": "node ./dist/index.js",
-    "start_v2": "ts-node -r tsconfig-paths/register ./src --env=development",
-    "start:dist": "node -r module-alias/register ./dist",
-    "start:dev": "nodemon --config nodemon.json",
-    "test": "nodemon --config nodemon.test.json",
-    "clean": "sudo rm -rf ./dist",
-    "start:build": "npm run clean && npm run build && npm run start:commit",
+    "start": "node ./bin/www",
+    "server": "babel-node ./src/bin/www",
+    "server:prod": "node ./dist/bin/www",
+    "dev": "NODE_ENV=development npm-run-all server",
+    "clean": "rimfat dist",
+    "build": "babel ./src --out-dir dist",
+    "prod": "NODE_ENV=production npm-run-all clean build server:prod",
     "start:commit": "git add . && git commit -m 'auto message' && git push origin master",
-    "heroku:prod": "git push heroku master"
-  },
-  "engines": {
-    "node": "8.1.1",
-    "npm": "5.0.3"
-  },
-  "_moduleAliases": {
-    "@entities": "dist/entities",
-    "@shared": "dist/shared",
-    "@server": "dist/server"
+    "watch": "nodemon"
   },
   "dependencies": {
-    "command-line-args": "^5.1.1",
-    "cookie-parser": "^1.4.4",
+    "cookie-parser": "~1.4.4",
+    "cors": "^2.8.5",
+    "debug": "~2.6.9",
     "dotenv": "^8.2.0",
-    "expres": "0.0.5",
-    "express": "^4.17.1",
-    "http-status-codes": "^1.4.0",
-    "module-alias": "^2.2.2",
+    "express": "~4.16.1",
     "mongoose": "^5.8.1",
-    "morgan": "^1.9.1",
-    "winston": "^3.2.1"
+    "morgan": "~1.9.1",
+    "npm-run-all": "^4.1.5",
+    "rimraf": "^3.0.0"
   },
   "devDependencies": {
-    "@liftr/tscov": "^1.4.4",
-    "@types/command-line-args": "^5.0.0",
-    "@types/cookie-parser": "^1.4.2",
-    "@types/express": "^4.17.2",
-    "@types/figlet": "^1.2.0",
-    "@types/find": "^0.2.1",
-    "@types/inquirer": "^6.5.0",
-    "@types/jasmine": "^3.5.0",
-    "@types/jsonfile": "^5.0.0",
-    "@types/mongoose": "^5.5.34",
-    "@types/morgan": "^1.7.37",
-    "@types/node": "^12.12.18",
-    "@types/supertest": "^2.0.8",
-    "find": "^0.3.0",
-    "fs-extra": "^8.1.0",
-    "jasmine": "^3.5.0",
-    "jsonfile": "^5.0.0",
-    "nodemon": "^2.0.2",
-    "supertest": "^4.0.2",
-    "ts-node": "^8.5.4",
-    "tsconfig-paths": "^3.9.0",
-    "tslint": "^5.20.1",
-    "typedoc": "^0.15.5",
-    "typescript": "^3.7.3"
+    "@babel/cli": "^7.7.5",
+    "@babel/core": "^7.7.5",
+    "@babel/node": "^7.7.4",
+    "@babel/preset-env": "^7.7.6",
+    "nodemon": "^2.0.2"
   }
 }
