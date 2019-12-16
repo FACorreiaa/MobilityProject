@@ -4,7 +4,8 @@
   "scripts": {
     "build": "node ./util/build.js",
     "lint": "tslint --project \"tsconfig.json\"",
-    "start": "ts-node -r tsconfig-paths/register ./src --env=development",
+    "start": "node ./dist/index.js",
+    "start_v2": "ts-node -r tsconfig-paths/register ./src --env=development",
     "start:dist": "node -r module-alias/register ./dist",
     "start:dev": "nodemon --config nodemon.json",
     "test": "nodemon --config nodemon.test.json",
