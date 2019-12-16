@@ -8,13 +8,13 @@
     "start:dist": "node -r module-alias/register ./dist",
     "start:dev": "nodemon --config nodemon.json",
     "test": "nodemon --config nodemon.test.json",
-    "clean": "sudo rm -rf ./app/dist",
+    "clean": "sudo rm -rf ./dist",
     "heroku": "npm run clean && npm run build",
     "heroku:prod": "npm run heroku && git push heroku master"
   },
   "engines": {
-    "node": "v12.13.0",
-    "npm": "6.13.3"
+    "node": "8.1.1",
+    "npm": "5.0.3"
   },
   "_moduleAliases": {
     "@daos": "dist/daos",
