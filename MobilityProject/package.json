@@ -1,12 +1,17 @@
 {
-  "name": "MobilityProject",
+  "name": "mobilityproject",
   "version": "0.0.0",
   "scripts": {
     "build": "node ./util/build.js",
     "lint": "tslint --project \"tsconfig.json\"",
-    "start": "node -r module-alias/register ./dist",
+    "start": "ts-node -r tsconfig-paths/register ./src --env=development",
+    "start:dist": "node -r module-alias/register ./dist",
     "start:dev": "nodemon --config nodemon.json",
     "test": "nodemon --config nodemon.test.json"
+  },
+  "engines": {
+    "node": "8.1.1",
+    "npm": "5.0.3"
   },
   "_moduleAliases": {
     "@daos": "dist/daos",
