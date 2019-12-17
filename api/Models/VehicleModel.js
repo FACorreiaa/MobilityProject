@@ -1,7 +1,6 @@
 'use strict';
 import mongoose from 'mongoose';
 
-
 let Schema = mongoose.Schema;
 /**
  * @typedef VehicleSchema
@@ -17,7 +16,7 @@ let VehicleSchema = new Schema({
   },
   place: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'Place'
+    ref: 'place'
   }
 });
-export default mongoose.model('VehicleSchema', VehicleSchema);
+export default mongoose.model('vehicle', VehicleSchema);

@@ -1,0 +1,5 @@
+{"_id":{"$oid":"5df8bd4d79ca3b3ecd23bf42"},"code":4,"description":"bike","place":{"$oid":"5df8b38f79ca3b3ecd23bf41"}}
+{"_id":{"$oid":"5df8bdc25d2b2b3ecdc476d9"},"code":4,"description":"bike","place":{"$oid":"5df8c3e95d2b2b3ecdc476dd"}}
+{"_id":{"$oid":"5df8bdde5d2b2b3ecdc476da"},"code":4,"description":"bike","place":{"$oid":"5df8c3ec5d2b2b3ecdc476de"}}
+{"_id":{"$oid":"5df8bdef5d2b2b3ecdc476db"},"code":4,"description":"bike","place":{"$oid":"5df8c3ee5d2b2b3ecdc476df"}}
+{"_id":{"$oid":"5df8be025d2b2b3ecdc476dc"},"code":4,"description":"bike","place":{"$oid":"5df8c3f25d2b2b3ecdc476e0"}}

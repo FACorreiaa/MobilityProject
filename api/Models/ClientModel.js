@@ -15,10 +15,12 @@ let ClientSchema = new Schema({
     type: String,
     required: 'last name of the person '
   },
-  rentals: [{
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Rental'
-  }],
+  rentals: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'rental'
+    }
+  ],
   balance: {
     type: Number
   },
@@ -27,4 +29,4 @@ let ClientSchema = new Schema({
     default: Date.now
   }
 });
-export default mongoose.model('ClientSchema', ClientSchema);
+export default mongoose.model('client', ClientSchema);

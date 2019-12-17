@@ -7,36 +7,47 @@ let Schema = mongoose.Schema;
  * @property {string} code.required
  */
 let RentalSchema = new Schema({
-  start: [{
-    date: {
-      type: Date
-    }
-  },
-  {
-    location:[{
-      type: String,
-      coordinates: [Number],
-      required: true
+  start: [
+    {
+      date: {
+        type: Date
+      }
     },
     {
-      range: Number
-    }]
-  }],
-  end: [{
-    date: {
-      type: Date
+      location: [
+        {
+          type: { type: String },
+          coordinates: [],
+          required: true
+        },
+        {
+          range: Number
+        }
+      ]
     }
-  },
-  {
-    location:[{
-      type: String,
-      coordinates: [Number],
-      required: true
+  ],
+  end: [
+    {
+      date: {
+        type: Date
+      }
     },
     {
-      range: Number
-    }]
-  }],
+      location: [
+        {
+          type: { type: String },
+          coordinates: [],
+          required: true
+        },
+        {
+          range: {
+            type: { type: String },
+            coordinates: []
+          }
+        }
+      ]
+    }
+  ],
   /*status: {
     type: String,
     enum: ['confirmed ', 'canceled '],
@@ -57,8 +68,8 @@ let RentalSchema = new Schema({
   },
   vehicle: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'Vehicle'
+    ref: 'vehicle'
   }
 });
 
-export default mongoose.model('RentalSchema', RentalSchema);
+export default mongoose.model('rental', RentalSchema);

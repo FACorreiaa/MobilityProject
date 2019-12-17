@@ -8,7 +8,7 @@ require('dotenv').config();
 const app = express();
 
 //BD SETUP
-//const MONGO_URI = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0-krbnl.mongodb.net/test?retryWrites=true&w=majority`;
+const MONGO_URI = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0-krbnl.mongodb.net/test?retryWrites=true&w=majority`;
 
 //mongoose.connect('mongodb://localhost/Mobility');
 
