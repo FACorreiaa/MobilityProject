@@ -1,15 +1,37 @@
 'use strict';
 const mongoose = require('mongoose');
 const Client = mongoose.model('Clients');
-
+const Rental = mongoose.model('Rentals');
 exports.getClients = function(req, res) {
+  console.log('params: ' + req.params);
   Client.find({}, function(error, clients) {
-    console.log(clients);
     if (error) {
       console.log(err);
-      res.json(error);
+      return res.json(error);
     }
-    console.log('return clients');
-    res.json(clients);
+    return res.json(clients);
+  });
+};
+
+exports.getClientsById = function(req, res) {
+  Client.findById(req.params.id, function(err, client) {
+    if (err) {
+      return res.send(err);
+    }
+    return res.json(client);
+  });
+};
+
+//JESSICA
+exports.getClientRentals = async function(req, res) {
+  Client.findById(req.params.id, async function(err, evento) {
+    console.log(evento);
+    if (err) {
+      await res.send(err);
+    }
+    let rentals = await evento.rentals;
+    Rental.find({ _id: { $in: rentals } }, async function(err, rental) {
+      await res.json(rental);
+    });
   });
 };

@@ -17,7 +17,7 @@ let ClientSchema = new Schema({
   rentals: [
     {
       type: mongoose.Schema.Types.ObjectId,
-      ref: 'rental'
+      ref: 'Rentals'
     }
   ],
   balance: {

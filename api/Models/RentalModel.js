@@ -20,7 +20,10 @@ let RentalSchema = new Schema({
           required: true
         },
         {
-          range: Number
+          range: {
+            type: { type: String },
+            coordinates: []
+          }
         }
       ]
     }
@@ -58,8 +61,8 @@ let RentalSchema = new Schema({
   },
   rentalMethod: {
     type: String,
-    enum: ['minutes ', 'pack '],
-    default: ['minutes ']
+    enum: ['minutes', 'pack'],
+    default: 'minutes'
   },
   code: {
     type: Number,
@@ -67,8 +70,8 @@ let RentalSchema = new Schema({
   },
   vehicle: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'vehicle'
+    ref: 'Vehicle'
   }
 });
 
-module.exports = mongoose.model('Rental', RentalSchema, 'Rental');
+module.exports = mongoose.model('Rentals', RentalSchema, 'Rentals');

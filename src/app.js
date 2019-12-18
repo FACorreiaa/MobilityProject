@@ -4,8 +4,10 @@ const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const indexRouter = require('./routes/index');
+const clientRouter = require('../api/Routes/clientRoute');
 const mongoose = require('mongoose');
 require('../api/Models/ClientModel');
+require('../api/Models/RentalModel');
 
 const app = express();
 const port = process.env.PORT || 8000;
@@ -18,8 +20,6 @@ server.listen(port, () => {
 //BD SETUP
 const MONGO_URI = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0-krbnl.mongodb.net/MobilityProject?retryWrites=true&w=majority`;
 //const MONGO_URI = 'mongodb://localhost:27017/MobilityProject';
-const clientRouter = require('../api/Routes/clientRoute');
-clientRouter(app);
 
 //mongoose.connect('mongodb://localhost/Mobility');
 
@@ -34,6 +34,7 @@ mongoose
 mongoose.connection
   .once('open', () => console.log('Connected to MongoLab instance.'))
   .on('error', error => console.log('Error connecting to MongoLab:', error));
+clientRouter(app);
 
 app.use(logger('dev'));
 app.use(express.json());

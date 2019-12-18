@@ -29,4 +29,4 @@ let PlaceSchema = new Schema({
 let jsonSchema = PlaceSchema.jsonSchema();
 console.dir(jsonSchema, { depth: null });
 
-module.exports = mongoose.model('Place', PlaceSchema, 'Place');
+module.exports = mongoose.model('Places', PlaceSchema, 'Places');

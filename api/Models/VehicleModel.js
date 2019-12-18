@@ -16,7 +16,7 @@ let VehicleSchema = new Schema({
   },
   place: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'place'
+    ref: 'Places'
   }
 });
-module.exports = mongoose.model('Vehicle', VehicleSchema, 'Vehicle');
+module.exports = mongoose.model('Vehicles', VehicleSchema, 'Vehicles');

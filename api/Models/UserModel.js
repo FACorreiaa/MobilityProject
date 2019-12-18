@@ -29,10 +29,10 @@ let UserSchema = new Schema({
   },
   registerBy: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'user'
+    ref: 'Users'
   },
   valid: {
     type: Boolean
   }
 });
-module.exports = mongoose.model('User', UserSchema, 'User');
+module.exports = mongoose.model('Users', UserSchema, 'Users');
