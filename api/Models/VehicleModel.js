@@ -1,5 +1,5 @@
 'use strict';
-import mongoose from 'mongoose';
+const mongoose = require('mongoose');
 
 let Schema = mongoose.Schema;
 /**
@@ -19,4 +19,4 @@ let VehicleSchema = new Schema({
     ref: 'place'
   }
 });
-export default mongoose.model('vehicle', VehicleSchema);
+module.exports = mongoose.model('Vehicle', VehicleSchema, 'Vehicle');

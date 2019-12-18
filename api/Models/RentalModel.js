@@ -1,6 +1,5 @@
 'use strict';
-import mongoose from 'mongoose';
-import VehicleSchema from './VehicleModel';
+const mongoose = require('mongoose');
 let Schema = mongoose.Schema;
 /**
  * @typedef RentalSchema
@@ -72,4 +71,4 @@ let RentalSchema = new Schema({
   }
 });
 
-export default mongoose.model('rental', RentalSchema);
+module.exports = mongoose.model('Rental', RentalSchema, 'Rental');

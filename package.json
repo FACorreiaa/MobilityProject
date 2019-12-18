@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "node ./bin/www",
+    "start": "node ./src/bin/www",
     "server": "babel-node ./src/bin/www",
     "server:prod": "node ./dist/bin/www",
     "dev": "NODE_ENV=development npm-run-all server",
@@ -11,7 +11,7 @@
     "build": "babel ./src --out-dir dist",
     "prod": "NODE_ENV=production npm-run-all clean build server:prod",
     "start:commit": "git add . && git commit -m 'auto message' && git push origin master",
-    "watch": "nodemon"
+    "watch": "nodemon ./src/app.js"
   },
   "dependencies": {
     "cookie-parser": "~1.4.4",

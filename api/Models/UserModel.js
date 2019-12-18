@@ -1,5 +1,5 @@
 'use strict';
-import mongoose from 'mongoose';
+const mongoose = require('mongoose');
 let Schema = mongoose.Schema;
 /**
  * @typedef UserSchema
@@ -35,4 +35,4 @@ let UserSchema = new Schema({
     type: Boolean
   }
 });
-export default mongoose.model('user', UserSchema);
+module.exports = mongoose.model('User', UserSchema, 'User');

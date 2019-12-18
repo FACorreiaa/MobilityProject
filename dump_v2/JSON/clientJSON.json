@@ -1,0 +1,2 @@
+{"_id":{"$oid":"5df8c99c79ca3b3ecd23bf46"},"firstName":"Fernando","lastName":"Correia","rentals":{"$oid":"5df8bd0c5d2b2b3ecdc476d5"},"balance":{"$numberDouble":"30.5"},"Created_Data":{"$date":{"$numberLong":"1576839057240"}}}
+{"_id":{"$oid":"5df8ca395d2b2b3ecdc476e2"},"firstName":"Jessica","lastName":"Macedo","rentals":{"$oid":"5df8c3e95d2b2b3ecdc476dd"},"balance":{"$numberDouble":"30.5"},"Created_Data":{"$date":{"$numberLong":"1576839057240"}}}

@@ -1,6 +1,5 @@
 'use strict';
-import mongoose from 'mongoose';
-
+const mongoose = require('mongoose');
 let Schema = mongoose.Schema;
 /**
  * @typedef ClientSchema
@@ -29,4 +28,4 @@ let ClientSchema = new Schema({
     default: Date.now
   }
 });
-export default mongoose.model('client', ClientSchema);
+module.exports = mongoose.model('Clients', ClientSchema, 'Clients');

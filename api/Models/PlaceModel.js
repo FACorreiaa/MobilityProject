@@ -1,6 +1,5 @@
 'use strict';
-import mongoose from 'mongoose';
-require('mongoose-schema-jsonschema')(mongoose);
+const mongoose = require('mongoose');
 
 let Schema = mongoose.Schema;
 /**
@@ -30,4 +29,4 @@ let PlaceSchema = new Schema({
 let jsonSchema = PlaceSchema.jsonSchema();
 console.dir(jsonSchema, { depth: null });
 
-export default mongoose.model('place', PlaceSchema);
+module.exports = mongoose.model('Place', PlaceSchema, 'Place');
