@@ -25,7 +25,11 @@ let UserSchema = new Schema({
     type: String,
     required: true,
     default: 'client',
-    enum: ['guest', 'client ', 'employee ', 'admin ']
+    enum: ['guest', 'client', 'employee', 'admin']
+  },
+  waitValidation:{
+    type: Boolean,
+    default: true
   },
   registerBy: {
     type: mongoose.Schema.Types.ObjectId,
