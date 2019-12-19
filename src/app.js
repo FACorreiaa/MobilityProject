@@ -5,13 +5,27 @@ const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const indexRouter = require('./routes/index');
 const clientRouter = require('../api/Routes/clientRoute');
+const vehicleRouter = require('../api/Routes/vehicleRoute');
+const placeRouter = require('../api/Routes/placeRouter');
 const mongoose = require('mongoose');
+const bodyParser = require('body-parser');
+const cors = require('cors');
+
 require('../api/Models/ClientModel');
 require('../api/Models/RentalModel');
-
+require('../api/Models/VehicleModel');
+require('../api/Models/PlaceModel');
 const app = express();
 const port = process.env.PORT || 8000;
+
 const server = require('http').Server(app);
+
+app.use(cors());
+app.use(logger('dev'));
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
+app.use(cookieParser());
+app.use(express.static(path.join(__dirname, 'public')));
 
 server.listen(port, () => {
   console.log('App is running on port ' + port);
@@ -35,13 +49,8 @@ mongoose.connection
   .once('open', () => console.log('Connected to MongoLab instance.'))
   .on('error', error => console.log('Error connecting to MongoLab:', error));
 clientRouter(app);
-
-app.use(logger('dev'));
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
-app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
-
+vehicleRouter(app);
+placeRouter(app);
 app.use('/', indexRouter);
 
 module.exports = app;
