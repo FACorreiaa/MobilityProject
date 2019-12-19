@@ -2,6 +2,8 @@
 const mongoose = require('mongoose');
 const Client = mongoose.model('Clients');
 const Rental = mongoose.model('Rentals');
+
+
 exports.getClients = function(req, res) {
   console.log('params: ' + req.params);
   Client.find({}, function(error, clients) {
@@ -35,3 +37,17 @@ exports.getClientRentals = async function(req, res) {
     });
   });
 };
+
+
+//add new rental
+exports.postClientRental = async function (req, res){
+  var newRental = new Rental(req.body);
+  console.log(req.body);
+    newRental.save()
+        .then(result => {
+           console.log(newRental)
+           res.status(201).jsonp(newRental) })
+        .catch(err => {
+            res.status(500).jsonp({ error: { message: err.message } })
+        })
+}
