@@ -3,10 +3,6 @@ const mongoose = require('mongoose');
 const Client = mongoose.model('Clients');
 const Rental = mongoose.model('Rentals');
 
-<<<<<<< HEAD
-
-=======
->>>>>>> 593348e90891a3460e485dff58bfec772c14061c
 exports.getClients = function(req, res) {
   console.log('params: ' + req.params);
   Client.find({}, function(error, clients) {
@@ -60,7 +56,6 @@ exports.getClientRentals = async function(req, res) {
 //add new rental
 exports.postClientRental = async function (req, res){
   var newRental = new Rental(req.body);
-  console.log(req.body);
     newRental.save()
         .then(result => {
            console.log(newRental)

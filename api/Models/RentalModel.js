@@ -10,9 +10,7 @@ let RentalSchema = new Schema({
     {
       date: {
         type: Date
-      }
-    },
-    {
+      },
       location: [
         {
           index: {
@@ -36,9 +34,7 @@ let RentalSchema = new Schema({
     {
       date: {
         type: Date
-      }
-    },
-    {
+      },
       location: [
         {
           index: {
