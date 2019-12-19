@@ -9,15 +9,21 @@ let Schema = mongoose.Schema;
 let PlaceSchema = new Schema({
   location: [
     {
-      type: { type: String },
-      coordinates: [],
-      required: true
+      index: {
+        type: String
+      },
+      type: {
+        type: String,
+        enum: ['Point'],
+        required: true
+      },
+      coordinates: {
+        type: [Number],
+        required: true
+      }
     }
   ],
-  range: {
-    type: { type: String },
-    coordinates: []
-  },
+  range: { type: Number },
   capacity: {
     type: Number
   },
@@ -25,8 +31,5 @@ let PlaceSchema = new Schema({
     type: Number
   }
 });
-
-let jsonSchema = PlaceSchema.jsonSchema();
-console.dir(jsonSchema, { depth: null });
 
 module.exports = mongoose.model('Places', PlaceSchema, 'Places');

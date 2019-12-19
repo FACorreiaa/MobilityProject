@@ -15,17 +15,21 @@ let RentalSchema = new Schema({
     {
       location: [
         {
-          type: { type: String },
-          coordinates: [],
-          required: true
-        },
-        {
-          range: {
-            type: { type: String },
-            coordinates: []
+          index: {
+            type: String
+          },
+          type: {
+            type: String,
+            enum: ['Point'],
+            required: true
+          },
+          coordinates: {
+            type: [Number],
+            required: true
           }
         }
-      ]
+      ],
+      range: { type: Number }
     }
   ],
   end: [
@@ -37,17 +41,21 @@ let RentalSchema = new Schema({
     {
       location: [
         {
-          type: { type: String },
-          coordinates: [],
-          required: true
-        },
-        {
-          range: {
-            type: { type: String },
-            coordinates: []
+          index: {
+            type: String
+          },
+          type: {
+            type: String,
+            enum: ['Point'],
+            required: true
+          },
+          coordinates: {
+            type: [Number],
+            required: true
           }
         }
-      ]
+      ],
+      range: { type: Number }
     }
   ],
   /*status: {
