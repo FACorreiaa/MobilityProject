@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "node ./src/bin/www",
+    "start": "node app.js",
     "server": "babel-node ./src/bin/www",
     "server:prod": "node ./dist/bin/www",
     "dev": "NODE_ENV=development npm-run-all server",

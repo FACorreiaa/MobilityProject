@@ -78,6 +78,8 @@ let RentalSchema = new Schema({
   }
 });
 
-RentalSchema.index({ route: '2dsphere' });
+RentalSchema.index({ location: '2dsphere' });
+RentalSchema.index({ 'start.location': '2dsphere' });
+RentalSchema.index({ 'end.location': '2dsphere' });
 
 module.exports = mongoose.model('Rentals', RentalSchema, 'Rentals');

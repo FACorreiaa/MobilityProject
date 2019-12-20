@@ -2,31 +2,34 @@
 const mongoose = require('mongoose');
 const Place = mongoose.model('Places');
 
-//GET: eventos/:lat/:lon?raio=200
-exports.pesquisar_eventos = function(req, res) {
-  let range = 200; //valor por omissao
-  if (req.query.raio) {
-    //query:queryparameters
+//GET: places/:lat/:lon?raio=200
+exports.getPlace = async function(req, res) {
+  Place.createIndexes({ point: '2dsphere' });
+
+  let range = 200; //default value
+  if (req.query.range) {
     range = req.query.range;
   }
-  Place.find({
-    localation: {
-      $near: {
-        $geometry: {
-          type: 'Point',
-          coordinates: [req.params.long, req.params.lat] //req.params: uri params
-        },
-        $maxDistance: range
+
+  Place.find(
+    {
+      location: {
+        $near: {
+          $geometry: {
+            type: 'Point',
+            coordinates: [req.params.lat, req.params.lon] //req.params: uri params
+          },
+          $maxDistance: range
+        }
       }
+    },
+    async function(error, places) {
+      if (error) {
+        return await res.json(error);
+      }
+      return await res.json(places);
     }
-  })
-    .exec()
-    .then(result => {
-      res.status(201).jsonp(novo);
-    })
-    .catch(err => {
-      res.status(500).jsonp({ error: { message: err.message } });
-    });
+  );
 };
 
 /* Place.save(function(err, book) {

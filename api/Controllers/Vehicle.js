@@ -23,3 +23,39 @@ exports.getPark = async function(req, res) {
     });
   });
 };
+
+exports.getPosition = async function(req, res) {
+  Place.createIndexes({ point: '2dsphere' });
+
+  let range = 200; //default value
+  if (req.query.range) {
+    range = req.query.range;
+  }
+  Vehicle.aggregate(
+    [
+      {
+        $lookup: {
+          from: 'Places',
+          localField: 'place',
+          foreignField: '_id',
+          as: 'veiculo'
+        }
+      },
+      { $unwind: '$veiculo' },
+      {
+        $match: {
+          $or: [
+            { 'veiculo.range': range },
+            { 'veiculo.coordinates': [req.params.lat, req.params.lon] }
+          ]
+        }
+      }
+    ],
+    async function(error, places) {
+      if (error) {
+        return await res.json(error);
+      }
+      return await res.json(places);
+    }
+  );
+};

@@ -8,9 +8,6 @@ let Schema = mongoose.Schema;
  */
 let PlaceSchema = new Schema({
   location: {
-    index: {
-      type: String
-    },
     type: {
       type: String,
       enum: ['Point'],
@@ -30,6 +27,6 @@ let PlaceSchema = new Schema({
   }
 });
 
-PlaceSchema.index({ route: '2dsphere' });
+PlaceSchema.index({ location: '2dsphere' });
 
 module.exports = mongoose.model('Places', PlaceSchema, 'Places');

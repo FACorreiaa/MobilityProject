@@ -8,6 +8,7 @@ const clientRouter = require('../api/Routes/clientRoute');
 const vehicleRouter = require('../api/Routes/vehicleRoute');
 const placeRouter = require('../api/Routes/placeRouter');
 const authRouter = require('../api/Routes/authenticationRoute');
+const rentalRouter = require('../api/Routes/rentalRouter');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const cors = require('cors');
@@ -45,7 +46,8 @@ mongoose.Promise = global.Promise;
 mongoose
   .connect(MONGO_URI, {
     useNewUrlParser: true,
-    useUnifiedTopology: true
+    useUnifiedTopology: true,
+    useCreateIndex: true
   })
   .catch(err => console.log(err));
 mongoose.connection
@@ -55,6 +57,8 @@ clientRouter(app);
 vehicleRouter(app);
 placeRouter(app);
 authRouter(app);
+rentalRouter(app);
+
 app.use('/', indexRouter);
 
 module.exports = app;
