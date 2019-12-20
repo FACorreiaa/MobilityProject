@@ -7,6 +7,7 @@ const indexRouter = require('./routes/index');
 const clientRouter = require('../api/Routes/clientRoute');
 const vehicleRouter = require('../api/Routes/vehicleRoute');
 const placeRouter = require('../api/Routes/placeRouter');
+const authRouter = require('../api/Routes/authenticationRoute');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const cors = require('cors');
@@ -15,6 +16,8 @@ require('../api/Models/ClientModel');
 require('../api/Models/RentalModel');
 require('../api/Models/VehicleModel');
 require('../api/Models/PlaceModel');
+require('../api/Models/UserModel');
+
 const app = express();
 const port = process.env.PORT || 8000;
 
@@ -51,6 +54,7 @@ mongoose.connection
 clientRouter(app);
 vehicleRouter(app);
 placeRouter(app);
+authRouter(app);
 app.use('/', indexRouter);
 
 module.exports = app;

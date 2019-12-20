@@ -51,3 +51,16 @@ exports.getClientRentals = async function(req, res) {
     });
   });
 };
+
+
+//add new rental
+exports.postClientRental = async function (req, res){
+  var newRental = new Rental(req.body);
+    newRental.save()
+        .then(result => {
+           console.log(newRental)
+           res.status(201).jsonp(newRental) })
+        .catch(err => {
+            res.status(500).jsonp({ error: { message: err.message } })
+        })
+}
