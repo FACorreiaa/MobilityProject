@@ -13,22 +13,20 @@ let RentalSchema = new Schema({
       }
     },
     {
-      location: [
-        {
-          index: {
-            type: String
-          },
-          type: {
-            type: String,
-            enum: ['Point'],
-            required: true
-          },
-          coordinates: {
-            type: [Number],
-            required: true
-          }
+      location: {
+        index: {
+          type: String
+        },
+        type: {
+          type: String,
+          enum: ['Point'],
+          required: true
+        },
+        coordinates: {
+          type: [],
+          required: true
         }
-      ],
+      },
       range: { type: Number }
     }
   ],
@@ -39,22 +37,20 @@ let RentalSchema = new Schema({
       }
     },
     {
-      location: [
-        {
-          index: {
-            type: String
-          },
-          type: {
-            type: String,
-            enum: ['Point'],
-            required: true
-          },
-          coordinates: {
-            type: [Number],
-            required: true
-          }
+      location: {
+        index: {
+          type: String
+        },
+        type: {
+          type: String,
+          enum: ['Point'],
+          required: true
+        },
+        coordinates: {
+          type: [],
+          required: true
         }
-      ],
+      },
       range: { type: Number }
     }
   ],
@@ -81,5 +77,7 @@ let RentalSchema = new Schema({
     ref: 'Vehicle'
   }
 });
+
+RentalSchema.index({ route: '2dsphere' });
 
 module.exports = mongoose.model('Rentals', RentalSchema, 'Rentals');

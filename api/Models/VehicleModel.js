@@ -19,4 +19,5 @@ let VehicleSchema = new Schema({
     ref: 'Places'
   }
 });
+
 module.exports = mongoose.model('Vehicles', VehicleSchema, 'Vehicles');

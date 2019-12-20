@@ -7,22 +7,20 @@ let Schema = mongoose.Schema;
  * @property {string} code.required
  */
 let PlaceSchema = new Schema({
-  location: [
-    {
-      index: {
-        type: String
-      },
-      type: {
-        type: String,
-        enum: ['Point'],
-        required: true
-      },
-      coordinates: {
-        type: [Number],
-        required: true
-      }
+  location: {
+    index: {
+      type: String
+    },
+    type: {
+      type: String,
+      enum: ['Point'],
+      required: true
+    },
+    coordinates: {
+      type: [],
+      required: true
     }
-  ],
+  },
   range: { type: Number },
   capacity: {
     type: Number
@@ -31,5 +29,7 @@ let PlaceSchema = new Schema({
     type: Number
   }
 });
+
+PlaceSchema.index({ route: '2dsphere' });
 
 module.exports = mongoose.model('Places', PlaceSchema, 'Places');
