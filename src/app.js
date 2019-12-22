@@ -9,6 +9,7 @@ const vehicleRouter = require('../api/Routes/vehicleRoute');
 const placeRouter = require('../api/Routes/placeRouter');
 const authRouter = require('../api/Routes/authenticationRoute');
 const rentalRouter = require('../api/Routes/rentalRouter');
+const userRouter = require('../api/Routes/userRoute');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const cors = require('cors');
@@ -19,7 +20,6 @@ require('../api/Models/RentalModel');
 require('../api/Models/VehicleModel');
 const Place = require('../api/Models/PlaceModel');
 const Rental = require('../api/Models/RentalModel');
-
 require('../api/Models/UserModel');
 
 const app = express();
@@ -67,6 +67,7 @@ vehicleRouter(app);
 placeRouter(app);
 authRouter(app);
 rentalRouter(app);
+userRouter(app);
 
 app.use('/', indexRouter);
 

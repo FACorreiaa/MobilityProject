@@ -40,7 +40,8 @@ let UserSchema = new Schema({
     ref: 'Users'
   },
   valid: {
-    type: Boolean
+    type: Boolean,
+    default: false
   }
 });
 
