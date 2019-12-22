@@ -63,4 +63,4 @@ exports.postClientRental = async function (req, res){
         .catch(err => {
             res.status(500).jsonp({ error: { message: err.message } })
         })
-}
+};

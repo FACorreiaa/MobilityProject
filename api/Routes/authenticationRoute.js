@@ -4,5 +4,7 @@ module.exports = function(app) {
   app.route('/api/v1/register')
     .post(routeAuth.register);
   
-  
+  app.route('/api/v1/login')
+    .post(routeAuth.login);
+
 };

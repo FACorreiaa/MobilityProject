@@ -6,59 +6,55 @@ let Schema = mongoose.Schema;
  * @property {string} code.required
  */
 let RentalSchema = new Schema({
-  start: [
-    {
-      date: {
-        type: Date
+  start: {
+    date: {
+      type: Date
+      /*       default: Date.now
+       */
+    },
+    location: {
+      index: {
+        type: String
+      },
+      type: {
+        type: String,
+        enum: ['Point']
+        /*         required: true
+         */
+      },
+      coordinates: {
+        type: []
+        /*         required: true
+         */
       }
     },
-    {
-      location: {
-        index: {
-          type: String
-        },
-        type: {
-          type: String,
-          enum: ['Point'],
-          required: true
-        },
-        coordinates: {
-          type: [],
-          required: true
-        }
+    range: { type: Number }
+  },
+  end: {
+    date: {
+      type: Date
+      /*       default: Date.now
+       */
+    },
+
+    location: {
+      index: {
+        type: String
       },
-      range: { type: Number }
-    }
-  ],
-  end: [
-    {
-      date: {
-        type: Date
+      type: {
+        type: String,
+        enum: ['Point']
+        /*         required: true
+         */
+      },
+      coordinates: {
+        type: []
+        /*         required: true
+         */
       }
     },
-    {
-      location: {
-        index: {
-          type: String
-        },
-        type: {
-          type: String,
-          enum: ['Point'],
-          required: true
-        },
-        coordinates: {
-          type: [],
-          required: true
-        }
-      },
-      range: { type: Number }
-    }
-  ],
-  /*status: {
-    type: String,
-    enum: ['confirmed ', 'canceled '],
-    default: ['confirmed ']
-  },*/
+    range: { type: Number }
+  },
   price: {
     type: Number,
     required: true
@@ -68,13 +64,17 @@ let RentalSchema = new Schema({
     enum: ['minutes', 'pack'],
     default: 'minutes'
   },
-  code: {
+  /* code: {
     type: Number,
     required: true
-  },
+  }, */
   vehicle: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'Vehicle'
+    ref: 'Vehicles'
+  },
+  place: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Places'
   }
 });
 

@@ -12,11 +12,14 @@ const rentalRouter = require('../api/Routes/rentalRouter');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const cors = require('cors');
+const expressValidator = require('express-validator');
 
 require('../api/Models/ClientModel');
 require('../api/Models/RentalModel');
 require('../api/Models/VehicleModel');
-require('../api/Models/PlaceModel');
+const Place = require('../api/Models/PlaceModel');
+const Rental = require('../api/Models/RentalModel');
+
 require('../api/Models/UserModel');
 
 const app = express();
@@ -29,8 +32,12 @@ app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
+app.use(
+  bodyParser.urlencoded({
+    extended: false
+  })
+);
 app.use(express.static(path.join(__dirname, 'public')));
-
 server.listen(port, () => {
   console.log('App is running on port ' + port);
 });
@@ -53,6 +60,8 @@ mongoose
 mongoose.connection
   .once('open', () => console.log('Connected to MongoLab instance.'))
   .on('error', error => console.log('Error connecting to MongoLab:', error));
+Place.createIndexes();
+Rental.createIndexes();
 clientRouter(app);
 vehicleRouter(app);
 placeRouter(app);
