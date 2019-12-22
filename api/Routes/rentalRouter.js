@@ -1,12 +1,28 @@
 module.exports = function(app) {
   //experimental.
-  const routeVehicle = require('../Controllers/Rental');
+  const routeRental = require('../Controllers/Rental');
 
   app
-    .route('/api/v1/rental/start/vehicles/:lat/:lon')
-    .get(routeVehicle.getVehicleStartInRental);
+    .route('/api/v1/rental/start/vehicles/:lat/:lon/:min/:max')
+    .get(routeRental.getVehicleStartInRental);
 
   app
-    .route('/api/v1/rental/end/vehicles/:lat/:lon')
-    .get(routeVehicle.getVehicleEndInRental);
+    .route('/api/v1/rental/end/vehicles/:lat/:lon/:min/:max')
+    .get(routeRental.getVehicleEndInRental);
+
+  app
+    .route('/api/v1/rental/date/:id/:start/:end')
+    .get(routeRental.getRentalsByDateAndId);
+  app
+    .route('/api/v1/rental/date/:start/:end')
+    .get(routeRental.getRentalsByDate);
+  app
+    .route('/api/v1/rental/date/:start')
+    .get(routeRental.getRentalsStartByDate);
+
+  app.route('/api/v1/rental/date/:end').get(routeRental.getRentalsEndByDate);
+
+  app
+    .route('/api/v1/rental/checkin/:id/:rentalMethod')
+    .post(routeRental.checkin);
 };

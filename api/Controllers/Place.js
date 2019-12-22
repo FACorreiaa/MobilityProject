@@ -4,8 +4,6 @@ const Place = mongoose.model('Places');
 
 //GET: places/:lat/:lon?raio=200
 exports.getPlace = async function(req, res) {
-  Place.createIndexes({ point: '2dsphere' });
-
   let range = 200; //default value
   if (req.query.range) {
     range = req.query.range;
@@ -19,7 +17,8 @@ exports.getPlace = async function(req, res) {
             type: 'Point',
             coordinates: [req.params.lat, req.params.lon] //req.params: uri params
           },
-          $maxDistance: range
+          $maxDistance: range,
+          $minDistance: 0
         }
       }
     },

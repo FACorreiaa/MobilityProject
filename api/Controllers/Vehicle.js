@@ -25,8 +25,6 @@ exports.getPark = async function(req, res) {
 };
 
 exports.getPosition = async function(req, res) {
-  Place.createIndexes({ point: '2dsphere' });
-
   let range = 200; //default value
   if (req.query.range) {
     range = req.query.range;
@@ -56,6 +54,35 @@ exports.getPosition = async function(req, res) {
         return await res.json(error);
       }
       return await res.json(places);
+    }
+  );
+};
+
+//search by id and show the place
+exports.getVehiclePlaceById = async function(req, res) {
+  let _id = mongoose.Types.ObjectId(req.params.id);
+  console.log(_id);
+  Vehicle.aggregate(
+    [
+      {
+        $match: {
+          _id: _id
+        }
+      },
+      {
+        $lookup: {
+          from: 'Places',
+          localField: 'place',
+          foreignField: '_id',
+          as: 'place'
+        }
+      }
+    ],
+    async function(error, vehicle) {
+      if (error) {
+        return await res.json(error);
+      }
+      return await res.json(vehicle);
     }
   );
 };

@@ -24,9 +24,13 @@ let PlaceSchema = new Schema({
   },
   quantity: {
     type: Number
+  },
+  Steet: {
+    type: String
   }
 });
 
 PlaceSchema.index({ location: '2dsphere' });
+PlaceSchema.index({ 'location.coordinates': '2dsphere' });
 
 module.exports = mongoose.model('Places', PlaceSchema, 'Places');
