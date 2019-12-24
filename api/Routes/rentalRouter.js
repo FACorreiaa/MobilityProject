@@ -25,4 +25,10 @@ module.exports = function(app) {
   app
     .route('/api/v1/rental/checkin/:id/:rentalMethod')
     .post(routeRental.checkin);
+
+  app
+    .route('/api/v1/rental/checkout/:id/place/:place')
+    .put(routeRental.checkout);
+  app.route('/api/v1/rental/payment/:id').put(routeRental.payment);
+  app.route('/api/v1/rental/consult/:id').put(routeRental.consult);
 };

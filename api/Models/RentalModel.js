@@ -75,11 +75,20 @@ let RentalSchema = new Schema({
   place: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Places'
+  },
+  finalCost: {
+    type: Number
+  },
+  previewCost: {
+    type: Number
+  },
+  timeSpent: {
+    type: String
   }
 });
 
 RentalSchema.index({ location: '2dsphere' });
-RentalSchema.index({ 'start.location': '2dsphere' });
-RentalSchema.index({ 'end.location': '2dsphere' });
+RentalSchema.index({ 'start.location.coordinates': '2dsphere' });
+RentalSchema.index({ 'end.location.coordinates': '2dsphere' });
 
 module.exports = mongoose.model('Rentals', RentalSchema, 'Rentals');

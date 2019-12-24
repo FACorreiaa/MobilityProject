@@ -1,7 +1,8 @@
 'use strict';
 const mongoose = require('mongoose');
 const Rental = mongoose.model('Rentals');
-
+const coords = require('../Services/RandomCoords.js');
+const moment = require('moment');
 exports.getVehicleEndInRental = async function(req, res) {
   /* let minRange = 0;
   let maxRange = 200;
@@ -180,38 +181,24 @@ exports.checkin = async function(req, res) {
     [
       {
         $lookup: {
-          from: 'Vehicles',
-          localField: 'vehicle',
-          foreignField: '_id',
-          as: 'vehicle_data'
-        }
-      },
-      { $unwind: '$veiculo' },
-      {
-        $lookup: {
           from: 'Places',
-          localField: 'vehicle_data.place',
+          localField: 'place',
           foreignField: '_id',
           as: 'places_data'
         }
       },
-      { $unwind: '$places_data' },
-      {
-        $project: {
-          title: 1,
-          places_data: '$places_data'
-        }
-      }
+      { $unwind: '$places_data' }
     ],
     async function(error, placeData) {
+      let date = new Date();
+      let rentalMethod = req.params.rentalMethod;
+      let vehicle = mongoose.Types.ObjectId(req.params.id);
+      let price = 0;
+
       if (error) {
         return await res.json(error);
       }
-      let date = new Date();
-      let price = 10;
-      let rentalMethod = req.params.rentalMethod;
-      let vehicle = mongoose.Types.ObjectId(req.params.id);
-      console.log(placeData.places_data);
+      rentalMethod == 'minutes' ? (price = 1) : (price = 6);
       console.log(placeData);
       let rental = new Rental({
         start: {
@@ -230,4 +217,89 @@ exports.checkin = async function(req, res) {
       });
     }
   );
+};
+
+exports.checkout = async function(req, res) {
+  let _id = mongoose.Types.ObjectId(req.params.id);
+  let query = { _id: _id };
+  let date = new Date();
+  /*  let object = {
+    'end.date': new Date(),
+    'end.location': {
+      type: 'Point',
+      coordinates: [41.530735, -8.621205]
+    }
+  }; */
+  let place = mongoose.Types.ObjectId(req.params.place);
+  console.log(date);
+  Rental.findOneAndUpdate(
+    query,
+    {
+      $set: {
+        'end.date': new Date(),
+        'end.location.type': 'Point',
+        'end.location.coordinates': [41.530735, -8.621205],
+        place
+      }
+    },
+    { upsert: true },
+    async function(err, rental) {
+      console.log(rental);
+      if (err) return await res.send(err);
+      return await res.send('Succesfully saved.' + rental);
+    }
+  );
+};
+
+exports.payment = async function(req, res) {
+  let _id = mongoose.Types.ObjectId(req.params.id);
+  let query = { _id: _id };
+
+  Rental.findOneAndUpdate(query, { upsert: true }, function(err, rental) {
+    const timeSpentInMinutes = (rental.end.date - rental.start.date) / 60000;
+    const timeSpentInHours = (rental.end.date - rental.start.date) / 3600000;
+
+    if (rental.rentalMethod == 'minutes') {
+      rental.finalCost = 1 + timeSpentInMinutes * 0.15;
+    }
+
+    if (rental.rentalMethod == 'pack') {
+      if (timeSpentInHours > 0 && timeSpentInHours <= 1) rental.finalCost = 6;
+      else if (timeSpentInHours > 1 && timeSpentInHours <= 2)
+        rental.finalCost = 10;
+      else rental.finalCost = 25;
+    }
+    rental.save();
+    console.log('finalPrice' + rental);
+    if (err) return res.send({ error: err });
+
+    return res.send('Succesfully saved.' + rental);
+  });
+};
+
+exports.consult = async function(req, res) {
+  let _id = mongoose.Types.ObjectId(req.params.id);
+  let query = { _id: _id };
+
+  Rental.findOneAndUpdate(query, { upsert: true }, function(err, rental) {
+    let currentDate = new Date();
+    const timeSpentInMinutes = (currentDate - rental.start.date) / 60000;
+    const timeSpentInHours = (currentDate - rental.start.date) / 3600000;
+
+    if (rental.rentalMethod == 'minutes') {
+      rental.previewCost = 1 + timeSpentInMinutes * 0.15;
+      rental.timeSpent = `${timeSpentInMinutes} minutes or ${timeSpentInHours} hours`;
+    }
+
+    if (rental.rentalMethod == 'pack') {
+      if (timeSpentInHours > 0 && timeSpentInHours <= 1) rental.previewCost = 6;
+      else if (timeSpentInHours > 1 && timeSpentInHours <= 2)
+        rental.previewCost = 10;
+      else rental.previewCost = 25;
+      rental.timeSpent = `${timeSpentInMinutes} minutes or ${timeSpentInHours} hours`;
+    }
+    rental.save();
+    if (err) return res.send({ error: err });
+    return res.send(rental);
+  });
 };

@@ -3,7 +3,6 @@ const express = require('express');
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
-const indexRouter = require('./routes/index');
 const clientRouter = require('../api/Routes/clientRoute');
 const vehicleRouter = require('../api/Routes/vehicleRoute');
 const placeRouter = require('../api/Routes/placeRouter');
@@ -13,7 +12,6 @@ const userRouter = require('../api/Routes/userRoute');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const cors = require('cors');
-const expressValidator = require('express-validator');
 
 require('../api/Models/ClientModel');
 require('../api/Models/RentalModel');
@@ -54,7 +52,8 @@ mongoose
   .connect(MONGO_URI, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
-    useCreateIndex: true
+    useCreateIndex: true,
+    useFindAndModify: false
   })
   .catch(err => console.log(err));
 mongoose.connection
@@ -68,7 +67,5 @@ placeRouter(app);
 authRouter(app);
 rentalRouter(app);
 userRouter(app);
-
-app.use('/', indexRouter);
 
 module.exports = app;

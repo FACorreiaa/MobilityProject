@@ -17,6 +17,10 @@ let VehicleSchema = new Schema({
   place: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Places'
+  },
+  client: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Clients'
   }
 });
 

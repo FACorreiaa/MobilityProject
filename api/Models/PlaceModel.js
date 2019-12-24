@@ -10,11 +10,11 @@ let PlaceSchema = new Schema({
   location: {
     type: {
       type: String,
-      enum: ['Point'],
+      enum: ['Point', 'Polygon'],
       required: true
     },
     coordinates: {
-      type: [],
+      type: [Number],
       required: true
     }
   },
