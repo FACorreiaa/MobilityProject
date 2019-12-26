@@ -30,8 +30,3 @@ exports.getPlace = async function(req, res) {
     }
   );
 };
-
-/* Place.save(function(err, book) {
-    if (err) return console.error(err);
-    console.log(book.name + ' saved to bookstore collection.');
-  }); */

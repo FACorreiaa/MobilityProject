@@ -64,7 +64,6 @@ exports.getVehicleStartInRental = async function(req, res) {
 //search by id and show the place
 exports.getRentalsByDateAndId = async function(req, res) {
   let _id = mongoose.Types.ObjectId(req.params.id);
-  console.log(_id);
   Rental.aggregate(
     [
       {
@@ -194,24 +193,28 @@ exports.checkin = async function(req, res) {
       let rentalMethod = req.params.rentalMethod;
       let vehicle = mongoose.Types.ObjectId(req.params.id);
       let price = 0;
+      let quantity = -quantity;
 
       if (error) {
         return await res.json(error);
       }
       rentalMethod == 'minutes' ? (price = 1) : (price = 6);
-      console.log(placeData);
       let rental = new Rental({
         start: {
           date
         },
         price,
         vehicle,
-        rentalMethod
+        rentalMethod,
+        quantity
       });
 
       rental.save(async function(error, rental) {
         if (error) {
           return await res.json(error);
+        }
+        if (rental.quantity <= 0) {
+          return await res.json('All vehicles are being used');
         }
         return await res.json(rental);
       });
@@ -223,9 +226,7 @@ exports.checkout = async function(req, res) {
   let _id = mongoose.Types.ObjectId(req.params.id);
   let query = { _id: _id };
   let date = new Date();
-  console.log(date);
   let place = mongoose.Types.ObjectId(req.params.place);
-  console.log(date);
   Rental.findOneAndUpdate(
     query,
     {
@@ -273,7 +274,6 @@ exports.payment = async function(req, res) {
       }
     }
     rental.save();
-    console.log('finalPrice' + rental);
     if (err) return res.send({ error: err });
 
     return res.send('Succesfully saved.' + rental);

@@ -20,10 +20,9 @@ let UserSchema = new Schema({
     type: String,
     required: true,
     select: false*/
-  dadosPassword : {
-    type : { hash: String,
-            salt: String }, 
-    required: true 
+  dadosPassword: {
+    type: { hash: String, salt: String },
+    required: true
   },
   role: {
     type: String,
@@ -31,7 +30,7 @@ let UserSchema = new Schema({
     default: 'client',
     enum: ['guest', 'client', 'employee', 'admin']
   },
-  waitValidation:{
+  waitValidation: {
     type: Boolean,
     default: true
   },
@@ -50,34 +49,39 @@ let UserSchema = new Schema({
 // -
 const crypto = require('crypto');
 
-UserSchema.methods.setDadosPassword = function (textoPassword){
-    const saltUtilizado = crypto.randomBytes(16).toString('hex'); 
-    this.dadosPassword.salt = saltUtilizado;
-   this.dadosPassword.hash = crypto.pbkdf2Sync(textoPassword, saltUtilizado, 1000, 64,'sha512').toString('hex');
-   // console.log('hash: ', this.dadosPassword.hash);
-}; 
+UserSchema.methods.setDadosPassword = function(textoPassword) {
+  const saltUtilizado = crypto.randomBytes(16).toString('hex');
+  this.dadosPassword.salt = saltUtilizado;
+  this.dadosPassword.hash = crypto
+    .pbkdf2Sync(textoPassword, saltUtilizado, 1000, 64, 'sha512')
+    .toString('hex');
+};
 
 // --------
 // - validarPassword(password): Schema method to validade a given password
-UserSchema.methods.validarPassword = function (password) {
-    const hash =  crypto.pbkdf2Sync(password, this.dadosPassword.salt, 1000, 64,'sha512').toString('hex');
-    return this.dadosPassword.hash === hash; ;
+UserSchema.methods.validarPassword = function(password) {
+  const hash = crypto
+    .pbkdf2Sync(password, this.dadosPassword.salt, 1000, 64, 'sha512')
+    .toString('hex');
+  return this.dadosPassword.hash === hash;
 };
 
 // --------
 // - gerarJwt(): Schema method to generate a JWT (Json web token)
 const jwt = require('jsonwebtoken');
-UserSchema.methods.gerarJwt = function () {
-    const validade = new Date();
-    validade.setDate(validade.getDate() + 7); 
-    return jwt.sign({ 
-            _id: this._id, 
-            username: this.username,
-            email: this.email, 
-            role: this.role, 
-            exp: parseInt(validade.getTime() / 1000, 10), 
-            }, 'esteEoSegredo' ); 
+UserSchema.methods.gerarJwt = function() {
+  const validade = new Date();
+  validade.setDate(validade.getDate() + 7);
+  return jwt.sign(
+    {
+      _id: this._id,
+      username: this.username,
+      email: this.email,
+      role: this.role,
+      exp: parseInt(validade.getTime() / 1000, 10)
+    },
+    'esteEoSegredo'
+  );
 };
-
 
 module.exports = mongoose.model('Users', UserSchema, 'Users');

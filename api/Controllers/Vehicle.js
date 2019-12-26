@@ -61,7 +61,6 @@ exports.getPosition = async function(req, res) {
 //search by id and show the place
 exports.getVehiclePlaceById = async function(req, res) {
   let _id = mongoose.Types.ObjectId(req.params.id);
-  console.log(_id);
   Vehicle.aggregate(
     [
       {
