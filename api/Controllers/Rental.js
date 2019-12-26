@@ -223,13 +223,7 @@ exports.checkout = async function(req, res) {
   let _id = mongoose.Types.ObjectId(req.params.id);
   let query = { _id: _id };
   let date = new Date();
-  /*  let object = {
-    'end.date': new Date(),
-    'end.location': {
-      type: 'Point',
-      coordinates: [41.530735, -8.621205]
-    }
-  }; */
+  console.log(date);
   let place = mongoose.Types.ObjectId(req.params.place);
   console.log(date);
   Rental.findOneAndUpdate(
@@ -244,9 +238,12 @@ exports.checkout = async function(req, res) {
     },
     { upsert: true },
     async function(err, rental) {
-      console.log(rental);
       if (err) return await res.send(err);
-      return await res.send('Succesfully saved.' + rental);
+      if (rental.timeSpent) {
+        await res.send('Checkout already made');
+      } else {
+        return await res.send('Succesfully saved.' + rental);
+      }
     }
   );
 };
@@ -261,6 +258,9 @@ exports.payment = async function(req, res) {
 
     if (rental.rentalMethod == 'minutes') {
       rental.finalCost = 1 + timeSpentInMinutes * 0.15;
+      if (isEmpty(rental.place)) {
+        rental.finalCost = 1 + timeSpentInMinutes * 0.15 - 0.5;
+      }
     }
 
     if (rental.rentalMethod == 'pack') {
@@ -268,6 +268,9 @@ exports.payment = async function(req, res) {
       else if (timeSpentInHours > 1 && timeSpentInHours <= 2)
         rental.finalCost = 10;
       else rental.finalCost = 25;
+      if (isEmpty(rental.place)) {
+        rental.finalCost = rental.finalCost - 0.5;
+      }
     }
     rental.save();
     console.log('finalPrice' + rental);
@@ -296,7 +299,7 @@ exports.consult = async function(req, res) {
       else if (timeSpentInHours > 1 && timeSpentInHours <= 2)
         rental.previewCost = 10;
       else rental.previewCost = 25;
-      rental.timeSpent = `${timeSpentInMinutes} minutes or ${timeSpentInHours} hours`;
+      rental.timeSpent = `${timeSpentInMinutes} minutes / ${timeSpentInHours} hours spend`;
     }
     rental.save();
     if (err) return res.send({ error: err });
