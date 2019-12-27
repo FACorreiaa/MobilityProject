@@ -11,7 +11,8 @@
     "build": "babel ./src --out-dir dist",
     "prod": "NODE_ENV=production npm-run-all clean build server:prod",
     "start:commit": "git add . && git commit -m 'auto message' && git push origin master",
-    "watch": "nodemon ./src/app.js"
+    "watch": "nodemon ./src/app.js",
+    "lines": "cloc lines api"
   },
   "dependencies": {
     "body-parser": "^1.19.0",

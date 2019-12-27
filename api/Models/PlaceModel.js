@@ -30,6 +30,29 @@ let PlaceSchema = new Schema({
   }
 });
 
+PlaceSchema.methods.comparePlaceWithFinalPlace = async function(lat, lon) {
+  this.model('Places').find(
+    {
+      'end.location': {
+        $near: {
+          $geometry: {
+            type: 'Point',
+            coordinates: [lat, lon]
+          },
+          $maxDistance: 200,
+          $minDistance: 0
+        }
+      }
+    },
+    async function(error, places) {
+      if (error) {
+        return await error;
+      }
+      return await places;
+    }
+  );
+};
+
 PlaceSchema.index({ location: '2dsphere' });
 PlaceSchema.index({ 'location.coordinates': '2dsphere' });
 
