@@ -2,20 +2,18 @@
 const mongoose = require('mongoose');
 const User = mongoose.model('Users');
 const Client = mongoose.model('Clients');
-var clientController = require ('./Client');
 
 
 // função auxiliar para obter o _id do utilizador a partir do JWT enviado no pedido
 const validateAdminAuth = (req, res, callback) => {
   // validar que os dados do JWT estão no request
-  console.log('username:' + req.payload.username + ' role:' + req.payload.role)
+  console.log('token username:' + req.payload.username + ' role:' + req.payload.role)
   
   if (req.payload && req.payload.username && req.payload.role) { 
       User.find({ "username": req.payload.username}
       //, {"role": req.payload.role}
       )
           .exec((err, utilizador) => {
-            console.log('admin = ' + (req.payload.role !== 'admin'));
               if (err) {
                 console.log(err);
                 return res
@@ -47,6 +45,7 @@ const validateAdminAuth = (req, res, callback) => {
 
 //gets all users on db
 exports.getUsers = function(req, res) {
+  console.log('chamar getusers')
   validateAdminAuth(req, res, 
     (req, res, utilizadorId) => {
       User.find({}, function(error, users) {
@@ -63,17 +62,21 @@ exports.getUsers = function(req, res) {
 
 //route for admin to get all users waiting registry validation
 exports.getUsersForValidation = function(req, res) {
-  User.find({waitValidation: {$ne: false}}, async function(err, user) {
-    if (err) {
-      return res.send(err);
-    }
-    await res.json(user);
+  validateAdminAuth(req, res, 
+    (req, res, utilizadorId) => {
+    User.find({waitValidation: {$ne: false}}, async function(err, user) {
+      if (err) {
+        return res.send(err);
+      }
+      await res.json(user);
+    })
   });
 };
 
-// update user "valid = true" and registeredby 
+// update user "valid = true"
+// registeredby id user
 // "waitValidation = false"
-// and insert new client
+// insert new client
 exports.validateUser = function(req, res) {
   validateAdminAuth(req, res, 
     (req, res, utilizadorId) => {
@@ -89,8 +92,9 @@ exports.validateUser = function(req, res) {
          
           console.log('result ' + result);
           console.log('user' + JSON.stringify(user))
+          
           //creates client object
-          console.log(' user.firstname ' +  user.firstname)
+          
           const newClient = new Client();
           newClient.firstname = user.firstname;
           newClient.lastname = user.lastname;
@@ -113,10 +117,14 @@ exports.validateUser = function(req, res) {
 
 
 exports.getUserById = function(req, res) {
-  User.findById(req.params.id, function(err, user) {
-    if (err) {
-      return res.send(err);
-    }
-    return res.json(user);
+  validateAdminAuth(req, res, 
+    (req, res, utilizadorId) => {
+    User.findById(req.params.id, function(err, user) {
+      if (err) {
+        return res.send(err);
+      }
+      return res.json(user);
+    })
   });
+
 };
