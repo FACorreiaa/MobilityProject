@@ -2,7 +2,8 @@ module.exports = function(app) {
   const routeClient = require('../Controllers/Client');
 
   app.route('/api/v1/clients')
-    .get(routeClient.getClients);
+    .get(routeClient.getClients)
+    .post(routeClient.postClient);
   
   app.route('/api/v1/clients/:id')
     .get(routeClient.getClientsById)

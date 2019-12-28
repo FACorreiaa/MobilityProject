@@ -10,6 +10,14 @@ let UserSchema = new Schema({
     unique: true,
     required: true
   },
+  firstname: {
+    type: String,
+    required: true
+  },
+  lastname: {
+    type: String,
+    required: true
+  },
   email: {
     type: String,
     unique: true,
@@ -34,7 +42,7 @@ let UserSchema = new Schema({
     type: Boolean,
     default: true
   },
-  registerBy: {
+  registeredBy: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Users'
   },

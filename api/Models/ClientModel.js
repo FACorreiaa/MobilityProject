@@ -6,11 +6,11 @@ let Schema = mongoose.Schema;
  * @property {string} code.required
  */
 let ClientSchema = new Schema({
-  firstName: {
+  firstname: {
     type: String,
     required: 'first name of the person '
   },
-  lastName: {
+  lastname: {
     type: String,
     required: 'last name of the person '
   },
@@ -21,7 +21,8 @@ let ClientSchema = new Schema({
     }
   ],
   balance: {
-    type: Number
+    type: Number,
+    default: 0
   },
   Created_data: {
     type: Date,

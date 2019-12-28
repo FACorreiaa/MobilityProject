@@ -57,3 +57,17 @@ exports.postClientRental = async function(req, res) {
       res.status(500).jsonp({ error: { message: err.message } });
     });
 };
+
+
+//add new client
+exports.postClient = async function(req, res) {
+  var newClient = new Client(req);
+  newClient
+    .save()
+    .then(result => {
+      res.status(201).jsonp(newClient);
+    })
+    .catch(err => {
+      res.status(500).jsonp({ error: { message: err.message } });
+    });
+};

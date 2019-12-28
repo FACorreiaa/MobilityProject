@@ -38,8 +38,12 @@ exports.register = async function(req, res) {
       .status(400)
       .json({ message: 'Necessário preencher todos os campos!' });
   }
+  console.log('req.firstname ' + req.firstname);
   const newUser = new User();
   newUser.username = req.body.username;
+  newUser.firstname = req.body.firstname;
+
+  newUser.lastname = req.body.lastname;
   newUser.email = req.body.email;
   newUser.dadosPassword = { hash: '', salt: '' };
   newUser.setDadosPassword(req.body.password);

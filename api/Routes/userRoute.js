@@ -3,11 +3,14 @@ module.exports = function(auth, app) {
 
   app.route('/api/v1/users')
     .get(auth, routeUser.getUsers);
-  
-  app.route('/api/v1/users/:id')
-    .put(routeUser.validateUser);
 
-  app.route('/api/v1/users/waitValidation')
-    .get(routeUser.getUsersForValidation)
+  app.route('/api/v1/users/:id')
+    .get(auth, routeUser.getUserById);
+  
+  app.route('/api/v1/users/:id/validation')
+    .put(auth, routeUser.validateUser);
+
+  app.route('/api/v1/users?valid=:true')
+    .get(auth, routeUser.getUsersForValidation)
 
 };
