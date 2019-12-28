@@ -6,9 +6,9 @@ module.exports = function(app) {
     .route('/api/v1/rental/start/vehicles/:lat/:lon/:min/:max')
     .get(routeRental.getVehicleStartInRental);
 
-  app
+  /* app
     .route('/api/v1/rental/end/vehicles/:lat/:lon/:min/:max')
-    .get(routeRental.getVehicleEndInRental);
+    .get(routeRental.getVehicleEndInRental); */
 
   app
     .route('/api/v1/rental/date/:id/:start/:end')
