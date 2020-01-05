@@ -69,7 +69,7 @@ exports.login = async function(req, res) {
   passport.authenticate('local', (err, user, info) => {
     let token;
     if (err) {
-      return res.status(404).json(err);
+      return res.status(401).json(err);
     }
     if (user) {
       token = user.gerarJwt();

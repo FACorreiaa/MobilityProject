@@ -39,6 +39,7 @@
     "@babel/core": "^7.7.5",
     "@babel/node": "^7.7.4",
     "@babel/preset-env": "^7.7.6",
+    "express-swagger-generator": "^1.1.15",
     "nodemon": "^2.0.2"
   }
 }

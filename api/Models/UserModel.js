@@ -3,6 +3,16 @@ const mongoose = require('mongoose');
 let Schema = mongoose.Schema;
 /**
  * @typedef UserSchema
+ * @property {string} username.required
+ * @property {string} firstname.required
+ * @property {string} lastname.required
+ * @property {string} email.required
+ * @property {string} dadosPassword
+ * @property {enum} role Values that need to be considered for role - eg: guest,client,employee,admin
+ * @property {Boolean} waitValidation
+ * @property {string} registeredBy
+ * @property {Boolean} valid
+ * 
  */
 let UserSchema = new Schema({
   username: {

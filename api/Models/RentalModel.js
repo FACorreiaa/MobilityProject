@@ -3,7 +3,16 @@ const mongoose = require('mongoose');
 let Schema = mongoose.Schema;
 /**
  * @typedef RentalSchema
- * @property {string} code.required
+ * @property {object} start
+ * @property {string} location
+ * @property {object} end
+ * @property {number} price
+ * @property {enum} rentalMethod Values that need to be considered for rentalMethod - eg: minutes,pack
+ * @property {number} vehicle
+ * @property {number} place
+ * @property {number} finalCost
+ * @property {number} previewCost
+ * @property {number} timeSpent
  */
 let RentalSchema = new Schema({
   start: {

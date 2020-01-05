@@ -4,7 +4,10 @@ const mongoose = require('mongoose');
 let Schema = mongoose.Schema;
 /**
  * @typedef VehicleSchema
- * @property {string} code.required
+ * @property {number} code.required
+ * @property {string} description
+ * @property {string} place
+ * @property {string} client
  */
 let VehicleSchema = new Schema({
   code: {

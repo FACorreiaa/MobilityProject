@@ -22,7 +22,6 @@ require('../api/Models/UserModel');
 
 const app = express();
 const port = process.env.PORT || 8000;
-
 const server = require('http').Server(app);
 
 app.use(cors());
@@ -75,3 +74,37 @@ rentalRouter(app);
 userRouter(auth, app);
 
 module.exports = app;
+
+
+const expressSwagger = require('express-swagger-generator')(app);
+
+//SWAGGER
+let options = {
+  swaggerDefinition: {
+      info: {
+          description: 'This is swagger documentation for Mobility Project',
+          title: 'Swagger',
+          version: '1.0.0',
+      },
+      host: 'localhost:8000',
+      basePath: '/api/v1/',
+      produces: [
+          "application/json",
+          "application/xml"
+      ],
+      schemes: ['http', 'https'],
+      securityDefinitions: {
+          JWT: {
+              type: 'apiKey',
+              in: 'header',
+              name: 'Authorization',
+              description: "",
+          }
+      }
+  },
+  basedir: __dirname, //app absolute path
+  files: ['../api/Routes/**.js','../api/Models/**.js'] //Path to the API handle folder
+};      
+
+expressSwagger(options)
+app.listen(3000);

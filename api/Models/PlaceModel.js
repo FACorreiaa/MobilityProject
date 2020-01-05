@@ -4,8 +4,14 @@ const mongoose = require('mongoose');
 let Schema = mongoose.Schema;
 /**
  * @typedef PlaceSchema
- * @property {string} code.required
+ * @property {object} location
+ * @property {number} coordinates
+ * @property {number} range
+ * @property {number} capacity
+ * @property {number} quantity
+ * @property {string} street
  */
+
 let PlaceSchema = new Schema({
   location: {
     type: {
@@ -25,7 +31,7 @@ let PlaceSchema = new Schema({
   quantity: {
     type: Number
   },
-  Steet: {
+  street: {
     type: String
   }
 });
