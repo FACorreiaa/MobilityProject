@@ -30,7 +30,7 @@ module.exports = function(app) {
  * @returns {Error} 500
  */
   app
-    .route('/api/v1/rental/date/:id/:start/:end')
+    .route('/api/v1/rental/:id/date/:start/:end')
     .get(routeRental.getRentalsByDateAndId);
 
     /**
