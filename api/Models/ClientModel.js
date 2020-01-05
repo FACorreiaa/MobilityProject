@@ -1,16 +1,23 @@
 'use strict';
 const mongoose = require('mongoose');
 let Schema = mongoose.Schema;
+const expressSwagger = require('express-swagger-generator');
+
 /**
  * @typedef ClientSchema
- * @property {string} code.required
+ * @property {string} firstname.required
+ * @property {string} lastname.required
+ * @property {array} rentals
+ * @property {number} balance
+ * @property {string} created_data
  */
+
 let ClientSchema = new Schema({
-  firstName: {
+  firstname: {
     type: String,
     required: 'first name of the person '
   },
-  lastName: {
+  lastname: {
     type: String,
     required: 'last name of the person '
   },
@@ -21,11 +28,13 @@ let ClientSchema = new Schema({
     }
   ],
   balance: {
-    type: Number
+    type: Number,
+    default: 0
   },
-  Created_data: {
+  created_data: {
     type: Date,
     default: Date.now
   }
 });
 module.exports = mongoose.model('Clients', ClientSchema, 'Clients');
+expressSwagger(ClientSchema);

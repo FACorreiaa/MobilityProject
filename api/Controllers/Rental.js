@@ -298,7 +298,7 @@ exports.payment = async function(req, res) {
     rental.save();
     if (err) return res.send({ error: err });
 
-    return res.send(`Payment of ${rental.finalCost}€ Succesfull`);
+    return res.send(`Rental price of  ${rental.finalCost}€ has been paid successfully!`);
   });
 };
 

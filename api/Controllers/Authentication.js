@@ -38,8 +38,12 @@ exports.register = async function(req, res) {
       .status(400)
       .json({ message: 'Necessário preencher todos os campos!' });
   }
+  console.log('req.firstname ' + req.firstname);
   const newUser = new User();
   newUser.username = req.body.username;
+  newUser.firstname = req.body.firstname;
+
+  newUser.lastname = req.body.lastname;
   newUser.email = req.body.email;
   newUser.dadosPassword = { hash: '', salt: '' };
   newUser.setDadosPassword(req.body.password);
@@ -65,7 +69,7 @@ exports.login = async function(req, res) {
   passport.authenticate('local', (err, user, info) => {
     let token;
     if (err) {
-      return res.status(404).json(err);
+      return res.status(401).json(err);
     }
     if (user) {
       token = user.gerarJwt();
