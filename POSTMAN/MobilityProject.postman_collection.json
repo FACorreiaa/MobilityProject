@@ -6,17 +6,194 @@
 	},
 	"item": [
 		{
-			"name": "User (w/token)",
+			"name": "AUTHENTICATION",
 			"item": [
 				{
-					"name": "/users/:id",
+					"name": "/register",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"username\":\"Joana_silva22\",\n\t\"firstname\":\"Joana\",\n\t\"lastname\":\"Silva\",\n\t\"email\":\"joana222@gmail.com\",\n\t\"password\":\"123\",\n\t\"role\": \"client\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOST}}:{{PORT}}/api/v1/register",
+							"host": [
+								"{{HOST}}"
+							],
+							"port": "{{PORT}}",
+							"path": [
+								"api",
+								"v1",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/login",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"username\":\"jose_employee\",\n\t\"password\":\"123\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOST}}:{{PORT}}/api/v1/login",
+							"host": [
+								"{{HOST}}"
+							],
+							"port": "{{PORT}}",
+							"path": [
+								"api",
+								"v1",
+								"login"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "USER",
+			"item": [
+				{
+					"name": "/users",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
 					"request": {
 						"auth": {
 							"type": "bearer",
 							"bearer": [
 								{
 									"key": "token",
-									"value": "{{token}}",
+									"value": "{{tokenAdmin}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOST}}:{{PORT}}/api/v1/users",
+							"host": [
+								"{{HOST}}"
+							],
+							"port": "{{PORT}}",
+							"path": [
+								"api",
+								"v1",
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/users/:id",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{tokenAdmin}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOST}}:{{PORT}}/api/v1/users/5e0545f7c6318217440b1ee2",
+							"host": [
+								"{{HOST}}"
+							],
+							"port": "{{PORT}}",
+							"path": [
+								"api",
+								"v1",
+								"users",
+								"5e0545f7c6318217440b1ee2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/users/:id/validation",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{tokenAdmin}}",
 									"type": "string"
 								}
 							]
@@ -32,7 +209,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"valid\": true\n}",
+							"raw": "",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -40,27 +217,133 @@
 							}
 						},
 						"url": {
-							"raw": "{{HOST}}:{{PORT}}/clients/1",
+							"raw": "{{HOST}}:{{PORT}}/api/v1/users/5e07841484e57c17a866480b/validation",
 							"host": [
 								"{{HOST}}"
 							],
 							"port": "{{PORT}}",
 							"path": [
-								"clients",
-								"1"
+								"api",
+								"v1",
+								"users",
+								"5e07841484e57c17a866480b",
+								"validation"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "users/admin/waitvalidation",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{tokenAdmin}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOST}}:{{PORT}}/api/v1/users/admin/waitvalidation",
+							"host": [
+								"{{HOST}}"
+							],
+							"port": "{{PORT}}",
+							"path": [
+								"api",
+								"v1",
+								"users",
+								"admin",
+								"waitvalidation"
 							]
 						}
 					},
 					"response": []
 				}
 			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "954664a8-a7c1-43b8-9577-4ec6dd73e5ae",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "59bb42ed-d2b1-4c2b-981d-31197f61dd18",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			],
 			"protocolProfileBehavior": {}
 		},
 		{
-			"name": "CLIENTS (w/token)",
+			"name": "CLIENTS",
 			"item": [
 				{
 					"name": "/clients",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{tokenAdmin}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{HOST}}:{{PORT}}/api/v1/clients",
+							"host": [
+								"{{HOST}}"
+							],
+							"port": "{{PORT}}",
+							"path": [
+								"api",
+								"v1",
+								"clients"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/clients/:id",
 					"request": {
 						"auth": {
 							"type": "bearer",
@@ -75,13 +358,16 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{HOST}}:{{PORT}}/clients",
+							"raw": "{{HOST}}:{{PORT}}/api/v1/clients/5df8ca395d2b2b3ecdc476e2",
 							"host": [
 								"{{HOST}}"
 							],
 							"port": "{{PORT}}",
 							"path": [
-								"clients"
+								"api",
+								"v1",
+								"clients",
+								"5df8ca395d2b2b3ecdc476e2"
 							]
 						}
 					},
@@ -103,14 +389,67 @@
 						"method": "PUT",
 						"header": [],
 						"url": {
-							"raw": "{{HOST}}:{{PORT}}/clients/1",
+							"raw": "{{HOST}}:{{PORT}}/api/v1/clients/5df8ca395d2b2b3ecdc476e2",
 							"host": [
 								"{{HOST}}"
 							],
 							"port": "{{PORT}}",
 							"path": [
+								"api",
+								"v1",
 								"clients",
-								"1"
+								"5df8ca395d2b2b3ecdc476e2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/clients/:id/rentals",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"start\": [\n    {\n      \"date\": \"2019-12-16\",\n      \"location\": [\n        323423431,\n        23432323\n      ],\n      \"range\": 200\n    }\n  ],\n  \"end\": [\n    {\n      \"date\": \"2019-12-16\",\n      \"location\": [\n        323423431,\n        23432323\n      ],\n      \"range\": 200\n    }\n  ],\n  \"price\": 12.6,\n  \"rentalMethod\": \"minutes\",\n  \"code\": 123,\n  \"vehicle\": 1232423424\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOST}}:{{PORT}}/api/v1/clients/5df8ca395d2b2b3ecdc476e2/rentals",
+							"host": [
+								"{{HOST}}"
+							],
+							"port": "{{PORT}}",
+							"path": [
+								"api",
+								"v1",
+								"clients",
+								"5df8ca395d2b2b3ecdc476e2",
+								"rentals"
 							]
 						}
 					},
@@ -140,7 +479,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"start\": [\n    {\n      \"date\": \"2019-12-16\",\n      \"location\": [\n        323423431,\n        23432323\n      ],\n      \"range\": 200\n    }\n  ],\n  \"end\": [\n    {\n      \"date\": \"2019-12-16\",\n      \"location\": [\n        323423431,\n        23432323\n      ],\n      \"range\": 200\n    }\n  ],\n  \"price\": 12.6,\n  \"rentalMethod\": \"minutes\",\n  \"code\": 123,\n  \"vehicle\": 1232423424\n}",
+							"raw": "{\n\t\"start\": [\n   {\n      \"date\": \"2019-12-12\",\n      \"location\": [{\n          \"index\": \"a\",\n          \"type\": \"Point\",\n          \"coordinates\": [0,0]\n      }],\n      \"range\": 200\n    }\n  ],\n\t\"code\": 1234,\n\t\"price\":12,\n\t\"vehicle\":\"5df8bd0c5d2b2b3ecdc476d5\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -148,14 +487,16 @@
 							}
 						},
 						"url": {
-							"raw": "{{HOST}}:{{PORT}}/clients/1/rentals",
+							"raw": "{{HOST}}:{{PORT}}/api/v1/clients/5df8ca395d2b2b3ecdc476e2/rentals",
 							"host": [
 								"{{HOST}}"
 							],
 							"port": "{{PORT}}",
 							"path": [
+								"api",
+								"v1",
 								"clients",
-								"1",
+								"5df8ca395d2b2b3ecdc476e2",
 								"rentals"
 							]
 						}
@@ -163,53 +504,7 @@
 					"response": []
 				},
 				{
-					"name": "/clients/:id/validate",
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{token}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"name": "Content-Type",
-								"type": "text",
-								"value": "application/json"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n\t\"valid\":true\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{HOST}}:{{PORT}}/clients/1/validate",
-							"host": [
-								"{{HOST}}"
-							],
-							"port": "{{PORT}}",
-							"path": [
-								"clients",
-								"1",
-								"validate"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "/clients/:id/rentals/:idrental",
+					"name": "x/clients/:id/rentals/:idrental",
 					"protocolProfileBehavior": {
 						"disableBodyPruning": true
 					},
@@ -259,13 +554,369 @@
 					"response": []
 				}
 			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "89a720b4-fc69-4aae-9177-24d7ba08bcff",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "9b443a84-90f7-4c1a-9004-22958b5f680c",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			],
 			"protocolProfileBehavior": {}
 		},
 		{
-			"name": "VEHICLES (w/token)",
+			"name": "RENTALS",
 			"item": [
 				{
-					"name": "/vehicles/:id",
+					"name": "/rental/start/vehicles/:lat/:lon/:min/:max",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{HOST}}:{{PORT}}/api/v1/rental/start/vehicles/:lat/:lon/:min/:max",
+							"host": [
+								"{{HOST}}"
+							],
+							"port": "{{PORT}}",
+							"path": [
+								"api",
+								"v1",
+								"rental",
+								"start",
+								"vehicles",
+								":lat",
+								":lon",
+								":min",
+								":max"
+							],
+							"variable": [
+								{
+									"key": "lat",
+									"value": ""
+								},
+								{
+									"key": "lon",
+									"value": ""
+								},
+								{
+									"key": "min",
+									"value": ""
+								},
+								{
+									"key": "max",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "rental/:id/date/:start/:end",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{HOST}}:{{PORT}}/api/v1/rental/:id/date/:start/:end",
+							"host": [
+								"{{HOST}}"
+							],
+							"port": "{{PORT}}",
+							"path": [
+								"api",
+								"v1",
+								"rental",
+								":id",
+								"date",
+								":start",
+								":end"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": ""
+								},
+								{
+									"key": "start",
+									"value": ""
+								},
+								{
+									"key": "end",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "rental/date/:start/:end",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{HOST}}:{{PORT}}/api/v1/rental/date/:start/:end",
+							"host": [
+								"{{HOST}}"
+							],
+							"port": "{{PORT}}",
+							"path": [
+								"api",
+								"v1",
+								"rental",
+								"date",
+								":start",
+								":end"
+							],
+							"variable": [
+								{
+									"key": "start",
+									"value": ""
+								},
+								{
+									"key": "end",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "rental/date/:start",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{HOST}}:{{PORT}}/api/v1/rental/date/:start",
+							"host": [
+								"{{HOST}}"
+							],
+							"port": "{{PORT}}",
+							"path": [
+								"api",
+								"v1",
+								"rental",
+								"date",
+								":start"
+							],
+							"variable": [
+								{
+									"key": "start",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "rental/date/:end",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{HOST}}:{{PORT}}/api/v1/rental/date/:end",
+							"host": [
+								"{{HOST}}"
+							],
+							"port": "{{PORT}}",
+							"path": [
+								"api",
+								"v1",
+								"rental",
+								"date",
+								":end"
+							],
+							"variable": [
+								{
+									"key": "end",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "rental/checkin/:id/:rentalMethod",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{HOST}}:{{PORT}}/api/v1/rental/checkin/:id/:rentalMethod",
+							"host": [
+								"{{HOST}}"
+							],
+							"port": "{{PORT}}",
+							"path": [
+								"api",
+								"v1",
+								"rental",
+								"checkin",
+								":id",
+								":rentalMethod"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": ""
+								},
+								{
+									"key": "rentalMethod",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "rental/checkout/:id/place/:place",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{HOST}}:{{PORT}}/api/v1/rental/checkout/:id/place/:place",
+							"host": [
+								"{{HOST}}"
+							],
+							"port": "{{PORT}}",
+							"path": [
+								"api",
+								"v1",
+								"rental",
+								"checkout",
+								":id",
+								"place",
+								":place"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": ""
+								},
+								{
+									"key": "place",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "rental/payment/:id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{HOST}}:{{PORT}}/api/v1/rental/payment/:id",
+							"host": [
+								"{{HOST}}"
+							],
+							"port": "{{PORT}}",
+							"path": [
+								"api",
+								"v1",
+								"rental",
+								"payment",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "rental/consult/:id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{HOST}}:{{PORT}}/api/v1/rental/consult/:id",
+							"host": [
+								"{{HOST}}"
+							],
+							"port": "{{PORT}}",
+							"path": [
+								"api",
+								"v1",
+								"rental",
+								"consult",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "PLACES",
+			"item": [
+				{
+					"name": "/places/:lat/:lon?range=200",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{HOST}}:{{PORT}}/api/v1/places/41.530736/-8.621205?range=200",
+							"host": [
+								"{{HOST}}"
+							],
+							"port": "{{PORT}}",
+							"path": [
+								"api",
+								"v1",
+								"places",
+								"41.530736",
+								"-8.621205"
+							],
+							"query": [
+								{
+									"key": "range",
+									"value": "200"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "VEHICLES",
+			"item": [
+				{
+					"name": "/vehicles/:code",
 					"request": {
 						"auth": {
 							"type": "bearer",
@@ -280,14 +931,20 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{HOST}}:{{PORT}}/vehicles/1",
+							"raw": "{{HOST}}:{{PORT}}/vehicles/:code",
 							"host": [
 								"{{HOST}}"
 							],
 							"port": "{{PORT}}",
 							"path": [
 								"vehicles",
-								"1"
+								":code"
+							],
+							"variable": [
+								{
+									"key": "code",
+									"value": ""
+								}
 							]
 						}
 					},
@@ -377,103 +1034,64 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "/vehicle/street/:id",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"id_vehicle\":1,\n\t\"valid_place\":true\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOST}}:{{PORT}}/vehicle/street/:id",
+							"host": [
+								"{{HOST}}"
+							],
+							"port": "{{PORT}}",
+							"path": [
+								"vehicle",
+								"street",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
 				}
 			],
 			"protocolProfileBehavior": {}
-		},
-		{
-			"name": "/register",
-			"request": {
-				"method": "POST",
-				"header": [
-					{
-						"key": "Content-Type",
-						"name": "Content-Type",
-						"value": "application/json",
-						"type": "text"
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n\t\"username\":\"ana1\",\n\t\"nome\":\"ana\",\n\t\"email\":\"ana@gmail.com\",\n\t\"password\":\"123\",\n\t\"role\": \"client\"\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "{{HOST}}:{{PORT}}/register",
-					"host": [
-						"{{HOST}}"
-					],
-					"port": "{{PORT}}",
-					"path": [
-						"register"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "/login",
-			"request": {
-				"method": "POST",
-				"header": [
-					{
-						"key": "Content-Type",
-						"name": "Content-Type",
-						"value": "application/json",
-						"type": "text"
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n\t\"username\":\"user3\",\n\t\"password\":\"123\"\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "{{HOST}}:{{PORT}}/login",
-					"host": [
-						"{{HOST}}"
-					],
-					"port": "{{PORT}}",
-					"path": [
-						"login"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "/places/:lat/:lon?range=200",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "{{HOST}}:{{PORT}}/places/lat/lon?range=200",
-					"host": [
-						"{{HOST}}"
-					],
-					"port": "{{PORT}}",
-					"path": [
-						"places",
-						"lat",
-						"lon"
-					],
-					"query": [
-						{
-							"key": "range",
-							"value": "200"
-						}
-					]
-				}
-			},
-			"response": []
 		}
 	],
 	"protocolProfileBehavior": {}
