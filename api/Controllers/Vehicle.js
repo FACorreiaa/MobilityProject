@@ -85,3 +85,35 @@ exports.getVehiclePlaceById = async function(req, res) {
     }
   );
 };
+
+//free vehicles
+exports.getFreeVehicles = async function(req, res) {
+  Vehicle.find({ available: true }),
+    async function(error, vehicles) {
+      if (error) {
+        return await error;
+      }
+      return await vehicles;
+    };
+};
+
+//return loc of free vehicles
+exports.getLocOfFreeVehicles = async function(req, res) {
+  Vehicle.aggregate([
+    { $match: { available: true } },
+    {
+      $lookup: {
+        from: 'Places',
+        localField: 'place',
+        foreignField: '_id',
+        as: 'place'
+      }
+    }
+  ]),
+    async function(error, vehicles) {
+      if (error) {
+        return await error;
+      }
+      return await vehicles;
+    };
+};

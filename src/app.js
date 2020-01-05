@@ -39,11 +39,11 @@ server.listen(port, () => {
   console.log('App is running on port ' + port);
 });
 
-const jwt = require('express-jwt'); 
+const jwt = require('express-jwt');
 const auth = jwt({
-      secret: 'esteEoSegredo',
-      userProperty: 'payload'
-      });
+  secret: 'esteEoSegredo',
+  userProperty: 'payload'
+});
 
 //BD SETUP
 const MONGO_URI = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0-krbnl.mongodb.net/MobilityProject?retryWrites=true&w=majority`;
@@ -75,36 +75,32 @@ userRouter(auth, app);
 
 module.exports = app;
 
-
 const expressSwagger = require('express-swagger-generator')(app);
 
 //SWAGGER
 let options = {
   swaggerDefinition: {
-      info: {
-          description: 'This is swagger documentation for Mobility Project',
-          title: 'Swagger',
-          version: '1.0.0',
-      },
-      host: 'localhost:8000',
-      basePath: '/api/v1/',
-      produces: [
-          "application/json",
-          "application/xml"
-      ],
-      schemes: ['http', 'https'],
-      securityDefinitions: {
-          JWT: {
-              type: 'apiKey',
-              in: 'header',
-              name: 'Authorization',
-              description: "",
-          }
+    info: {
+      description: 'This is swagger documentation for Mobility Project',
+      title: 'Swagger',
+      version: '1.0.0'
+    },
+    host: 'localhost:8000',
+    basePath: '/api/v1/',
+    produces: ['application/json', 'application/xml'],
+    schemes: ['http', 'https'],
+    securityDefinitions: {
+      JWT: {
+        type: 'apiKey',
+        in: 'header',
+        name: 'Authorization',
+        description: ''
       }
+    }
   },
   basedir: __dirname, //app absolute path
-  files: ['../api/Routes/**.js','../api/Models/**.js'] //Path to the API handle folder
-};      
+  files: ['../api/Routes/**.js', '../api/Models/**.js'] //Path to the API handle folder
+};
 
-expressSwagger(options)
-app.listen(3000);
+expressSwagger(options);
+app.listen(5001);

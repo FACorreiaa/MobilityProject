@@ -57,3 +57,19 @@ exports.postClientRental = async function(req, res) {
       res.status(500).jsonp({ error: { message: err.message } });
     });
 };
+
+//increment user Balance
+exports.updateBalance = async function(req, res) {
+  let _id = mongoose.Types.ObjectId(req.params.id);
+  let query = { _id: _id };
+  let newBalance = req.params.balance;
+  Client.findOneAndUpdate(
+    query,
+    { $inc: { balance: newBalance } },
+    { upsert: true },
+    async function(err, balance) {
+      if (err) return await res.send(err);
+      return await res.send(balance);
+    }
+  );
+};

@@ -2,6 +2,7 @@
 const mongoose = require('mongoose');
 const Rental = mongoose.model('Rentals');
 const Place = mongoose.model('Places');
+const Vehicle = mongoose.model('Vehicles');
 const coords = require('../Services/RandomCoords.js');
 const moment = require('moment');
 /* let minRange = 0;
@@ -204,14 +205,22 @@ exports.checkin = async function(req, res) {
           as: 'places_data'
         }
       },
-      { $unwind: '$places_data' }
+      { $unwind: '$places_data' },
+      {
+        $lookup: {
+          from: 'Vehicles',
+          localField: 'vehicle',
+          foreignField: '_id',
+          as: 'vehicle_data'
+        }
+      },
+      { $unwind: '$vehicle_data' }
     ],
     async function(error, placeData) {
       let date = new Date();
       let rentalMethod = req.params.rentalMethod;
       let vehicle = mongoose.Types.ObjectId(req.params.id);
       let price = 0;
-      let quantity = quantity - 1;
 
       if (error) {
         return await res.json(error);
@@ -224,10 +233,17 @@ exports.checkin = async function(req, res) {
         price,
         vehicle,
         rentalMethod,
-        quantity
+        'places_data.quantity': { $inc: { 'places_data.quantity': -1 } },
+        'vehicle_data.available': false
       });
 
       rental.save(async function(error, rental) {
+        Vehicle.findOneAndUpdate(
+          { _id: vehicle },
+          { $set: { available: false } },
+          { new: true }
+        );
+        console.log(rental);
         if (error) {
           return await res.json(error);
         }
@@ -298,7 +314,9 @@ exports.payment = async function(req, res) {
     rental.save();
     if (err) return res.send({ error: err });
 
-    return res.send(`Rental price of  ${rental.finalCost}€ has been paid successfully!`);
+    return res.send(
+      `Rental price of  ${rental.finalCost}€ has been paid successfully!`
+    );
   });
 };
 

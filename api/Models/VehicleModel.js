@@ -24,6 +24,10 @@ let VehicleSchema = new Schema({
   client: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Clients'
+  },
+  available: {
+    type: Boolean,
+    default: true
   }
 });
 
