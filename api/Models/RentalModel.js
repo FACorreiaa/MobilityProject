@@ -1,5 +1,7 @@
 'use strict';
 const mongoose = require('mongoose');
+const diffHistory = require('mongoose-diff-history/diffHistory');
+
 let Schema = mongoose.Schema;
 /**
  * @typedef RentalSchema
@@ -85,6 +87,10 @@ let RentalSchema = new Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Places'
   },
+  client: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Clients'
+  },
   finalCost: {
     type: Number
   },
@@ -96,6 +102,9 @@ let RentalSchema = new Schema({
   }
 });
 
+let options = { customCollectionName: 'Rental_History' };
+
+RentalSchema.plugin(diffHistory.plugin);
 RentalSchema.index({ location: '2dsphere' });
 RentalSchema.index({ 'start.location.coordinates': '2dsphere' });
 RentalSchema.index({ 'end.location.coordinates': '2dsphere' });

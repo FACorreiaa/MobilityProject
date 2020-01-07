@@ -20,7 +20,7 @@ let PlaceSchema = new Schema({
       required: true
     },
     coordinates: {
-      type: [Number],
+      type: Array,
       required: true
     }
   },
@@ -39,14 +39,9 @@ let PlaceSchema = new Schema({
 PlaceSchema.methods.comparePlaceWithFinalPlace = async function(lat, lon) {
   this.model('Places').find(
     {
-      'end.location': {
-        $near: {
-          $geometry: {
-            type: 'Point',
-            coordinates: [lat, lon]
-          },
-          $maxDistance: 200,
-          $minDistance: 0
+      location: {
+        $geoIntersects: {
+          $geometry: { type: 'Point', coordinates: [lat, lon] }
         }
       }
     },
@@ -60,6 +55,5 @@ PlaceSchema.methods.comparePlaceWithFinalPlace = async function(lat, lon) {
 };
 
 PlaceSchema.index({ location: '2dsphere' });
-PlaceSchema.index({ 'location.coordinates': '2dsphere' });
 
 module.exports = mongoose.model('Places', PlaceSchema, 'Places');

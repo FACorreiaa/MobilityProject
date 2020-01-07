@@ -27,6 +27,8 @@
     "moment": "^2.24.0",
     "mongodb": "^3.4.1",
     "mongoose": "^5.8.3",
+    "mongoose-diff-history": "^1.6.1",
+    "mongoose-history": "^0.8.0",
     "mongoose-schema-jsonschema": "^1.2.1",
     "morgan": "~1.9.1",
     "npm-run-all": "^4.1.5",
