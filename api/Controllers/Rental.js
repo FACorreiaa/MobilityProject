@@ -197,7 +197,7 @@ exports.getRentalsEndByDate = async function(req, res) {
 };
 
 exports.checkin = async function(req, res) {
-  Rental.aggregate(
+  /* Rental.aggregate(
     [
       {
         $lookup: {
@@ -216,8 +216,13 @@ exports.checkin = async function(req, res) {
           as: 'vehicle_data'
         }
       },
-      { $unwind: '$vehicle_data' }
-    ],
+      { $unwind: '$vehicle_data' },
+      { $match: { vehicle: { $exists: false } } }
+    ], */
+  Rental.find(
+    {
+      vehicle: { $exists: false }
+    },
     async function(error, placeData) {
       let date = new Date();
       let rentalMethod = req.params.rentalMethod;
