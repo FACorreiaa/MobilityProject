@@ -4,6 +4,7 @@ const Rental = mongoose.model('Rentals');
 const Place = mongoose.model('Places');
 const Vehicle = mongoose.model('Vehicles');
 const Client = mongoose.model('Clients');
+const History = mongoose.model('HistoryRentals');
 const coords = require('../Services/RandomCoords.js');
 const moment = require('moment');
 /* let minRange = 0;
@@ -246,6 +247,19 @@ exports.checkin = async function(req, res) {
           { new: true }
         );
         console.log(rental);
+        let history = new History({
+          rental: rental._id,
+          'checkin.position': rental.start.location.coordinates,
+          'checkin.date': rental.start.date,
+          createdDate: new Date(),
+          rentalMethod: rental.rentalMethod,
+          vehicle: rental.vehicle,
+          client: rental.client,
+          place: rental.place,
+          info: 'Check In'
+        });
+        history.save();
+        console.log('history');
         if (error) {
           return await res.json(error);
         }
@@ -289,6 +303,17 @@ exports.checkout = async function(req, res) {
       if (rental.timeSpent) {
         await res.send('Checkout already made');
       } else {
+        let history = new History({
+          rental: rental._id,
+          'checkout.position': rental.end.location.coordinates,
+          'checkout.date': rental.end.date,
+          createdDate: new Date(),
+          vehicle: rental.vehicle,
+          client: rental.client,
+          place: rental.place,
+          info: 'Check Out'
+        });
+        history.save();
         return await res.send('Succesfully saved.' + rental);
       }
     }
@@ -333,6 +358,18 @@ exports.payment = async function(req, res) {
       async function(err, doc) {
         if (err) return new Error(err);
         if (doc) {
+          let history = new History({
+            rental: rental._id,
+            'checkout.position': rental.end.location.coordinates,
+            'checkout.date': rental.end.date,
+            createdDate: new Date(),
+            vehicle: rental.vehicle,
+            client: rental.client,
+            place: rental.place,
+            info: 'Payment',
+            finalCost: rental.finalCost
+          });
+          history.save();
           return res.send(
             `Rental price of  ${rental.finalCost}€ has been paid successfully!`
           );
