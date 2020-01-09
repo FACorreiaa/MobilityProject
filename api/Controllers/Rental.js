@@ -5,8 +5,8 @@ const Place = mongoose.model('Places');
 const Vehicle = mongoose.model('Vehicles');
 const Client = mongoose.model('Clients');
 const History = mongoose.model('HistoryRentals');
-const coords = require('../Services/RandomCoords.js');
-const moment = require('moment');
+const Pusher = require('pusher');
+
 /* let minRange = 0;
   let maxRange = 200;
   if (req.query.range) {
@@ -411,5 +411,53 @@ exports.consult = async function(req, res) {
     rental.save();
     if (err) return res.send({ error: err });
     return res.send(rental);
+  });
+};
+
+//TRABALHAR ESTE SERVIÇO MAIS PRA FRENTE
+exports.validateVehiclesInRental = async function(req, res) {
+  let _id = mongoose.Types.ObjectId(req.params.id);
+  let query = { _id: _id };
+  Rental.findById(query, function(err, rental) {
+    Place.find(
+      {
+        location: {
+          $geoIntersects: {
+            $geometry: {
+              type: 'Point',
+              coordinates: rental.end.location.coordinates
+            }
+          }
+        }
+      },
+      async function(error, places) {
+        console.log(rental);
+        if (error) {
+          return await error;
+        }
+        if (places.length > 0) {
+          rental.valid = true;
+          res.send('Valid place');
+        } else {
+          rental.valid = false;
+          let pusher = new Pusher({
+            appId: process.env.PUSHER_APP_ID,
+            key: process.env.PUSHER_APP_KEY,
+            secret: process.env.PUSHER_APP_SECRET,
+            cluster: process.env.PUSHER_APP_CLUSTER
+          });
+
+          pusher.trigger(
+            'notifications',
+            'invalid',
+            rental,
+            req.headers['x-socket-id']
+          );
+          console.log(pusher);
+          res.send('');
+        }
+      }
+    );
+    rental.save();
   });
 };

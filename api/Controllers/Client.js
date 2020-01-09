@@ -3,34 +3,38 @@ const mongoose = require('mongoose');
 const Client = mongoose.model('Clients');
 const Rental = mongoose.model('Rentals');
 
-exports.getClients = function(req, res) {
-  Client.find({}, function(error, clients) {
-    if (error) {
-      return res.json(error);
-    }
-    return res.json(clients);
-  });
+const clientService = require('../Services/Client.service');
+
+exports.getClients = async function(req, res) {
+  try {
+    let result = await clientService.getClients();
+    console.log('result' + result);
+    res.status(200);
+    return await res.send(result);
+  } catch (error) {
+    return await res.send(error);
+  }
 };
 
-exports.getClientsById = function(req, res) {
-  Client.findById(req.params.id, function(err, client) {
-    if (err) {
-      return res.send(err);
-    }
-    return res.json(client);
-  });
+exports.getClientsById = async function(req, res) {
+  let result = await clientService.getClientsById(req.params.id);
+  console.log('result' + result);
+
+  try {
+    return await res.send(result);
+  } catch (error) {
+    return await res.send('Invalid input data', error);
+  }
 };
 
-exports.updateClient = function(req, res, next) {
-  Client.findOneAndUpdate(
-    { _id: req.params.id },
-    req.body,
-    { new: true },
-    function(err, client) {
-      if (err) res.send(err);
-      res.json(client);
-    }
-  );
+exports.updateClient = async function(req, res, next) {
+  let body = req.body;
+  try {
+    let result = await clientService.updateClient(req.params.id, body);
+    return await res.send(body);
+  } catch (error) {
+    return await res.send('error on updating', error);
+  }
 };
 
 exports.getClientRentals = async function(req, res) {

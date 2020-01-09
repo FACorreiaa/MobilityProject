@@ -99,6 +99,9 @@ let RentalSchema = new Schema({
   },
   timeSpent: {
     type: String
+  },
+  valid: {
+    type: Boolean
   }
 });
 

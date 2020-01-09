@@ -49,7 +49,11 @@ PlaceSchema.methods.comparePlaceWithFinalPlace = async function(lat, lon) {
       if (error) {
         return await error;
       }
-      return await places;
+      if (places) {
+        return true;
+      } else {
+        return false;
+      }
     }
   );
 };

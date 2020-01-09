@@ -112,4 +112,8 @@ module.exports = function(app) {
    */
 
   app.route('/api/v1/rental/consult/:id').get(routeRental.consult);
+
+  app
+    .route('/api/v1/rental/validate/:id')
+    .get(routeRental.validateVehiclesInRental);
 };

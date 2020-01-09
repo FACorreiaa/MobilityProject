@@ -31,9 +31,11 @@
     "mongoose-history": "^0.8.0",
     "mongoose-schema-jsonschema": "^1.2.1",
     "morgan": "~1.9.1",
+    "nodemailer": "^6.4.2",
     "npm-run-all": "^4.1.5",
     "passport": "^0.4.1",
     "passport-local": "^1.0.0",
+    "pusher": "^3.0.0",
     "rimraf": "^3.0.0"
   },
   "devDependencies": {
