@@ -52,7 +52,7 @@ let config = {
     authToken: '',
     from: ''
   },
-  website: 'http://localhost:5000',
+  website: 'http://localhost:5001',
   whitelist: null
 };
 

@@ -12,7 +12,7 @@ let Schema = mongoose.Schema;
  * @property {Boolean} waitValidation
  * @property {string} registeredBy
  * @property {Boolean} valid
- * 
+ *
  */
 let UserSchema = new Schema({
   username: {
@@ -44,7 +44,6 @@ let UserSchema = new Schema({
   },
   role: {
     type: String,
-    required: true,
     default: 'client',
     enum: ['guest', 'client', 'employee', 'admin']
   },

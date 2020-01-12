@@ -4,18 +4,21 @@
   "private": true,
   "scripts": {
     "start": "node app.js",
-    "server": "babel-node ./src/bin/www",
     "server:prod": "node ./dist/bin/www",
-    "dev": "NODE_ENV=development npm-run-all server",
     "clean": "rimfat dist",
     "build": "babel ./src --out-dir dist",
     "prod": "NODE_ENV=production npm-run-all clean build server:prod",
     "start:commit": "git add . && git commit -m 'auto message' && git push origin master",
     "watch": "nodemon ./src/app.js",
-    "lines": "cloc lines api"
+    "lines": "cloc lines api",
+    "server": "nodemon ./src/app.js",
+    "client": "npm start --prefix client --port 3001",
+    "dev": "concurrently \"npm run server\" \"npm run client\"",
+    "stop-linux": "killall node"
   },
   "dependencies": {
     "body-parser": "^1.19.0",
+    "concurrently": "^5.0.2",
     "cookie-parser": "~1.4.4",
     "cors": "^2.8.5",
     "debug": "~2.6.9",
