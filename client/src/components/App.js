@@ -12,6 +12,8 @@ import Login from '../components/Auth/Login';
 import PrivateRoute from '../components/PrivateRoute/PrivateRoute';
 import Dashboard from '../components/Dashboard/Dashboard';
 import Places from '../components/Places/Places';
+import Clients from '../components/Clients/Clients';
+import SearchVehicles from '../components/Clients/SearchVehicles';
 // Check for token to keep user logged in
 if (localStorage.jwtToken) {
   // Set auth token header auth
@@ -45,6 +47,12 @@ class App extends Component {
 
             <Switch>
               <PrivateRoute exact path='/dashboard' component={Dashboard} />
+              <PrivateRoute exact path='/main' component={Clients} />
+              <PrivateRoute
+                exact
+                path='/searchVehicles'
+                component={SearchVehicles}
+              />
             </Switch>
           </div>
         </Router>

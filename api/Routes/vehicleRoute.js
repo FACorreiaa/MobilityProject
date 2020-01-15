@@ -9,6 +9,8 @@ module.exports = function(app) {
    * @returns {Error} 500
    */
 
+  app.route('/api/v1/vehicles').get(routeVehicle.getVehicles);
+
   app.route('/api/v1/vehicle/:code').get(routeVehicle.getVehicleById);
 
   /**

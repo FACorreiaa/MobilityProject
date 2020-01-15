@@ -24,6 +24,9 @@ let PlaceSchema = new Schema({
       required: true
     }
   },
+  center: {
+    type: Array
+  },
   range: { type: Number },
   capacity: {
     type: Number
@@ -32,6 +35,12 @@ let PlaceSchema = new Schema({
     type: Number
   },
   street: {
+    type: String
+  },
+  cp: {
+    type: String
+  },
+  city: {
     type: String
   }
 });

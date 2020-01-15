@@ -3,6 +3,15 @@ const mongoose = require('mongoose');
 const Vehicle = mongoose.model('Vehicles');
 const Place = mongoose.model('Places');
 
+exports.getVehicles = function(req, res) {
+  Vehicle.find({}, function(err, vehicle) {
+    if (err) {
+      return res.json(err);
+    }
+    return res.json(vehicle);
+  });
+};
+
 exports.getVehicleById = function(req, res) {
   Vehicle.findById(req.params.code, function(err, vehicle) {
     if (err) {
