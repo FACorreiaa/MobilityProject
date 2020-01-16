@@ -3,7 +3,6 @@ const mongoose = require('mongoose');
 const Rental = mongoose.model('Rentals');
 const Place = mongoose.model('Places');
 const Vehicle = mongoose.model('Vehicles');
-const Client = mongoose.model('Clients');
 const History = mongoose.model('HistoryRentals');
 const Pusher = require('pusher');
 
@@ -228,7 +227,7 @@ exports.checkin = async function(req, res) {
       let rentalMethod = req.params.rentalMethod;
       let vehicle = mongoose.Types.ObjectId(req.params.id);
       let price = 0;
-      let client = mongoose.Types.ObjectId(req.params.client);
+      let user = mongoose.Types.ObjectId(req.params.user);
       if (error) {
         return await res.json(error);
       }
@@ -240,7 +239,7 @@ exports.checkin = async function(req, res) {
         price,
         vehicle,
         rentalMethod,
-        client,
+        user,
         'places_data.quantity': { $inc: { 'places_data.quantity': -1 } },
         'vehicle_data.available': false
       });
@@ -259,7 +258,7 @@ exports.checkin = async function(req, res) {
           createdDate: new Date(),
           rentalMethod: rental.rentalMethod,
           vehicle: rental.vehicle,
-          client: rental.client,
+          user: rental.user,
           place: rental.place,
           info: 'Check In'
         });
@@ -281,7 +280,7 @@ exports.checkout = async function(req, res) {
   let rentalID = mongoose.Types.ObjectId(req.params.rental);
   let query = { _id: rentalID };
   let date = new Date();
-  let client = mongoose.Types.ObjectId(req.params.client);
+  let user = mongoose.Types.ObjectId(req.params.user);
   let vehicle = mongoose.Types.ObjectId(req.params.vehicle);
   let lat = req.params.lat;
   let lon = req.params.lon;
@@ -292,7 +291,7 @@ exports.checkout = async function(req, res) {
         'end.date': date,
         'end.location.type': 'Point',
         //'end.location.coordinates': [1, 1],
-        client,
+        user,
         vehicle,
         'end.location.coordinates': [parseFloat(lon), parseFloat(lat)]
       }
@@ -302,7 +301,7 @@ exports.checkout = async function(req, res) {
       console.log(rental);
       if (err) return await res.send(err);
       //não testei
-      if (!rental.client) {
+      if (!rental.user) {
         await res.send('No checkin made for this vehicle');
       }
       if (rental.timeSpent) {
@@ -314,7 +313,7 @@ exports.checkout = async function(req, res) {
           'checkout.date': rental.end.date,
           createdDate: new Date(),
           vehicle: rental.vehicle,
-          client: rental.client,
+          user: rental.user,
           place: rental.place,
           info: 'Check Out'
         });
@@ -326,11 +325,10 @@ exports.checkout = async function(req, res) {
 };
 
 exports.payment = async function(req, res) {
-  let c = new Client();
   const place = new Place();
   let _id = mongoose.Types.ObjectId(req.params.id);
   let query = { _id: _id };
-  let client = mongoose.Types.ObjectId(req.params.client);
+  let user = mongoose.Types.ObjectId(req.params.user);
 
   Rental.findOneAndUpdate(query, { upsert: true }, function(err, rental) {
     const timeSpentInMinutes = (rental.end.date - rental.start.date) / 60000;
@@ -354,9 +352,9 @@ exports.payment = async function(req, res) {
         rental.finalCost = rental.finalCost - 0.5;
       }
     }
-    Client.findOneAndUpdate(
+    User.findOneAndUpdate(
       {
-        _id: client,
+        _id: user,
         balance: { $gte: 0 }
       },
       { $inc: { balance: -rental.finalCost } },
@@ -369,7 +367,7 @@ exports.payment = async function(req, res) {
             'checkout.date': rental.end.date,
             createdDate: new Date(),
             vehicle: rental.vehicle,
-            client: rental.client,
+            user: rental.user,
             place: rental.place,
             info: 'Payment',
             finalCost: rental.finalCost

@@ -58,6 +58,18 @@ let UserSchema = new Schema({
   valid: {
     type: Boolean,
     default: false
+  },
+  balance: {
+    type: Number,
+    default: 0
+  },
+  profile: {
+    age: Number,
+    street: String,
+    contact: String,
+    city: String,
+    school: String,
+    bio: String
   }
 });
 

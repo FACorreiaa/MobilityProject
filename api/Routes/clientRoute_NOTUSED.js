@@ -1,5 +1,5 @@
 module.exports = function(app) {
-  const routeClient = require('../Controllers/Client');
+  const routeClient = require('../Controllers/Client_NOTUSED');
 
   /**
    * @route GET /clients

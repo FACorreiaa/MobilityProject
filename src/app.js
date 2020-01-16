@@ -3,7 +3,6 @@ const express = require('express');
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
-const clientRouter = require('../api/Routes/clientRoute');
 const vehicleRouter = require('../api/Routes/vehicleRoute');
 const placeRouter = require('../api/Routes/placeRouter');
 const authRouter = require('../api/Routes/authenticationRoute');
@@ -14,7 +13,6 @@ const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 
-require('../api/Models/ClientModel');
 require('../api/Models/RentalModel');
 require('../api/Models/VehicleModel');
 require('../api/Models/HistoryRentalModel');
@@ -68,7 +66,6 @@ mongoose.connection
   .on('error', error => console.log('Error connecting to MongoLab:', error));
 Place.createIndexes();
 Rental.createIndexes();
-clientRouter(app);
 vehicleRouter(app);
 placeRouter(app);
 authRouter(app);

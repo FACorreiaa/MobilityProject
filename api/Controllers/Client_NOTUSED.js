@@ -1,9 +1,9 @@
-'use strict';
+/* 'use strict';
 const mongoose = require('mongoose');
 const Client = mongoose.model('Clients');
 const Rental = mongoose.model('Rentals');
 
-const clientService = require('../Services/Client.service');
+const clientService = require('../Services/Client.service_NOTUSER');
 
 exports.getClients = async function(req, res) {
   try {
@@ -77,3 +77,4 @@ exports.updateBalance = async function(req, res) {
     }
   );
 };
+ */

@@ -3,9 +3,9 @@ const mongoose = require('mongoose');
 const History = mongoose.model('HistoryRentals');
 
 exports.getHistory = function(req, res) {
-  let clientID = mongoose.Types.ObjectId(req.params.client);
+  let userID = mongoose.Types.ObjectId(req.params.user);
   let query = {
-    client: clientID
+    user: userID
   };
   History.find(query, function(err, hist) {
     console.log(hist);
