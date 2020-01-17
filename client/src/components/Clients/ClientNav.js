@@ -25,6 +25,9 @@ export default function ClientNav() {
             <li>
               <Link to='/consult'>Consult</Link>
             </li>
+            <li>
+              <Link to='/profile'>Profile</Link>
+            </li>
           </ul>
         </div>
       </nav>

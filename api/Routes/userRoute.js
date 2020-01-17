@@ -43,4 +43,5 @@ module.exports = function(auth, app) {
     .post(routeUser.postUserRental);
 
   app.route('/api/v1/users/:id/balance/:balance').put(routeUser.updateBalance);
+  app.route('/api/v1/users/:id/balance').get(routeUser.getUserBalanceById);
 };

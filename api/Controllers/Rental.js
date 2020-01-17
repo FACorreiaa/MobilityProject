@@ -19,17 +19,18 @@ const Pusher = require('pusher');
           $near: {
             $geometry: {
               type: 'Point',
-              'end.location.coordinates': [req.params.lat, req.params.lon] //req.params: uri params
+              'end.geometry.coordinates': [req.params.lat, req.params.lon] //req.params: uri params
             },
             $maxDistance: req.params.max,
             $minDistance: req.params.min
           },
           distanceField: 'distance',
-          includeLocs: 'location',
+          includeLocs: 'geometry',
           spherical: true
         }
       }
     ] */
+
 exports.getVehicleEndInPlace = async function(lat, lon) {
   Place.find(
     {
@@ -62,7 +63,7 @@ exports.getVehicleStartInRental = async function(req, res) {
 
   Rental.find(
     {
-      'start.location': {
+      'start.geometry': {
         $near: {
           $geometry: {
             type: 'Point',
@@ -218,6 +219,7 @@ exports.checkin = async function(req, res) {
       { $unwind: '$vehicle_data' },
       { $match: { vehicle: { $exists: false } } }
     ], */
+
   Rental.find(
     {
       vehicle: { $exists: false }
@@ -228,6 +230,8 @@ exports.checkin = async function(req, res) {
       let vehicle = mongoose.Types.ObjectId(req.params.id);
       let price = 0;
       let user = mongoose.Types.ObjectId(req.params.user);
+      let lat = req.params.lat;
+      let lon = req.params.lon;
       if (error) {
         return await res.json(error);
       }
@@ -240,9 +244,11 @@ exports.checkin = async function(req, res) {
         vehicle,
         rentalMethod,
         user,
+        'start.geometry.coordinates': [parseFloat(lat), parseFloat(lon)],
         'places_data.quantity': { $inc: { 'places_data.quantity': -1 } },
         'vehicle_data.available': false
       });
+      console.log(rental);
 
       rental.save(async function(error, rental) {
         Vehicle.findOneAndUpdate(
@@ -251,7 +257,7 @@ exports.checkin = async function(req, res) {
           { new: true }
         );
         console.log(rental);
-        let history = new History({
+        /* let history = new History({
           rental: rental._id,
           'checkin.position': rental.start.location.coordinates,
           'checkin.date': rental.start.date,
@@ -263,7 +269,7 @@ exports.checkin = async function(req, res) {
           info: 'Check In'
         });
         history.save();
-        console.log('history');
+        console.log('history'); */
         if (error) {
           return await res.json(error);
         }
@@ -289,11 +295,11 @@ exports.checkout = async function(req, res) {
     {
       $set: {
         'end.date': date,
-        'end.location.type': 'Point',
-        //'end.location.coordinates': [1, 1],
+        'end.geometry.type': 'Point',
+        //'end.geometry.coordinates': [1, 1],
         user,
         vehicle,
-        'end.location.coordinates': [parseFloat(lon), parseFloat(lat)]
+        'end.geometry.coordinates': [parseFloat(lon), parseFloat(lat)]
       }
     },
     { upsert: true },
@@ -309,7 +315,7 @@ exports.checkout = async function(req, res) {
       } else {
         let history = new History({
           rental: rental._id,
-          'checkout.position': rental.end.location.coordinates,
+          'checkout.position': rental.end.geometry.coordinates,
           'checkout.date': rental.end.date,
           createdDate: new Date(),
           vehicle: rental.vehicle,
@@ -333,8 +339,8 @@ exports.payment = async function(req, res) {
   Rental.findOneAndUpdate(query, { upsert: true }, function(err, rental) {
     const timeSpentInMinutes = (rental.end.date - rental.start.date) / 60000;
     const timeSpentInHours = (rental.end.date - rental.start.date) / 3600000;
-    const lat = rental.end.location.coordinates[0];
-    const lon = rental.end.location.coordinates[1];
+    const lat = rental.end.geometry.coordinates[0];
+    const lon = rental.end.geometry.coordinates[1];
 
     if (rental.rentalMethod == 'minutes') {
       rental.finalCost = 1 + timeSpentInMinutes * 0.15;
@@ -363,7 +369,7 @@ exports.payment = async function(req, res) {
         if (doc) {
           let history = new History({
             rental: rental._id,
-            'checkout.position': rental.end.location.coordinates,
+            'checkout.position': rental.end.geometry.coordinates,
             'checkout.date': rental.end.date,
             createdDate: new Date(),
             vehicle: rental.vehicle,
@@ -419,11 +425,11 @@ exports.validateVehiclesInRental = async function(req, res) {
   Rental.findById(query, function(err, rental) {
     Place.find(
       {
-        location: {
+        geometry: {
           $geoIntersects: {
             $geometry: {
               type: 'Point',
-              coordinates: rental.end.location.coordinates
+              coordinates: rental.end.geometry.coordinates
             }
           }
         }
