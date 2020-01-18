@@ -9,9 +9,11 @@ const authRouter = require('../api/Routes/authenticationRoute');
 const rentalRouter = require('../api/Routes/rentalRouter');
 const userRouter = require('../api/Routes/userRoute');
 const historyRouter = require('../api/Routes/historyRentalRoute');
+const DashboardRouter = require('../api/Routes/DashboardRoute');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const cors = require('cors');
+
 
 require('../api/Models/RentalModel');
 require('../api/Models/VehicleModel');
@@ -71,6 +73,7 @@ placeRouter(app);
 authRouter(app);
 rentalRouter(app);
 historyRouter(app);
+DashboardRouter(app);
 
 userRouter(auth, app);
 

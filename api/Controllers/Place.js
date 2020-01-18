@@ -2,33 +2,17 @@
 const mongoose = require('mongoose');
 const Place = mongoose.model('Places');
 
+const placesService = require('../Services/Places.service');
+
+
 //GET: places/:lat/:lon?raio=200
 exports.getPlace = async function(req, res) {
-  let range = 200; //default value
-  if (req.query.range) {
-    range = req.query.range;
-  }
-
-  Place.find(
-    {
-      location: {
-        $near: {
-          $geometry: {
-            type: 'Point',
-            coordinates: [req.params.lat, req.params.lon] //req.params: uri params
-          },
-          $maxDistance: range,
-          $minDistance: 0
-        }
-      }
-    },
-    async function(error, places) {
-      if (error) {
-        return await res.json(error);
-      }
-      return await res.json(places);
-    }
-  );
+  placesService.getPlaceByRange(req,res)
+  .then(place => {
+    res.json(place);
+  })
+  .catch(e => {
+    res.status(400).json(e)});
 };
 
 exports.listPlace = function(req, res) {

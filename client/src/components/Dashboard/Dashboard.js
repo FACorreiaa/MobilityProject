@@ -1,12 +1,19 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { logoutUser } from '../../actions/authActions';
+import { logoutUser, getCharts } from '../../actions/authActions';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+
 class Dashboard extends Component {
   onLogoutClick = e => {
     e.preventDefault();
     this.props.logoutUser();
   };
+
+  onDashboardClick = () => {
+    this.props.history.push('/charts');
+ }
+
   render() {
     const { user } = this.props.auth;
     return (
@@ -28,21 +35,34 @@ class Dashboard extends Component {
                 marginTop: '1rem'
               }}
               onClick={this.onLogoutClick}
-              className='btn btn-large waves-effect waves-light hoverable blue accent-3'
-            >
+              className='btn btn-large waves-effect waves-light hoverable blue accent-3'>
               Logout
             </button>
+            <button
+              style={{
+                width: '150px',
+                borderRadius: '3px',
+                letterSpacing: '1.5px',
+                marginTop: '1rem'
+              }}
+              onClick={this.onDashboardClick}
+              className='btn btn-large waves-effect waves-light hoverable blue accent-3'>
+              DASHBOARD
+            </button>
+           
           </div>
         </div>
       </div>
+      
     );
   }
 }
 Dashboard.propTypes = {
   logoutUser: PropTypes.func.isRequired,
+  getCharts: PropTypes.func.isRequired,
   auth: PropTypes.object.isRequired
 };
 const mapStateToProps = state => ({
   auth: state.auth
 });
-export default connect(mapStateToProps, { logoutUser })(Dashboard);
+export default connect(mapStateToProps, { logoutUser,getCharts })(Dashboard);
