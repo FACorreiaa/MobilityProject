@@ -152,3 +152,12 @@ exports.updateBalance = async function(req, res) {
     }
   );
 };
+exports.getUserBalanceById = async function(req, res) {
+  let _id = mongoose.Types.ObjectId(req.params.id);
+  let query = { _id: _id };
+  let balance = { balance: 1 };
+  User.findById(query, balance, async function(err, doc) {
+    if (err) return await res.send(err);
+    return await res.send(doc);
+  });
+};

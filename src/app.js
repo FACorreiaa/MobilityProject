@@ -10,6 +10,7 @@ const rentalRouter = require('../api/Routes/rentalRouter');
 const userRouter = require('../api/Routes/userRoute');
 const historyRouter = require('../api/Routes/historyRentalRoute');
 const DashboardRouter = require('../api/Routes/DashboardRoute');
+const rentalMethodRouter = require('../api/Routes/rentalMethodRoute');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const cors = require('cors');
@@ -21,6 +22,7 @@ require('../api/Models/HistoryRentalModel');
 const Place = require('../api/Models/PlaceModel');
 const Rental = require('../api/Models/RentalModel');
 require('../api/Models/UserModel');
+require('../api/Models/RentalMethodsModel');
 
 const app = express();
 const port = process.env.PORT || 8000;
@@ -74,7 +76,7 @@ authRouter(app);
 rentalRouter(app);
 historyRouter(app);
 DashboardRouter(app);
-
+rentalMethodRouter(app);
 userRouter(auth, app);
 
 module.exports = app;

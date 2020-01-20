@@ -22,7 +22,7 @@ class Clients extends Component {
         <div style={{ textAlign: 'center' }}>
           <h4>List of Vehicles</h4>
           <p className='flow-text grey-text text-darken-1'>
-            All available and being used
+            Want to use one? Just check in now here!
           </p>
         </div>
         <Table centered='true' responsible='true'>

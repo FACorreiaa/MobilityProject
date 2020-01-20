@@ -1,6 +1,5 @@
 'use strict';
 const mongoose = require('mongoose');
-const diffHistory = require('mongoose-diff-history/diffHistory');
 
 let Schema = mongoose.Schema;
 /**
@@ -20,10 +19,8 @@ let RentalSchema = new Schema({
   start: {
     date: {
       type: Date
-      /*       default: Date.now
-       */
     },
-    location: {
+    geometry: {
       index: {
         type: String
       },
@@ -48,7 +45,7 @@ let RentalSchema = new Schema({
        */
     },
 
-    location: {
+    geometry: {
       index: {
         type: String
       },
@@ -59,7 +56,7 @@ let RentalSchema = new Schema({
          */
       },
       coordinates: {
-        type: []
+        type: [Number]
         /*         required: true
          */
       }
@@ -107,9 +104,8 @@ let RentalSchema = new Schema({
 
 let options = { customCollectionName: 'Rental_History' };
 
-RentalSchema.plugin(diffHistory.plugin);
-RentalSchema.index({ location: '2dsphere' });
-RentalSchema.index({ 'start.location.coordinates': '2dsphere' });
+RentalSchema.index({ geometry: '2dsphere' });
+RentalSchema.index({ 'start.geometry.coordinates': '2dsphere' });
 RentalSchema.index({ 'end.location.coordinates': '2dsphere' });
 
 module.exports = mongoose.model('Rentals', RentalSchema, 'Rentals');

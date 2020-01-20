@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { logoutUser, getCharts } from '../../actions/authActions';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import { logoutUser } from '../../actions/authActions';
 
 class Dashboard extends Component {
   onLogoutClick = e => {
@@ -59,10 +58,9 @@ class Dashboard extends Component {
 }
 Dashboard.propTypes = {
   logoutUser: PropTypes.func.isRequired,
-  getCharts: PropTypes.func.isRequired,
   auth: PropTypes.object.isRequired
 };
 const mapStateToProps = state => ({
   auth: state.auth
 });
-export default connect(mapStateToProps, { logoutUser,getCharts })(Dashboard);
+export default connect(mapStateToProps, { logoutUser })(Dashboard);

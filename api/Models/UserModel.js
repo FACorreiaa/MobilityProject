@@ -68,6 +68,7 @@ let UserSchema = new Schema({
     street: String,
     contact: String,
     city: String,
+    education: String,
     school: String,
     bio: String
   }

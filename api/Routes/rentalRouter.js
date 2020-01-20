@@ -74,7 +74,9 @@ module.exports = function(app) {
    * @returns {Error} 500
    */
   app
-    .route('/api/v1/rental/checkin/user/:user/vehicle/:id/:rentalMethod')
+    .route(
+      '/api/v1/rental/checkin/user/:user/vehicle/:id/:rentalMethod/lat/:lat/lon/:lon'
+    )
     .post(routeRental.checkin);
 
   /**
