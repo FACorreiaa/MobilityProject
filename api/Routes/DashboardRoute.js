@@ -27,5 +27,5 @@ module.exports = function(app) {
    * @returns {Array} 200
    * @returns {Error}  500
    */
-  app.route('/api/v1/dashboard/rentals/:date/count').get(dashRoute.getCheckinByDay);
+  app.route('/api/v1/dashboard/rentals/date/count').get(dashRoute.getCheckinByDay);
 };

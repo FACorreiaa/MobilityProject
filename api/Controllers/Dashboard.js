@@ -2,10 +2,6 @@
 const mongoose = require('mongoose');
 const Rental = mongoose.model('Rentals');
 const Places = mongoose.model('Places');
-const placesService = require('../Services/Places.service');
-
-//checkin overtime, checkout overtime e historico de ocupação dos lugares (este está feito)
-
 
 
 //Situação atual dos lugares por lugar - occupancy rate - taxa de ocupação
@@ -34,10 +30,18 @@ exports.get_occupancy_rate = async function(req, res) {
 
 //checkin overtime
 exports.getCheckinByDay = async function(req, res) {
-  Rental.count({'start.date': { $gte: req.params.date }}, function(err, rentals) {
+
+    Rental.aggregate([
+    
+      { $match: {} },
+                { $group: { _id: { $dateToString: { format: "%Y-%m-%d", date: "$start.date" } }, count: { $sum: 1 } } },
+               
+
+    ], function(err, rentals) {
+
     if (err) res.send(err);
     res.json(rentals);
-  }).count();
+  });
   console.log('count:' + rentals);
 };
 
