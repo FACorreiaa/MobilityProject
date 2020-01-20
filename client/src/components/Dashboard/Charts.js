@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { logoutUser } from '../../actions/authActions';
-import { getOccupancy } from '../../actions/dashActions';
+import { getOccupancy,getCheckinDash } from '../../actions/dashActions';
 import CanvasJSReact from '../../assets/canvasjs.react';
 var CanvasJSChart = CanvasJSReact.CanvasJSChart;
 var CanvasJS = CanvasJSReact.CanvasJS;
@@ -10,11 +10,13 @@ var CanvasJS = CanvasJSReact.CanvasJS;
 class Charts extends Component {
   componentWillMount() {
     this.props.getOccupancy();
+    this.props.getCheckinDash();
   }
 
   render() {
 
     const { charts_places } = this.props.charts_places;
+    const { charts_checkin } = this.props.charts_checkin;
     
     var datapointsArray = [];
     var i;
@@ -23,14 +25,13 @@ class Charts extends Component {
       var street = place.street;
       var occupancy = place.occupancy;
       var datapoint = {label: street,  y: occupancy};
-      console.log(datapoint);
+      //console.log(datapoint);
       datapointsArray.push(datapoint);
     }
-
-   
+    
     const options = {
       title: {
-        text: "Basic Column Chart in React"
+        text: "Occupancy tax"
       },
       data: [{				
           type: "column",
@@ -41,11 +42,23 @@ class Charts extends Component {
 
    /** CHECKIN COUNTING CHART */
 
+   console.log(charts_checkin);
+   var datapointsArray = [];
+    var i;
+    for (i = 0; i < charts_checkin.length; i++) {
+      var checkin = charts_checkin[i];
+      var checkinDt = checkin._id;
+      var count = checkin.count;
+      var datapoint = {x: new Date(checkinDt),  y: count};
+      console.log(datapoint);
+      datapointsArray.push(datapoint);
+    }
+
    const options2 = {
     animationEnabled: true,
     theme: "light2",
     title:{
-      text: "Stock Price of BMW - March 2018"
+      text: "Number of checkins overtime"
     },
     axisX:{
       valueFormatString: "DD MMM",
@@ -55,24 +68,26 @@ class Charts extends Component {
       }
     },
     axisY: {
-      title: "Closing Price (in EUR)",
-      includeZero: false,
-      valueFormatString: "€##0.00",
+      title: "Checkin count overtime",
+      includeZero: true,
+      valueFormatString: "##0",
       crosshair: {
         enabled: true,
         snapToDataPoint: true,
         labelFormatter: function(e) {
-          return "€" + CanvasJS.formatNumber(e.value, "##0.00");
+          return CanvasJS.formatNumber(e.value, "##0");
         }
       }
     },
     data: [{
       type: "area",
       xValueFormatString: "DD MMM",
-      yValueFormatString: "€##0.00",
-      dataPoints: [
-        { x: new Date("2018-03-01"), y: 85.3},
-        { x: new Date("2018-03-02"), y: 83.97},
+      yValueFormatString: "##0",
+      dataPoints: 
+      datapointsArray 
+      /*[
+        { x: new Date("2018-03-01"), y: 1},
+        { x: new Date("2018-03-02"), y: 2}
         { x: new Date("2018-03-05"), y: 83.49},
         { x: new Date("2018-03-06"), y: 84.16},
         { x: new Date("2018-03-07"), y: 84.86},
@@ -92,7 +107,7 @@ class Charts extends Component {
         { x: new Date("2018-03-27"), y: 85.81},
         { x: new Date("2018-03-28"), y: 85.56},
         { x: new Date("2018-03-29"), y: 88.15}
-      ]
+      ]*/
     }]
   }
 
@@ -160,11 +175,13 @@ class Charts extends Component {
 Charts.propTypes = {
   logoutUser: PropTypes.func.isRequired,
   auth: PropTypes.object.isRequired,
-  getOccupancy: PropTypes.func.isRequired
+  getOccupancy: PropTypes.func.isRequired,
+  getCheckinDash: PropTypes.func.isRequired
 };
 const mapStateToProps = state => ({
   auth: state.auth,
-  charts_places: state.charts_places
+  charts_places: state.charts_places,
+  charts_checkin: state.charts_checkin
 });
 //connect to redux
-export default connect(mapStateToProps, { logoutUser,getOccupancy })(Charts);
+export default connect(mapStateToProps, { logoutUser,getOccupancy, getCheckinDash })(Charts);

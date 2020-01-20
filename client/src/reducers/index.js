@@ -11,6 +11,7 @@ export default combineReducers({
   places: placeReducer,
   vehicles: clientReducers,
   charts_places: dashReducers,
+  charts_checkin: dashReducers,
   balance: clientReducers,
   methods: clientReducers
 });

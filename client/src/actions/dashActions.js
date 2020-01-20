@@ -2,7 +2,8 @@ import axios from 'axios';
 
 import {
   GET_CHARTS_PLACES,
-  GET_ERRORS
+  GET_ERRORS,
+  GET_CHECKIN_DASH
 } from './types';
 
 
@@ -28,20 +29,26 @@ export const getOccupancy = () => {
   };
 };
 
-/*
-fetch("http://localhost:5002/api/v1/dashboard/places/occupancy_rate")
-    .then(res => res.json())
-    .then(data => {
-        //document.querySelector('#chartTitle').textContent = `Total Votes: ${totalVotes}`;
-        console.log(data);
-        
-        var datapointsArray =  [
-          { label: data[0].street,  y: 10  },
-          { label: "Orange", y: 15  },
-          { label: "Banana", y: 25  },
-          { label: "Mango",  y: 30  },
-          { label: "Grape",  y: 28  }
-        ];
-    });
-  */
+//see dashboard charts
+export const getCheckinDash = () => {
+  return dispatch => {
+    return axios
+      .get('http://localhost:5002/api/v1/dashboard/rentals/date/count')
+      .then(charts_checkin => {
+        return dispatch({
+          type: GET_CHECKIN_DASH,
+          payload: charts_checkin.data
+        });
+      })
+
+      .catch(err =>
+        dispatch({
+          type: GET_ERRORS,
+          payload: err
+        })
+      );
+  };
+};
+
+
 
