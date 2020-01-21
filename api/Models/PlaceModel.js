@@ -45,6 +45,7 @@ let PlaceSchema = new Schema({
   }
 });
 
+//VALIDADO!
 PlaceSchema.methods.comparePlaceWithFinalPlace = async function(lat, lon) {
   this.model('Places').find(
     {

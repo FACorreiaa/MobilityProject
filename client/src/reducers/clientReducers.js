@@ -4,17 +4,23 @@ import {
   GET_BALANCE,
   UPDATE_BALANCE,
   GET_RENTAL_METHODS,
-  POST_CHECKIN
+  POST_CHECKIN,
+  GET_CONSULT,
+  PUT_CHECKOUT,
+  PUT_PAYMENT
 } from '../actions/types';
-
-const isEmpty = require('is-empty');
 
 const initialState = {
   vehicles: [],
   loading: false,
   balance: [],
   methods: [],
-  checkin: {}
+  checkin: {},
+  clients: [],
+  isCheckedIn: false,
+  consult: [],
+  checkout: [],
+  payment: []
 };
 
 export default function(state = initialState, action) {
@@ -47,9 +53,25 @@ export default function(state = initialState, action) {
     case POST_CHECKIN:
       return {
         ...state,
+        isCheckedIn: true,
         checkin: action.payload
+      };
+    case GET_CONSULT:
+      return {
+        ...state,
+        consult: action.payload
+      };
+    case PUT_CHECKOUT:
+      return {
+        ...state,
+        checkout: action.payload
       };
     default:
       return state;
+    case PUT_PAYMENT:
+      return {
+        ...state,
+        payment: action.checkout
+      };
   }
 }

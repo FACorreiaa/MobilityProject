@@ -88,9 +88,7 @@ module.exports = function(app) {
    * @returns {Error} 500
    */
   app
-    .route(
-      '/api/v1/rental/checkout/:rental/user/:user/vehicle/:vehicle/lat/:lat/lon/:lon'
-    )
+    .route('/api/v1/rental/checkout/:id/vehicle/:vehicle/lat/:lat/lon/:lon')
     .put(routeRental.checkout);
 
   /**
@@ -111,9 +109,11 @@ module.exports = function(app) {
    * @returns {Error} 500
    */
 
-  app.route('/api/v1/rental/consult/:id').get(routeRental.consult);
+  app.route('/api/v1/rental/consult/:client').get(routeRental.consult);
 
   app
     .route('/api/v1/rental/validate/:id')
     .get(routeRental.validateVehiclesInRental);
+
+  //app.route('/api/v1/rental/:id').get(routeRental.getUserCheckInData);
 };

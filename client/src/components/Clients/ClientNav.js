@@ -20,9 +20,6 @@ export default function ClientNav() {
               <Link to='/checkin'>Checkin</Link>
             </li>
             <li>
-              <Link to='/checkout'>Checkout</Link>
-            </li>
-            <li>
               <Link to='/consult'>Consult</Link>
             </li>
             <li>

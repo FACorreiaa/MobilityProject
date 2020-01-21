@@ -17,6 +17,7 @@ import SearchVehicles from '../components/Clients/SearchVehicles';
 import Profile from '../components/Clients/Profile';
 import Balance from '../components/Clients/Balance';
 import CheckIn from '../components/Clients/Checkin';
+import Checkout from '../components/Clients/Checkout';
 // Check for token to keep user logged in
 if (localStorage.jwtToken) {
   // Set auth token header auth
@@ -54,6 +55,7 @@ class App extends Component {
               <PrivateRoute exact path='/profile' component={Profile} />
               <PrivateRoute exact path='/balance' component={Balance} />
               <PrivateRoute exact path='/checkin' component={CheckIn} />
+              <PrivateRoute exact path='/checkout' component={Checkout} />
               <PrivateRoute
                 exact
                 path='/searchVehicles'

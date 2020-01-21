@@ -12,7 +12,13 @@ import {
   GET_RENTAL_METHODS,
   RENTAL_METHODS_ERROR,
   POST_CHECKIN,
-  POST_CHECKIN_ERROR
+  POST_CHECKIN_ERROR,
+  GET_CONSULT,
+  CONSULT_ERROR,
+  PUT_CHECKOUT,
+  CHECKOUT_ERROR,
+  PUT_PAYMENT,
+  PAYMENT_ERROR
 } from './types';
 
 export const getVehicles = () => {
@@ -100,12 +106,75 @@ export const postCheckIn = (user, id, rentalMethod, lat, lon) => {
       .post(
         `http://localhost:5002/api/v1/rental/checkin/user/${user}/vehicle/${id}/${rentalMethod}/lat/${lat}/lon/${lon}`
       )
-      .then(postBalance => {
-        return dispatch({ type: POST_CHECKIN, payload: postBalance });
+      .then(checkin => {
+        return dispatch({ type: POST_CHECKIN, payload: checkin });
       })
       .catch(err =>
         dispatch({
           type: POST_CHECKIN_ERROR,
+          payload: err
+        })
+      );
+  };
+};
+
+///api/v1/rental/:client
+export const getConsult = client => {
+  return dispatch => {
+    return axios
+      .get(`http://localhost:5002/api/v1/rental/consult/${client}`)
+      .then(consult => {
+        return dispatch({
+          type: GET_CONSULT,
+          payload: consult.data
+        });
+      })
+      .catch(err =>
+        dispatch({
+          type: CONSULT_ERROR,
+          payload: err
+        })
+      );
+  };
+};
+
+///api/v1/rental/checkout/:rental/lat/:lat/lon/:lon
+export const updateCheckout = (id, vehicle, lat, lon) => {
+  return dispatch => {
+    return axios
+      .put(
+        `http://localhost:5002/api/v1/rental/checkout/${id}/vehicle/${vehicle}/lat/${lat}/lon/${lon}`
+      )
+      .then(checkout => {
+        return dispatch({
+          type: PUT_CHECKOUT,
+          payload: checkout.data
+        });
+      })
+      .catch(err =>
+        dispatch({
+          type: CHECKOUT_ERROR,
+          payload: err
+        })
+      );
+  };
+};
+
+///api/v1/rental/payment/user/:user/:id
+export const updatePayment = (user, id) => {
+  return dispatch => {
+    return axios
+      .put(`http://localhost:5002/api/v1/rental/payment/user/${user}/${id}`)
+      .then(payment => {
+        console.log(payment);
+        return dispatch({
+          type: PUT_PAYMENT,
+          payload: payment
+        });
+      })
+      .catch(err =>
+        dispatch({
+          type: PAYMENT_ERROR,
           payload: err
         })
       );

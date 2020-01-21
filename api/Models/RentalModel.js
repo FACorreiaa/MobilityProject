@@ -99,6 +99,21 @@ let RentalSchema = new Schema({
   },
   valid: {
     type: Boolean
+  },
+  checkin: {
+    type: Boolean,
+    default: false
+  },
+  checkout: {
+    type: Boolean,
+    default: false
+  },
+  paymentComplete: {
+    type: Boolean,
+    default: false
+  },
+  hasDiscount: {
+    type: Boolean
   }
 });
 

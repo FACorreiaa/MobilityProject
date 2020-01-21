@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const Rental = mongoose.model('Rentals');
 const Place = mongoose.model('Places');
 const Vehicle = mongoose.model('Vehicles');
-const History = mongoose.model('HistoryRentals');
+const User = mongoose.model('Users');
 const Pusher = require('pusher');
 
 /* let minRange = 0;
@@ -197,134 +197,138 @@ exports.getRentalsEndByDate = async function(req, res) {
 };
 
 exports.checkin = async function(req, res) {
-  /* Rental.aggregate(
-    [
-      {
-        $lookup: {
-          from: 'Places',
-          localField: 'place',
-          foreignField: '_id',
-          as: 'places_data'
-        }
-      },
-      { $unwind: '$places_data' },
-      {
-        $lookup: {
-          from: 'Vehicles',
-          localField: 'vehicle',
-          foreignField: '_id',
-          as: 'vehicle_data'
-        }
-      },
-      { $unwind: '$vehicle_data' },
-      { $match: { vehicle: { $exists: false } } }
-    ], */
-
-  Rental.find(
-    {
-      vehicle: { $exists: false }
-    },
-    async function(error, placeData) {
-      let date = new Date();
-      let rentalMethod = req.params.rentalMethod;
-      let vehicle = mongoose.Types.ObjectId(req.params.id);
-      let price = 0;
-      let user = mongoose.Types.ObjectId(req.params.user);
-      let lat = req.params.lat;
-      let lon = req.params.lon;
-      if (error) {
-        return await res.json(error);
-      }
+  let user = mongoose.Types.ObjectId(req.params.user);
+  let query = { client: user, checkin: true },
+    update = { checkin: true },
+    options = { upsert: false, new: true, setDefaultsOnInsert: true };
+  Rental.findOneAndUpdate(query, update, options, async function(
+    error,
+    placeData
+  ) {
+    /* if (placeData.checkin === true && placeData.checkout === false) {
+        return await res.json('YOU ALREADY CHECKED IN');
+      } */
+    console.log('placeData' + placeData);
+    let rental;
+    let date = new Date();
+    let rentalMethod = req.params.rentalMethod;
+    let vehicle = mongoose.Types.ObjectId(req.params.id);
+    let price = 0;
+    let lat = req.params.lat;
+    let lon = req.params.lon;
+    let place = mongoose.Types.ObjectId('5e14ccd070941d06189da9f2');
+    if (error) {
+      return await res.json(error);
+    }
+    console.log(
+      placeData === null ||
+        placeData === undefined ||
+        (placeData.length === 0 && placeData.checkin === true)
+    );
+    console.log(placeData);
+    if (
+      placeData === null ||
+      placeData === undefined ||
+      placeData.length === 0
+    ) {
       rentalMethod == 'minutes' ? (price = 1) : (price = 6);
-      let rental = new Rental({
+      rental = new Rental({
         start: {
           date
         },
         price,
         vehicle,
         rentalMethod,
-        user,
+        client: user,
         'start.geometry.coordinates': [parseFloat(lat), parseFloat(lon)],
-        'places_data.quantity': { $inc: { 'places_data.quantity': -1 } },
-        'vehicle_data.available': false
+        checkin: true,
+        checkout: false
       });
-      console.log(rental);
+
+      Vehicle.findByIdAndUpdate(
+        {
+          _id: vehicle
+        },
+        {
+          available: false
+        },
+        { upsert: true },
+        async function(error, vehicle) {}
+      );
+      Place.findByIdAndUpdate(
+        {
+          _id: place
+        },
+        { $inc: { quantity: -1 } },
+        { upsert: true },
+        async function(error, place) {}
+      );
 
       rental.save(async function(error, rental) {
-        Vehicle.findOneAndUpdate(
-          { _id: vehicle },
-          { $set: { available: false } },
-          { new: true }
-        );
-        console.log(rental);
-        /* let history = new History({
-          rental: rental._id,
-          'checkin.position': rental.start.location.coordinates,
-          'checkin.date': rental.start.date,
-          createdDate: new Date(),
-          rentalMethod: rental.rentalMethod,
-          vehicle: rental.vehicle,
-          user: rental.user,
-          place: rental.place,
-          info: 'Check In'
-        });
-        history.save();
-        console.log('history'); */
         if (error) {
           return await res.json(error);
         }
         if (rental.quantity <= 0) {
           return await res.json('All vehicles are being used');
         }
+
         return await res.json(rental);
       });
+    } else {
+      return await res.json('You are already checked in');
     }
-  );
+  });
 };
 
 exports.checkout = async function(req, res) {
-  let rentalID = mongoose.Types.ObjectId(req.params.rental);
-  let query = { _id: rentalID };
+  let id = mongoose.Types.ObjectId(req.params.id);
+  let query = { _id: id };
   let date = new Date();
-  let user = mongoose.Types.ObjectId(req.params.user);
   let vehicle = mongoose.Types.ObjectId(req.params.vehicle);
+  let place = mongoose.Types.ObjectId('5e14ccd070941d06189da9f2');
   let lat = req.params.lat;
   let lon = req.params.lon;
+  Vehicle.findByIdAndUpdate(
+    {
+      _id: vehicle
+    },
+    {
+      available: true,
+      checkin: true,
+      checkout: true
+    },
+    { upsert: true, new: true },
+    async function(error, vehicle) {}
+  );
+  Place.findByIdAndUpdate(
+    {
+      _id: place
+    },
+    { $inc: { quantity: 1 } },
+    { upsert: true },
+    async function(error, place) {}
+  );
   Rental.findOneAndUpdate(
     query,
     {
       $set: {
         'end.date': date,
         'end.geometry.type': 'Point',
-        //'end.geometry.coordinates': [1, 1],
-        user,
         vehicle,
-        'end.geometry.coordinates': [parseFloat(lon), parseFloat(lat)]
+        'end.geometry.coordinates': [parseFloat(lat), parseFloat(lon)],
+        hasPayment: 'true',
+        checkin: false,
+        checkout: true
       }
     },
-    { upsert: true },
+    { upsert: false, new: true },
     async function(err, rental) {
-      console.log(rental);
       if (err) return await res.send(err);
       //não testei
-      if (!rental.user) {
-        await res.send('No checkin made for this vehicle');
-      }
-      if (rental.timeSpent) {
-        await res.send('Checkout already made');
+      if (!rental) {
+        return await res.send('No checkin made for this vehicle');
       } else {
-        let history = new History({
-          rental: rental._id,
-          'checkout.position': rental.end.geometry.coordinates,
-          'checkout.date': rental.end.date,
-          createdDate: new Date(),
-          vehicle: rental.vehicle,
-          user: rental.user,
-          place: rental.place,
-          info: 'Check Out'
-        });
-        history.save();
-        return await res.send('Succesfully saved.' + rental);
+        return await res.send(rental);
       }
     }
   );
@@ -336,81 +340,109 @@ exports.payment = async function(req, res) {
   let query = { _id: _id };
   let user = mongoose.Types.ObjectId(req.params.user);
 
-  Rental.findOneAndUpdate(query, { upsert: true }, function(err, rental) {
-    const timeSpentInMinutes = (rental.end.date - rental.start.date) / 60000;
-    const timeSpentInHours = (rental.end.date - rental.start.date) / 3600000;
-    const lat = rental.end.geometry.coordinates[0];
-    const lon = rental.end.geometry.coordinates[1];
-
-    if (rental.rentalMethod == 'minutes') {
-      rental.finalCost = 1 + timeSpentInMinutes * 0.15;
-      if (place.comparePlaceWithFinalPlace(lat, lon)) {
-        rental.finalCost = 1 + timeSpentInMinutes * 0.15 - 0.5;
+  Rental.findOneAndUpdate(
+    query,
+    {
+      $set: {
+        checkin: false,
+        checkout: false
       }
-    }
+    },
+    { upsert: false, new: true },
 
-    if (rental.rentalMethod == 'pack') {
-      if (timeSpentInHours > 0 && timeSpentInHours <= 1) rental.finalCost = 6;
-      else if (timeSpentInHours > 1 && timeSpentInHours <= 2)
-        rental.finalCost = 10;
-      else rental.finalCost = 25;
-      if (place.comparePlaceWithFinalPlace(lat, lon)) {
-        rental.finalCost = rental.finalCost - 0.5;
-      }
-    }
-    User.findOneAndUpdate(
-      {
-        _id: user,
-        balance: { $gte: 0 }
-      },
-      { $inc: { balance: -rental.finalCost } },
-      async function(err, doc) {
-        if (err) return new Error(err);
-        if (doc) {
-          let history = new History({
-            rental: rental._id,
-            'checkout.position': rental.end.geometry.coordinates,
-            'checkout.date': rental.end.date,
-            createdDate: new Date(),
-            vehicle: rental.vehicle,
-            user: rental.user,
-            place: rental.place,
-            info: 'Payment',
-            finalCost: rental.finalCost
-          });
-          history.save();
-          return res.send(
-            `Rental price of  ${rental.finalCost}€ has been paid successfully!`
-          );
-        } else {
-          return res.send(`Your payment is negative right now`);
+    function(err, rental) {
+      console.log(rental);
+      const timeSpentInMinutes = (rental.end.date - rental.start.date) / 60000;
+      const timeSpentInHours = (rental.end.date - rental.start.date) / 3600000;
+      const lat = rental.end.geometry.coordinates[0];
+      const lon = rental.end.geometry.coordinates[1];
+      rental.price = 1;
+      if (rental.rentalMethod == 'minutes') {
+        rental.finalCost = rental.price + timeSpentInMinutes * 0.15;
+        rental.hasDiscount == false;
+        if (place.comparePlaceWithFinalPlace(lat, lon)) {
+          console.log('ESTOU AQUI');
+          rental.hasDiscount == true;
+          rental.finalCost = rental.price + timeSpentInMinutes * 0.15 - 0.5;
         }
       }
-    );
-    rental.save();
-  });
+
+      if (rental.rentalMethod == 'pack') {
+        rental.hasDiscount == false;
+        if (timeSpentInHours > 0 && timeSpentInHours <= 1) rental.finalCost = 6;
+        else if (timeSpentInHours > 1 && timeSpentInHours <= 2)
+          rental.finalCost = 10;
+        else rental.finalCost = 25;
+        if (place.comparePlaceWithFinalPlace(lat, lon)) {
+          console.log('ESTOU AQUI');
+          rental.hasDiscount == true;
+          rental.finalCost = rental.finalCost - 0.5;
+        }
+      }
+
+      console.log(rental);
+      User.findOneAndUpdate(
+        {
+          _id: user,
+          balance: { $gte: 0 }
+        },
+        { $inc: { balance: -rental.finalCost } },
+        async function(err, doc) {
+          if (err) return new Error(err);
+          if (doc.balance < rental.finalCost) {
+            return res.send(`Insuficient funds`);
+          }
+          if (!rental.paymentComplete) {
+            rental.hasDiscount == true;
+            rental.paymentComplete == true;
+            rental.checkin == false;
+            rental.checkout == false;
+            return res.send(rental);
+          } else {
+            return res.send(`You already payed this rental`);
+          }
+        }
+      );
+      rental.save();
+    }
+  );
 };
 
 exports.consult = async function(req, res) {
-  let _id = mongoose.Types.ObjectId(req.params.id);
-  let query = { _id: _id };
+  let client = mongoose.Types.ObjectId(req.params.client);
+  let query = { client: client, checkin: true, checkout: false };
+  let options = { price: 1, previewCost: 1, timeSpent: 1 };
 
   Rental.findOneAndUpdate(query, { upsert: true }, function(err, rental) {
     let currentDate = new Date();
-    const timeSpentInMinutes = (currentDate - rental.start.date) / 60000;
-    const timeSpentInHours = (currentDate - rental.start.date) / 3600000;
+    let timeSpentInMinutes = (currentDate - rental.start.date) / 60000;
+    let timeSpentInHours = (currentDate - rental.start.date) / 3600000;
+    if (timeSpentInMinutes < 1) {
+      timeSpentInMinutes = 1;
+    }
+
+    if (timeSpentInHours < 1) {
+      timeSpentInHours = 1;
+    }
 
     if (rental.rentalMethod == 'minutes') {
+      rental.price = 1;
       rental.previewCost = 1 + timeSpentInMinutes * 0.15;
-      rental.timeSpent = `${timeSpentInMinutes} minutes or ${timeSpentInHours} hours`;
+      rental.timeSpent = `${timeSpentInMinutes} min.`;
     }
 
     if (rental.rentalMethod == 'pack') {
-      if (timeSpentInHours > 0 && timeSpentInHours <= 1) rental.previewCost = 6;
-      else if (timeSpentInHours > 1 && timeSpentInHours <= 2)
+      if (timeSpentInHours > 0 && timeSpentInHours <= 1) {
+        rental.previewCost = 6;
+        rental.price = 6;
+      } else if (timeSpentInHours > 1 && timeSpentInHours <= 2) {
         rental.previewCost = 10;
-      else rental.previewCost = 25;
-      rental.timeSpent = `${timeSpentInMinutes} minutes / ${timeSpentInHours} hours spent`;
+        rental.price = 10;
+      } else {
+        rental.previewCost = 25;
+        rental.price = 25;
+      }
+      rental.timeSpent = `${Math.ceil(timeSpentInHours)} h`;
     }
     rental.save();
     if (err) return res.send({ error: err });
@@ -465,3 +497,22 @@ exports.validateVehiclesInRental = async function(req, res) {
     rental.save();
   });
 };
+
+/* exports.getUserCheckInData = async function(req, res) {
+  let client = mongoose.Types.ObjectId(req.params.id);
+
+  Rental.find(
+    {
+      client,
+      checkin: true,
+      checkout: false
+    },
+    async function(error, checks) {
+      if (error) {
+        return await res.json(error);
+      } else {
+        return await res.json(checks);
+      }
+    }
+  );
+}; */

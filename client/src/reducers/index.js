@@ -10,5 +10,9 @@ export default combineReducers({
   places: placeReducer,
   vehicles: clientReducers,
   balance: clientReducers,
-  methods: clientReducers
+  methods: clientReducers,
+  checkin: clientReducers,
+  consult: clientReducers,
+  checkout: clientReducers,
+  payment: clientReducers
 });
