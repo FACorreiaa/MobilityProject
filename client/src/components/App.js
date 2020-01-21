@@ -7,10 +7,11 @@ import { Provider } from 'react-redux';
 import store from '../store';
 import Navbar from '../components/Navbar/Navbar';
 import Landing from '../components/Landing/Landing';
-import Register from '../components/Auth/Register';
-import Login from '../components/Auth/Login';
+import Register from '../components/auth/Register';
+import Login from '../components/auth/Login';
 import PrivateRoute from '../components/PrivateRoute/PrivateRoute';
 import Dashboard from '../components/Dashboard/Dashboard';
+import Charts from '../components/Dashboard/Charts';
 import Places from '../components/Places/Places';
 import Clients from '../components/Clients/Clients';
 import SearchVehicles from '../components/Clients/SearchVehicles';
@@ -18,6 +19,8 @@ import Profile from '../components/Clients/Profile';
 import Balance from '../components/Clients/Balance';
 import CheckIn from '../components/Clients/Checkin';
 import Checkout from '../components/Clients/Checkout';
+
+
 // Check for token to keep user logged in
 if (localStorage.jwtToken) {
   // Set auth token header auth
@@ -48,7 +51,7 @@ class App extends Component {
             <Route exact path='/register' component={Register} />
             <Route exact path='/login' component={Login} />
             <Route exact path='/places' component={Places} />
-
+            <Route exact path='/charts' component={Charts} />
             <Switch>
               <PrivateRoute exact path='/dashboard' component={Dashboard} />
               <PrivateRoute exact path='/main' component={Clients} />
