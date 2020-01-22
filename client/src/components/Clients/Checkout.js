@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Redirect } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { logoutUser } from '../../actions/authActions';
@@ -26,7 +27,11 @@ class Checkout extends Component {
       value: '',
       canRender: false,
       checkout: false,
-      hasPayment: false
+      hasPayment: false,
+      payment: '',
+      finalCost: 0,
+      count: 3,
+      disabled: false
     };
   }
 
@@ -39,7 +44,6 @@ class Checkout extends Component {
       .then(results => getLatLng(results[0]))
       .then(latLng => {
         this.setState({ lat: latLng.lat, lng: latLng.lng, canRender: true });
-        console.log('Success', latLng);
       })
       .catch(error => console.error('Error', error));
   };
@@ -50,12 +54,12 @@ class Checkout extends Component {
     //checkout
     this.setState(prevState => {
       return {
-        checkout: this.props.checkin.checkin.data.checkout
+        checkout: this.props.checkin.checkin.checkout
       };
     });
     const checkout = {
-      id: this.props.checkin.checkin.data._id,
-      vehicle: this.props.checkin.checkin.data.vehicle,
+      id: this.props.checkin.checkin._id,
+      vehicle: this.props.checkin.checkin.vehicle,
       lat: this.state.lat,
       lon: this.state.lng
     };
@@ -68,10 +72,8 @@ class Checkout extends Component {
     );
 
     this.setState(prevState => ({
-      checkout: this.props.checkin.checkin.data.checkout
+      checkout: this.props.checkin.checkin.checkout
     }));
-
-    console.log('MY PROPS' + JSON.stringify(this.props.checkout.checkout));
   };
 
   updatePayment = e => {
@@ -80,23 +82,43 @@ class Checkout extends Component {
     //checkout
     /* this.setState(prevState => {
       return {
-        checkout: this.props.checkin.checkin.data.checkout
+        checkout: this.props.checkin.checkin.checkout
       };
     }); */
     //user
     const payment = {
       user: this.props.auth.user._id,
-      id: this.props.checkin.checkin.data._id
+      id: this.props.checkin.checkin._id
     };
+    console.log(payment);
 
     this.props.updatePayment(payment.user, payment.id);
+  };
 
-    this.setState(prevState => ({
-      hasPayment: !prevState.hasPayment
-    }));
-
-    console.log('MY CHECKOUT' + JSON.stringify(this.props.checkout));
-    console.log('MY PAYMENT' + JSON.stringify(this.props.payment));
+  redirectNow = () => {
+    /* this.setState(prevState => ({
+      disabled: !prevState.disabled
+    })); */
+    setInterval(() => {
+      this.setState({
+        //disabled: !this.state.disabled,
+        count: this.state.count - 1
+      });
+    }, 2000);
+    return (
+      <div>
+        <div>Redirecting in {this.state.count}</div>
+        {this.state.count !== 0 ? (
+          ''
+        ) : (
+          <Redirect
+            to={'/balance'}
+            /*             state={this.props.checkin.isCheckIn === false}
+             */
+          />
+        )}
+      </div>
+    );
   };
 
   render() {
@@ -185,7 +207,12 @@ class Checkout extends Component {
           </div>
         </div>
         <div style={{ textAlign: 'center' }}>
-          <Button node='button' type='submit' onClick={this.checkoutNow}>
+          <Button
+            node='button'
+            type='submit'
+            onClick={this.checkoutNow}
+            disabled={this.state.disabled}
+          >
             Checkout
             <Icon right>send</Icon>
           </Button>
@@ -201,6 +228,7 @@ class Checkout extends Component {
                         node='button'
                         type='submit'
                         onClick={this.updatePayment}
+                        disabled={this.state.disabled}
                       >
                         Pay now!
                         <Icon right>send</Icon>
@@ -247,8 +275,11 @@ class Checkout extends Component {
           )}
         </div>
 
-        {this.state.hasPayment ? (
-          <div>{`Payment of lol Successful!`}</div>
+        {this.props.payment.payment.finalCost > 0 ? (
+          <div>
+            <div>{this.redirectNow()}</div>
+            <div>{`Payment of ${this.props.payment.payment.finalCost}€ Successful!`}</div>
+          </div>
         ) : (
           <div>No payment has been made</div>
         )}

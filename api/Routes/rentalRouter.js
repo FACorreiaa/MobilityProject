@@ -109,7 +109,7 @@ module.exports = function(app) {
    * @returns {Error} 500
    */
 
-  app.route('/api/v1/rental/consult/:client').get(routeRental.consult);
+  app.route('/api/v1/rental/consult/:id').get(routeRental.consult);
 
   app
     .route('/api/v1/rental/validate/:id')

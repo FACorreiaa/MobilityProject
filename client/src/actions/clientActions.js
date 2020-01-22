@@ -107,7 +107,7 @@ export const postCheckIn = (user, id, rentalMethod, lat, lon) => {
         `http://localhost:5002/api/v1/rental/checkin/user/${user}/vehicle/${id}/${rentalMethod}/lat/${lat}/lon/${lon}`
       )
       .then(checkin => {
-        return dispatch({ type: POST_CHECKIN, payload: checkin });
+        return dispatch({ type: POST_CHECKIN, payload: checkin.data });
       })
       .catch(err =>
         dispatch({
@@ -119,10 +119,10 @@ export const postCheckIn = (user, id, rentalMethod, lat, lon) => {
 };
 
 ///api/v1/rental/:client
-export const getConsult = client => {
+export const getConsult = id => {
   return dispatch => {
     return axios
-      .get(`http://localhost:5002/api/v1/rental/consult/${client}`)
+      .get(`http://localhost:5002/api/v1/rental/consult/${id}`)
       .then(consult => {
         return dispatch({
           type: GET_CONSULT,
@@ -166,10 +166,9 @@ export const updatePayment = (user, id) => {
     return axios
       .put(`http://localhost:5002/api/v1/rental/payment/user/${user}/${id}`)
       .then(payment => {
-        console.log(payment);
         return dispatch({
           type: PUT_PAYMENT,
-          payload: payment
+          payload: payment.data
         });
       })
       .catch(err =>

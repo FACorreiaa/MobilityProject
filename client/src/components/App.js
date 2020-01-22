@@ -7,8 +7,8 @@ import { Provider } from 'react-redux';
 import store from '../store';
 import Navbar from '../components/Navbar/Navbar';
 import Landing from '../components/Landing/Landing';
-import Register from '../components/auth/Register';
-import Login from '../components/auth/Login';
+import Register from '../components/Auth/Register';
+import Login from '../components/Auth/Login';
 import PrivateRoute from '../components/PrivateRoute/PrivateRoute';
 import Dashboard from '../components/Dashboard/Dashboard';
 import Charts from '../components/Dashboard/Charts';
@@ -19,7 +19,6 @@ import Profile from '../components/Clients/Profile';
 import Balance from '../components/Clients/Balance';
 import CheckIn from '../components/Clients/Checkin';
 import Checkout from '../components/Clients/Checkout';
-
 
 // Check for token to keep user logged in
 if (localStorage.jwtToken) {

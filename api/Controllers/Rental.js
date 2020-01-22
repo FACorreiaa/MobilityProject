@@ -348,7 +348,7 @@ exports.payment = async function(req, res) {
         checkout: false
       }
     },
-    { upsert: false, new: true },
+    { upsert: true, new: true },
 
     function(err, rental) {
       console.log(rental);
@@ -409,11 +409,10 @@ exports.payment = async function(req, res) {
 };
 
 exports.consult = async function(req, res) {
-  let client = mongoose.Types.ObjectId(req.params.client);
-  let query = { client: client, checkin: true, checkout: false };
-  let options = { price: 1, previewCost: 1, timeSpent: 1 };
+  let id = mongoose.Types.ObjectId(req.params.id);
+  let query = { _id: id, checkin: true, checkout: false };
 
-  Rental.findOneAndUpdate(query, { upsert: true }, function(err, rental) {
+  Rental.findByIdAndUpdate(query, { upsert: true }, function(err, rental) {
     let currentDate = new Date();
     let timeSpentInMinutes = (currentDate - rental.start.date) / 60000;
     let timeSpentInHours = (currentDate - rental.start.date) / 3600000;

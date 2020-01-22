@@ -84,7 +84,7 @@ class Checkin extends Component {
   onConsult = e => {
     e.preventDefault();
 
-    this.props.getConsult(this.props.auth.user._id);
+    this.props.getConsult(this.props.checkin.checkin._id);
 
     setTimeout(() => {
       this.setState(prevState => ({
@@ -184,7 +184,7 @@ class Checkin extends Component {
             </div>
           </section>
           <div className='flow-text grey-text text-darken-2'>
-            {this.props.checkin.isCheckIn ? (
+            {this.state.checkin ? (
               <div>
                 <div
                   className='bg-blue-100 border-t border-b border-blue-500 text-blue-700 px-4 py-3'

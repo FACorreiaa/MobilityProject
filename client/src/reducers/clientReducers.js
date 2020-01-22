@@ -71,7 +71,7 @@ export default function(state = initialState, action) {
     case PUT_PAYMENT:
       return {
         ...state,
-        payment: action.checkout
+        payment: action.payload
       };
   }
 }
