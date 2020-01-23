@@ -229,7 +229,7 @@ exports.checkin = async function(req, res) {
     if (
       placeData === null ||
       placeData === undefined ||
-      placeData.length === 0
+      placeData.length == 0
     ) {
       rentalMethod == 'minutes' ? (price = 1) : (price = 6);
       rental = new Rental({
@@ -336,9 +336,8 @@ exports.checkout = async function(req, res) {
 
 exports.payment = async function(req, res) {
   const place = new Place();
-  let _id = mongoose.Types.ObjectId(req.params.id);
-  let query = { _id: _id };
-  let user = mongoose.Types.ObjectId(req.params.user);
+  let id = mongoose.Types.ObjectId(req.params.id);
+  let query = { _id: id };
 
   Rental.findOneAndUpdate(
     query,
@@ -383,7 +382,7 @@ exports.payment = async function(req, res) {
       console.log(rental);
       User.findOneAndUpdate(
         {
-          _id: user,
+          _id: rental.client,
           balance: { $gte: 0 }
         },
         { $inc: { balance: -rental.finalCost } },

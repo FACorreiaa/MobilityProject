@@ -22,20 +22,7 @@ class SearchVehicles extends Component {
     console.log(this.props);
 
     const { user } = this.props.auth;
-    const { places } = this.props.places;
-    const mapContainerStyle = {
-      height: '400px',
-      width: '800px'
-    };
-
-    const onClick = (...args) => {
-      console.log('onClick args: ', args);
-    };
-
-    const MARKER_POSITION = {
-      lat: 41.53113384600326,
-      lng: -8.619018495082855
-    };
+    const { places } = this.props.clients;
 
     const center = { lat: 41.53113384600326, lng: -8.619018495082855 };
     /*     const center = { lat: 36.10237644873644, lng: -11.074218749999998 };
@@ -76,7 +63,7 @@ class SearchVehicles extends Component {
     console.log('arr', arr);
 
     console.log(this.props.places);
-    const placeItems = this.props.places.places.map(place => (
+    const placeItems = this.props.clients.places.map(place => (
       <div key={place.id}>
         <div className='row center-align'>
           <div className='col'>
@@ -102,21 +89,13 @@ class SearchVehicles extends Component {
     ));
     return (
       <div>
-        <ClientNav />
-        <LoadScript
-          id='script-loader'
-          googleMapsApiKey={process.env.REACT_APP_GOOGLE_MAPS_API_TEST}
-        >
-          <GoogleMap
-            id='circle-example'
-            mapContainerStyle={mapContainerStyle}
-            zoom={18}
-            center={center}
-          >
-            <Polygon onLoad={onLoad} paths={paths} options={options} />
-            <Marker position={MARKER_POSITION} icon={pinIcon} />
-          </GoogleMap>
-        </LoadScript>
+        <MapContainer
+          initialCenter={initialCenter}
+          position={position}
+          paths={paths}
+          style={style}
+          center={center}
+        />
         <div>{placeItems}</div>
       </div>
     );
@@ -129,7 +108,8 @@ SearchVehicles.propTypes = {
 };
 const mapStateToProps = state => ({
   auth: state.auth,
-  places: state.places
+  places: state.places,
+  clients: state.clients
 });
 export default connect(mapStateToProps, { logoutUser, getPlaces })(
   SearchVehicles

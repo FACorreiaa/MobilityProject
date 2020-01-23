@@ -135,7 +135,8 @@ SearchVehicles.propTypes = {
 };
 const mapStateToProps = state => ({
   auth: state.auth,
-  places: state.places
+  places: state.places,
+  clients: state.clients
 });
 
 export default connect(mapStateToProps, { logoutUser, getPlaces })(

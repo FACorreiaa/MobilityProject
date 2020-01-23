@@ -161,10 +161,10 @@ export const updateCheckout = (id, vehicle, lat, lon) => {
 };
 
 ///api/v1/rental/payment/user/:user/:id
-export const updatePayment = (user, id) => {
+export const updatePayment = id => {
   return dispatch => {
     return axios
-      .put(`http://localhost:5002/api/v1/rental/payment/user/${user}/${id}`)
+      .put(`http://localhost:5002/api/v1/rental/payment/${id}`)
       .then(payment => {
         return dispatch({
           type: PUT_PAYMENT,
