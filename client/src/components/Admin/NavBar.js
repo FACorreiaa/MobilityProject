@@ -16,6 +16,9 @@ export default function NavBar() {
             <li>
               <Link to='/checkParkings'>Check Parkings</Link>
             </li>
+            <li>
+              <Link to='/marParkings'>Visualize Parkings</Link>
+            </li>
           </ul>
         </div>
       </nav>

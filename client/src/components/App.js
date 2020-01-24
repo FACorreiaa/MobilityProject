@@ -20,6 +20,8 @@ import Balance from '../components/Clients/Balance';
 import CheckIn from '../components/Clients/Checkin';
 import Checkout from '../components/Clients/Checkout';
 import ValidateUsers from './Admin/ValidateUsers';
+import CheckParkingData from './Admin/CheckParkingData';
+import MapParkings from './Admin/MapParkings';
 // Check for token to keep user logged in
 if (localStorage.jwtToken) {
   // Set auth token header auth
@@ -68,6 +70,12 @@ class App extends Component {
                 path='/validateusers'
                 component={ValidateUsers}
               />
+              <PrivateRoute
+                exact
+                path='/checkParkings'
+                component={CheckParkingData}
+              />
+              <PrivateRoute exact path='/marParkings' component={MapParkings} />
             </Switch>
           </div>
         </Router>

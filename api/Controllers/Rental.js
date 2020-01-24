@@ -289,6 +289,7 @@ exports.checkout = async function(req, res) {
   let lat = req.params.lat;
   let lon = req.params.lon;
   let address = req.params.address;
+
   Vehicle.findByIdAndUpdate(
     {
       _id: vehicle
@@ -327,6 +328,7 @@ exports.checkout = async function(req, res) {
     async function(err, rental) {
       if (err) return await res.send(err);
       //não testei
+
       if (!rental) {
         return await res.send('No checkin made for this vehicle');
       } else {
@@ -357,22 +359,20 @@ exports.payment = async function(req, res) {
       const timeSpentInHours = (rental.end.date - rental.start.date) / 3600000;
       const lat = rental.end.geometry.coordinates[0];
       const lon = rental.end.geometry.coordinates[1];
-      const checker = await place.comparePlaceWithFinalPlace(lat, lon);
-      console.log('PLACE', place);
+      const checker = await Place.comparePlaceWithFinalPlace(lat, lon);
       console.log('CHECKER' + checker);
-
+      console.log('PLACE', place);
       console.log(lat, lon); //40.73061 -73.935242
       rental.price = 1;
       if (rental.rentalMethod == 'minutes') {
         rental.finalCost = rental.price + timeSpentInMinutes * 0.15;
-        rental.hasDiscount == false;
-        if (checker !== 0 || checker !== '' || checker !== false || !checker) {
+        if (checker.length > 0) {
           console.log('MINUTES');
-          rental.hasDiscount == true;
+          rental.hasDiscount = true;
           rental.finalCost = rental.price + timeSpentInMinutes * 0.15 - 0.5;
         } else {
           console.log('CONSEGUI');
-          rental.hasDiscount == false;
+          rental.hasDiscount = false;
           rental.finalCost = rental.price + timeSpentInMinutes * 0.15;
         }
       }
@@ -383,13 +383,13 @@ exports.payment = async function(req, res) {
         else if (timeSpentInHours > 1 && timeSpentInHours <= 2)
           rental.finalCost = 10;
         else rental.finalCost = 25;
-        if (checker !== 0 || checker !== '' || checker !== false || !checker) {
+        if (checker.length > 0) {
           console.log('HOURS');
-          rental.hasDiscount == true;
+          rental.hasDiscount = true;
           rental.finalCost = rental.finalCost - 0.5;
         } else {
           console.log('CONSEGUI');
-          rental.hasDiscount == false;
+          rental.hasDiscount = false;
           rental.finalCost = rental.finalCost;
         }
       }
@@ -508,6 +508,42 @@ exports.validateVehiclesInRental = async function(req, res) {
     );
     rental.save();
   });
+};
+
+exports.getRentalData = async function(req, res) {
+  Rental.aggregate(
+    [
+      {
+        $lookup: {
+          from: 'Users',
+          localField: 'client',
+          foreignField: '_id',
+          as: 'user_info'
+        }
+      },
+      { $unwind: '$user_info' },
+      {
+        $project: {
+          'start.geometry.coordinates': 1,
+          'end.geometry.coordinates': 1,
+          address: 1,
+          rentalMethod: 1,
+          timeSpent: 1,
+          finalCost: 1,
+          username: '$user_info.username',
+          firstname: '$user_info.firstname',
+          lastname: '$user_info.lastname',
+          email: '$user_info.email'
+        }
+      }
+    ],
+    async function(error, rental) {
+      if (error) {
+        return await res.send(error);
+      }
+      return await res.send(rental);
+    }
+  );
 };
 
 /* exports.getUserCheckInData = async function(req, res) {

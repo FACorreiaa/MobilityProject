@@ -117,5 +117,5 @@ module.exports = function(app) {
     .route('/api/v1/rental/validate/:id')
     .get(routeRental.validateVehiclesInRental);
 
-  //app.route('/api/v1/rental/:id').get(routeRental.getUserCheckInData);
+  app.route('/api/v1/rental/check').get(routeRental.getRentalData);
 };

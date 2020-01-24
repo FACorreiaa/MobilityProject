@@ -113,7 +113,8 @@ let RentalSchema = new Schema({
     default: false
   },
   hasDiscount: {
-    type: Boolean
+    type: Boolean,
+    default: false
   },
   address: {
     type: String

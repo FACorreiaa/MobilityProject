@@ -13,5 +13,6 @@ export default combineReducers({
   charts_checkin: dashReducers,
   clients: clientReducers,
   validUsers: funcReducers,
-  updateUser: funcReducers
+  updateUser: funcReducers,
+  rental: funcReducers
 });

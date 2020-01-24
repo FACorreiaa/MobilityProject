@@ -34,7 +34,8 @@ class Checkout extends Component {
       disabled: false,
       rentalMethod: '',
       timeSpent: 0,
-      previewCost: 0
+      previewCost: 0,
+      hasDiscount: true
     };
   }
 
@@ -88,7 +89,8 @@ class Checkout extends Component {
         checkout: this.props.clients.checkin.checkout,
         rentalMethod: this.props.clients.checkout.rentalMethod,
         previewCost: this.props.clients.checkout.previewCost,
-        timeSpent: this.props.clients.checkout.timeSpent
+        timeSpent: this.props.clients.checkout.timeSpent,
+        hasDiscount: this.props.clients.checkout.hasDiscount
       });
     }, 500);
   };
@@ -311,6 +313,11 @@ class Checkout extends Component {
 
         {this.state.finalCost > 0 ? (
           <div>
+            {this.state.hasDiscount ? (
+              <div>Discount applied for valid Park.</div>
+            ) : (
+              <div>No discount</div>
+            )}
             <div>{`Payment of ${this.state.finalCost}€ Successful!`}</div>
 
             <div>{this.redirectNow()}</div>

@@ -1,7 +1,8 @@
 import {
   GET_VALIDATE_USERS,
   USER_LOADING,
-  UPDATE_VALIDATE_USERS
+  UPDATE_VALIDATE_USERS,
+  GET_RENTAL_DATA
 } from '../actions/types';
 
 const isEmpty = require('is-empty');
@@ -11,7 +12,8 @@ const initialState = {
   user: {},
   loading: false,
   validUsers: [],
-  updateUser: []
+  updateUser: [],
+  rental: []
 };
 
 export default function(state = initialState, action) {
@@ -25,6 +27,11 @@ export default function(state = initialState, action) {
       return {
         ...state,
         updateUser: action.payload
+      };
+    case GET_RENTAL_DATA:
+      return {
+        ...state,
+        rental: action.payload
       };
     case USER_LOADING:
       return {

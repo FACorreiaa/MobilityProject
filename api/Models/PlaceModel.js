@@ -46,23 +46,27 @@ let PlaceSchema = new Schema({
 });
 
 //VALIDADO!
-PlaceSchema.methods.comparePlaceWithFinalPlace = async function(lat, lon) {
+PlaceSchema.statics.comparePlaceWithFinalPlace = async function(lat, lon) {
   return this.model('Places').find(
     {
-      'location.coordinates': {
+      location: {
         $geoIntersects: {
-          $geometry: { type: 'Point', coordinates: [lat, lon] }
+          $geometry: {
+            type: 'Point',
+            coordinates: [parseFloat(lat), parseFloat(lon)]
+          }
         }
       }
     },
     async function(error, places) {
       if (error) {
+        console.log('ERRRRRRRRRRRR', error);
         return await error;
       }
       if (places) {
-        return await true;
+        return await 1;
       } else {
-        return await false;
+        return await 0;
       }
     }
   );

@@ -4,7 +4,8 @@ import {
   GET_VALIDATE_USERS,
   GET_ERRORS,
   UPDATE_VALIDATE_USERS,
-  UPDATE_ERROS
+  UPDATE_ERROS,
+  GET_RENTAL_DATA
 } from './types';
 
 export const getValidUsers = () => {
@@ -47,4 +48,23 @@ export const updateUsers = (id, userId) => {
   };
 };
 
-//api/v1/users/:id/validation/:userId
+///api/v1/rental/check
+export const getRentalData = () => {
+  return dispatch => {
+    return axios
+      .get(`http://localhost:5002/api/v1/rental/check`)
+      .then(rental => {
+        return dispatch({
+          type: GET_RENTAL_DATA,
+          payload: rental.data
+        });
+      })
+
+      .catch(err =>
+        dispatch({
+          type: UPDATE_ERROS,
+          payload: err
+        })
+      );
+  };
+};
