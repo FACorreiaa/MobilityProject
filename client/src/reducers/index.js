@@ -4,7 +4,7 @@ import errorReducer from './errorReducers';
 import placeReducer from './placeReducers';
 import clientReducers from './clientReducers';
 import dashReducers from './dashReducers';
-import funcReducers from './funcReducers';
+import funcReducers from './adminreducers';
 export default combineReducers({
   auth: authReducer,
   errors: errorReducer,

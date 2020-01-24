@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { logoutUser } from '../../actions/authActions';
-import { getValidUsers, updateUsers } from '../../actions/funcActions';
+import { getValidUsers, updateUsers } from '../../actions/adminActions';
 import { Table, Button, Icon, Checkbox } from 'react-materialize';
 import Navbar from './NavBar';
 class ValidateUsers extends Component {

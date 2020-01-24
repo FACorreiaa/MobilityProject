@@ -19,7 +19,7 @@ import Profile from '../components/Clients/Profile';
 import Balance from '../components/Clients/Balance';
 import CheckIn from '../components/Clients/Checkin';
 import Checkout from '../components/Clients/Checkout';
-import ValidateUsers from '../components/Func/ValidateUsers';
+import ValidateUsers from './Admin/ValidateUsers';
 // Check for token to keep user logged in
 if (localStorage.jwtToken) {
   // Set auth token header auth
