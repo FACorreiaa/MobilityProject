@@ -10,7 +10,7 @@ import {
 } from '../../actions/clientActions';
 
 import ClientNav from './ClientNav';
-import MapContainer from './MapContainer';
+import MapContainer from '../MapAux/MapContainer';
 import PlacesAutocomplete, {
   geocodeByAddress,
   getLatLng
@@ -43,12 +43,12 @@ class Checkout extends Component {
   };
 
   handleSelect = address => {
+    this.setState({ address });
     geocodeByAddress(address)
       .then(results => getLatLng(results[0]))
       .then(latLng => {
         console.log('latlng' + latLng);
         this.setState({
-          address: latLng.address,
           lat: latLng.lat,
           lng: latLng.lng,
           canRender: true
@@ -161,13 +161,10 @@ class Checkout extends Component {
     };
 
     const initialCenter = { lat: 41.53113384600326, lng: -8.619018495082855 };
-    const position = [this.state.lat, this.state.lng];
-    const centers = position.map(p => {
-      return {
-        lat: p[0],
-        lng: p[1]
-      };
-    });
+    const position = {
+      lat: this.state.lat,
+      lng: this.state.lng
+    };
     const paths = [
       { lat: 41.53113384600326, lng: -8.619018495082855 },
       { lat: 41.53113384600326, lng: -8.61851692199707 },
@@ -325,7 +322,7 @@ class Checkout extends Component {
         <div className='m12'>
           <MapContainer
             initialCenter={initialCenter}
-            markerPositions={centers}
+            position={position}
             paths={paths}
             style={style}
             center={center}

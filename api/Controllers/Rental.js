@@ -351,20 +351,29 @@ exports.payment = async function(req, res) {
     },
     { upsert: true, new: true },
 
-    function(err, rental) {
+    async function(err, rental) {
       console.log(rental);
       const timeSpentInMinutes = (rental.end.date - rental.start.date) / 60000;
       const timeSpentInHours = (rental.end.date - rental.start.date) / 3600000;
       const lat = rental.end.geometry.coordinates[0];
       const lon = rental.end.geometry.coordinates[1];
+      const checker = await place.comparePlaceWithFinalPlace(lat, lon);
+      console.log('PLACE', place);
+      console.log('CHECKER' + checker);
+
+      console.log(lat, lon); //40.73061 -73.935242
       rental.price = 1;
       if (rental.rentalMethod == 'minutes') {
         rental.finalCost = rental.price + timeSpentInMinutes * 0.15;
         rental.hasDiscount == false;
-        if (place.comparePlaceWithFinalPlace(lat, lon)) {
-          console.log('ESTOU AQUI');
+        if (checker !== 0 || checker !== '' || checker !== false || !checker) {
+          console.log('MINUTES');
           rental.hasDiscount == true;
           rental.finalCost = rental.price + timeSpentInMinutes * 0.15 - 0.5;
+        } else {
+          console.log('CONSEGUI');
+          rental.hasDiscount == false;
+          rental.finalCost = rental.price + timeSpentInMinutes * 0.15;
         }
       }
 
@@ -374,14 +383,17 @@ exports.payment = async function(req, res) {
         else if (timeSpentInHours > 1 && timeSpentInHours <= 2)
           rental.finalCost = 10;
         else rental.finalCost = 25;
-        if (place.comparePlaceWithFinalPlace(lat, lon)) {
-          console.log('ESTOU AQUI');
+        if (checker !== 0 || checker !== '' || checker !== false || !checker) {
+          console.log('HOURS');
           rental.hasDiscount == true;
           rental.finalCost = rental.finalCost - 0.5;
+        } else {
+          console.log('CONSEGUI');
+          rental.hasDiscount == false;
+          rental.finalCost = rental.finalCost;
         }
       }
 
-      console.log(rental);
       User.findOneAndUpdate(
         {
           _id: rental.client,

@@ -27,11 +27,12 @@ class SearchVehicles extends Component {
   };
 
   handleSelect = address => {
+    this.setState({ address });
     geocodeByAddress(address)
       .then(results => getLatLng(results[0]))
       .then(latLng => {
         this.setState({ lat: latLng.lat, lng: latLng.lng });
-        console.log('Success', latLng);
+        console.log(this.state);
       })
       .catch(error => console.error('Error', error));
   };

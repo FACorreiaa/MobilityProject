@@ -47,9 +47,9 @@ let PlaceSchema = new Schema({
 
 //VALIDADO!
 PlaceSchema.methods.comparePlaceWithFinalPlace = async function(lat, lon) {
-  this.model('Places').find(
+  return this.model('Places').find(
     {
-      location: {
+      'location.coordinates': {
         $geoIntersects: {
           $geometry: { type: 'Point', coordinates: [lat, lon] }
         }
@@ -60,9 +60,9 @@ PlaceSchema.methods.comparePlaceWithFinalPlace = async function(lat, lon) {
         return await error;
       }
       if (places) {
-        return true;
+        return await true;
       } else {
-        return false;
+        return await false;
       }
     }
   );
