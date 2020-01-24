@@ -13,7 +13,7 @@ class Clients extends Component {
 
   render() {
     const { user } = this.props.auth;
-    const { vehicles } = this.props.vehicles;
+    const { vehicles } = this.props.clients;
 
     console.log(this.props);
     return (
@@ -55,7 +55,8 @@ Clients.propTypes = {
 };
 const mapStateToProps = state => ({
   auth: state.auth,
-  vehicles: state.vehicles
+  vehicles: state.vehicles,
+  clients: state.clients
 });
 
 export default connect(mapStateToProps, { logoutUser, getVehicles })(Clients);

@@ -31,7 +31,10 @@ class Checkout extends Component {
       payment: '',
       finalCost: 0,
       count: 3,
-      disabled: false
+      disabled: false,
+      rentalMethod: '',
+      timeSpent: 0,
+      previewCost: 0
     };
   }
 
@@ -43,7 +46,13 @@ class Checkout extends Component {
     geocodeByAddress(address)
       .then(results => getLatLng(results[0]))
       .then(latLng => {
-        this.setState({ lat: latLng.lat, lng: latLng.lng, canRender: true });
+        console.log('latlng' + latLng);
+        this.setState({
+          address: latLng.address,
+          lat: latLng.lat,
+          lng: latLng.lng,
+          canRender: true
+        });
       })
       .catch(error => console.error('Error', error));
   };
@@ -51,29 +60,37 @@ class Checkout extends Component {
   checkoutNow = e => {
     e.preventDefault();
 
-    //checkout
-    this.setState(prevState => {
-      return {
-        checkout: this.props.checkin.checkin.checkout
-      };
-    });
     const checkout = {
-      id: this.props.checkin.checkin._id,
-      vehicle: this.props.checkin.checkin.vehicle,
+      id: this.props.clients.checkin._id,
+      vehicle: this.props.clients.checkin.vehicle,
       lat: this.state.lat,
-      lon: this.state.lng
+      lon: this.state.lng,
+      address: this.state.address
     };
 
     this.props.updateCheckout(
       checkout.id,
       checkout.vehicle,
       checkout.lat,
-      checkout.lon
+      checkout.lon,
+      checkout.address
     );
 
-    this.setState(prevState => ({
-      checkout: this.props.checkin.checkin.checkout
-    }));
+    //checkout
+    /* setTimeout(() => {
+      this.setState({
+        checkout: this.props.clients.checkin.checkout
+      });
+    }, 100); */
+
+    setTimeout(() => {
+      this.setState({
+        checkout: this.props.clients.checkin.checkout,
+        rentalMethod: this.props.clients.checkout.rentalMethod,
+        previewCost: this.props.clients.checkout.previewCost,
+        timeSpent: this.props.clients.checkout.timeSpent
+      });
+    }, 500);
   };
 
   updatePayment = e => {
@@ -87,12 +104,23 @@ class Checkout extends Component {
     }); */
     //user
     const payment = {
-      user: this.props.auth.user._id,
-      id: this.props.checkin.checkin._id
+      id: this.props.clients.checkout._id
     };
     console.log(payment);
 
-    this.props.updatePayment(payment.user, payment.id);
+    this.props.updatePayment(payment.id);
+
+    //checkout
+    setTimeout(() => {
+      this.setState({
+        finalCost: this.props.clients.payment.finalCost
+      });
+    }, 1000);
+
+    //this.props.payment.payment.finalCost
+    //this.props.checkout.checkout.rentalMethod
+    //this.props.checkout.checkout.previewCost
+    //this.props.checkout.checkout.timeSpent
   };
 
   redirectNow = () => {
@@ -107,15 +135,20 @@ class Checkout extends Component {
     }, 2000);
     return (
       <div>
-        <div>Redirecting in {this.state.count}</div>
+        <div>Refreshing in {this.state.count}</div>
         {this.state.count !== 0 ? (
           ''
         ) : (
-          <Redirect
-            to={'/balance'}
-            /*             state={this.props.checkin.isCheckIn === false}
-             */
-          />
+          <div>
+            {/* <Redirect
+              to={'/balance'}
+              state={this.props.checkin.isCheckIn === false}
+              /> */}
+            <Redirect
+              to={'/balance'}
+              state={this.props.clients.isCheckIn === false}
+            />
+          </div>
         )}
       </div>
     );
@@ -128,10 +161,13 @@ class Checkout extends Component {
     };
 
     const initialCenter = { lat: 41.53113384600326, lng: -8.619018495082855 };
-    const position = {
-      lat: this.state.lat,
-      lng: this.state.lng
-    };
+    const position = [this.state.lat, this.state.lng];
+    const centers = position.map(p => {
+      return {
+        lat: p[0],
+        lng: p[1]
+      };
+    });
     const paths = [
       { lat: 41.53113384600326, lng: -8.619018495082855 },
       { lat: 41.53113384600326, lng: -8.61851692199707 },
@@ -141,7 +177,7 @@ class Checkout extends Component {
     ];
     let lat = this.state.lat;
     let lng = this.state.lng;
-    let center = {};
+    let center = { lat: 41.53113384600326, lng: -8.619018495082855 };
 
     if (this.state.lat !== '' && this.state.lng !== '') {
       center = { lat, lng };
@@ -155,7 +191,6 @@ class Checkout extends Component {
           <h3 className='flow-text grey-text text-darken-1'>
             Checkout your location please!
           </h3>
-          {!this.state.checkout ? <div>1</div> : <div>2</div>}
         </div>
         <div className='container valign-wrapper'>
           <div className='row center-align s12'>
@@ -216,9 +251,15 @@ class Checkout extends Component {
             Checkout
             <Icon right>send</Icon>
           </Button>
+          {console.log('1' + this.props.clients.checkout.checkout)}
 
-          {this.props.checkout.checkout.checkout &&
-          !this.props.checkout.checkout.paymentComplete ? (
+          {console.log('2' + this.props.clients.checkout.paymentComplete)}
+          {console.log(
+            '3' + this.props.clients.checkout.checkout &&
+              this.props.clients.checkout.paymentComplete
+          )}
+          {this.props.clients.checkout.checkout &&
+          !this.props.clients.checkout.paymentComplete ? (
             <div>
               <Row key={0}>
                 <Col m={12} s={12}>
@@ -245,23 +286,19 @@ class Checkout extends Component {
                         <p>
                           <label>Payment Method: </label>
                           <strong>
-                            <span>
-                              {this.props.checkout.checkout.rentalMethod}
-                            </span>
+                            <span>{this.state.rentalMethod}</span>
                           </strong>
                         </p>
                         <p>
                           <label>Payment Method: </label>
                           <strong>
-                            <span>{`${this.props.checkout.checkout.previewCost}€`}</span>
+                            <span>{`${this.state.previewCost}€`}</span>
                           </strong>
                         </p>
                         <p>
                           <label>Payment Method: </label>
                           <strong>
-                            <span>
-                              {this.props.checkout.checkout.timeSpent}
-                            </span>
+                            <span>{this.state.timeSpent}</span>
                           </strong>
                         </p>
                       </div>
@@ -275,10 +312,11 @@ class Checkout extends Component {
           )}
         </div>
 
-        {this.props.payment.payment.finalCost > 0 ? (
+        {this.state.finalCost > 0 ? (
           <div>
+            <div>{`Payment of ${this.state.finalCost}€ Successful!`}</div>
+
             <div>{this.redirectNow()}</div>
-            <div>{`Payment of ${this.props.payment.payment.finalCost}€ Successful!`}</div>
           </div>
         ) : (
           <div>No payment has been made</div>
@@ -287,7 +325,7 @@ class Checkout extends Component {
         <div className='m12'>
           <MapContainer
             initialCenter={initialCenter}
-            position={position}
+            markerPositions={centers}
             paths={paths}
             style={style}
             center={center}
@@ -309,7 +347,8 @@ const mapStateToProps = state => ({
   places: state.places,
   checkin: state.checkin,
   checkout: state.checkout,
-  payment: state.payment
+  payment: state.payment,
+  clients: state.clients
 });
 
 export default connect(mapStateToProps, {

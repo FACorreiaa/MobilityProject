@@ -23,7 +23,7 @@ class Profile extends Component {
 
   render() {
     const { user } = this.props.auth;
-    const { vehicles } = this.props.vehicles;
+    const { vehicles } = this.props.clients;
 
     console.log(this.props);
     return (

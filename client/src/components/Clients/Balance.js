@@ -48,7 +48,7 @@ class Balance extends Component {
 
   render() {
     const { user } = this.props.auth;
-    const { balance } = this.props.balance;
+    const { balance } = this.props.clients;
 
     return (
       <>
@@ -131,7 +131,8 @@ Balance.propTypes = {
 const mapStateToProps = state => ({
   auth: state.auth,
   vehicles: state.vehicles,
-  balance: state.balance
+  balance: state.balance,
+  clients: state.clients
 });
 
 export default connect(mapStateToProps, {

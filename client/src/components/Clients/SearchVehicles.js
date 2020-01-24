@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { logoutUser } from '../../actions/authActions';
 import { getPlaces } from '../../actions/placeActions';
 import { Navbar, NavItem, Icon } from 'react-materialize';
-import { Map, InfoWindow, Marker, GoogleApiWrapper } from 'google-maps-react';
+import { Map, InfoWindow, GoogleApiWrapper, Marker } from 'google-maps-react';
 
 import ClientNav from './ClientNav';
 import MapContainer from './MapContainer';
@@ -42,8 +42,32 @@ class SearchVehicles extends Component {
       height: '400px',
       width: '800px'
     };
+    // center
     const initialCenter = { lat: 41.53113384600326, lng: -8.619018495082855 };
-    const position = { lat: 41.53113384600326, lng: -8.619018495082855 };
+
+    //marker
+    //let position = { lat: 41.53113384600326, lng: -8.619018495082855 };
+    /* const position = this.props.places.places.map(element => {
+      const obg = { lat: 0, lng: 0 };
+      obg.lat = element.center[0];
+      obg.lng = element.center[1];
+      console.log('obj', obg);
+      return obg;
+    });
+    console.log(position); */
+    const centers = this.props.places.places.map(place => {
+      return {
+        lat: place.center[0],
+        lng: place.center[1]
+      };
+    });
+    console.log(centers);
+
+    //for (let i = 0; i < centers.length; i++) position = centers[i];
+    //const position = centers[1];
+    //console.log('centers', ...centers);
+
+    //polygon
     const paths = [
       { lat: 41.53113384600326, lng: -8.619018495082855 },
       { lat: 41.53113384600326, lng: -8.61851692199707 },
@@ -51,6 +75,20 @@ class SearchVehicles extends Component {
       { lat: 41.53129447698251, lng: -8.619018495082855 },
       { lat: 41.53113384600326, lng: -8.619018495082855 }
     ];
+
+    /* const paths = this.props.places.places.map(place => {
+      return place.location.coordinates
+        .map((c, i) => {
+          return c.map(x => ({
+            lat: x[i],
+            lng: x[i]
+          }));
+        })
+        .flat();
+    }); */
+
+    console.log('t', JSON.stringify(paths));
+    //center
     let lat = this.state.lat;
     let lng = this.state.lng;
     let center = {};
@@ -119,10 +157,10 @@ class SearchVehicles extends Component {
         </div>
         <MapContainer
           initialCenter={initialCenter}
-          position={position}
           paths={paths}
           style={style}
           center={center}
+          markerPositions={centers}
         />
       </div>
     );
@@ -135,7 +173,8 @@ SearchVehicles.propTypes = {
 };
 const mapStateToProps = state => ({
   auth: state.auth,
-  places: state.places
+  places: state.places,
+  clients: state.clients
 });
 
 export default connect(mapStateToProps, { logoutUser, getPlaces })(

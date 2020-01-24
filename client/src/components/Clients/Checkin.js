@@ -78,13 +78,13 @@ class Checkin extends Component {
       checkin: !prevState.checkin
     }));
 
-    this.props.checkin.isCheckIn = !this.props.checkin.isCheckIn;
+    this.props.clients.isCheckIn = !this.props.clients.isCheckIn;
   };
 
   onConsult = e => {
     e.preventDefault();
 
-    this.props.getConsult(this.props.checkin.checkin._id);
+    this.props.getConsult(this.props.clients.checkin._id);
 
     setTimeout(() => {
       this.setState(prevState => ({
@@ -95,9 +95,9 @@ class Checkin extends Component {
 
   render() {
     const { user } = this.props.auth;
-    const { vehicles } = this.props.vehicles;
-    const { methods } = this.props.methods;
-    const { consult } = this.props.consult;
+    const { vehicles } = this.props.clients;
+    const { methods } = this.props.clients;
+    const { consult } = this.props.clients;
     console.log('state' + this.state);
     console.log('props' + this.props);
     console.log(consult);
@@ -123,18 +123,15 @@ class Checkin extends Component {
       <>
         <ClientNav />
         <div style={{ textAlign: 'center' }}>
-          <h3>Hello {user.username}!</h3>
-          <p className='flow-text grey-text text-darken-1'>
-            Checkin with us now!
-          </p>
-          <h4 className='flow-text grey-text text-darken-1'>
-            Feel free to choose from our available vehicle list!
-          </h4>
+          <h3 className='flow-text grey-text text-darken-1'>
+            Hello {user.username}! Checkin with us now!
+          </h3>
+
           <div className='row'>
             <section>
-              <h5 className='flow-text grey-text text-darken-1'>
+              <p className='flow-text grey-text text-darken-1'>
                 Pick your Vehicle
-              </h5>
+              </p>
               <div className='col s6'>
                 <Dropdown
                   options={getAvailables.map(available => available._id)}
@@ -202,28 +199,27 @@ class Checkin extends Component {
                     <div>
                       <span>
                         Base price is:{' '}
-                        <strong>{this.props.consult.consult.price}</strong>
+                        <strong>{this.props.clients.consult.price}</strong>
                       </span>
                     </div>
                     <div>
                       <span>
                         Your preview cost is:{' '}
                         <strong>
-                          {this.props.consult.consult.previewCost}
+                          {this.props.clients.consult.previewCost}
                         </strong>
                       </span>
                     </div>
                     <div>
                       <span>
                         Time spend:{' '}
-                        <strong>{this.props.consult.consult.timeSpent}</strong>
+                        <strong>{this.props.clients.consult.timeSpent}</strong>
                       </span>
                     </div>
-                    <div>checkout now!</div>
                     <NavLink
                       to={{
                         pathname: '/checkout',
-                        state: { ...this.props.consult.consult }
+                        state: { ...this.props.clients.consult }
                       }}
                     >
                       <Button node='button' type='submit'>
@@ -231,7 +227,7 @@ class Checkin extends Component {
                         <Icon right>send</Icon>
                       </Button>
                     </NavLink>
-                    {this.props.consult.consult.paymentComplete ? (
+                    {this.props.clients.consult.paymentComplete ? (
                       <Link to='/checkout'>
                         Payment incomplete. Click here to redirect!
                       </Link>
@@ -273,7 +269,8 @@ const mapStateToProps = state => ({
   vehicles: state.vehicles,
   methods: state.methods,
   checkin: state.checkin,
-  consult: state.consult
+  consult: state.consult,
+  clients: state.clients
 });
 
 export default connect(mapStateToProps, {
