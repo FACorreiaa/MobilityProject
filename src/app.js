@@ -14,7 +14,7 @@ const rentalMethodRouter = require('../api/Routes/rentalMethodRoute');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const cors = require('cors');
-
+const Pusher = require('pusher');
 
 require('../api/Models/RentalModel');
 require('../api/Models/VehicleModel');
@@ -41,6 +41,13 @@ app.use(
 app.use(express.static(path.join(__dirname, 'public')));
 server.listen(port, () => {
   console.log('App is running on port ' + port);
+});
+const pusher = new Pusher({
+  appId: process.env.PUSHER_APP_ID,
+  key: process.env.PUSHER_APP_KEY,
+  secret:process.env.PUSHER_APP_SECRET,
+  cluster: process.env.PUSHER_APP_CLUSTER,
+  encrypted: true
 });
 
 const jwt = require('express-jwt');
