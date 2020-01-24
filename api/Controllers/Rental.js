@@ -288,6 +288,7 @@ exports.checkout = async function(req, res) {
   let place = mongoose.Types.ObjectId('5e14ccd070941d06189da9f2');
   let lat = req.params.lat;
   let lon = req.params.lon;
+  let address = req.params.address;
   Vehicle.findByIdAndUpdate(
     {
       _id: vehicle
@@ -318,7 +319,8 @@ exports.checkout = async function(req, res) {
         'end.geometry.coordinates': [parseFloat(lat), parseFloat(lon)],
         hasPayment: 'true',
         checkin: false,
-        checkout: true
+        checkout: true,
+        address
       }
     },
     { upsert: false, new: true },

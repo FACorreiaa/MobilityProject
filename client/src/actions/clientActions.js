@@ -139,11 +139,11 @@ export const getConsult = id => {
 };
 
 ///api/v1/rental/checkout/:rental/lat/:lat/lon/:lon
-export const updateCheckout = (id, vehicle, lat, lon) => {
+export const updateCheckout = (id, vehicle, lat, lon, address) => {
   return dispatch => {
     return axios
       .put(
-        `http://localhost:5002/api/v1/rental/checkout/${id}/vehicle/${vehicle}/lat/${lat}/lon/${lon}`
+        `http://localhost:5002/api/v1/rental/checkout/${id}/vehicle/${vehicle}/lat/${lat}/lon/${lon}/address/${address}`
       )
       .then(checkout => {
         return dispatch({

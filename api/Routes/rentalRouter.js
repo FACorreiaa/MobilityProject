@@ -88,7 +88,9 @@ module.exports = function(app) {
    * @returns {Error} 500
    */
   app
-    .route('/api/v1/rental/checkout/:id/vehicle/:vehicle/lat/:lat/lon/:lon')
+    .route(
+      '/api/v1/rental/checkout/:id/vehicle/:vehicle/lat/:lat/lon/:lon/address/:address'
+    )
     .put(routeRental.checkout);
 
   /**

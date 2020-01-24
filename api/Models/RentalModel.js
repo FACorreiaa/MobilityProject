@@ -114,10 +114,11 @@ let RentalSchema = new Schema({
   },
   hasDiscount: {
     type: Boolean
+  },
+  address: {
+    type: String
   }
 });
-
-let options = { customCollectionName: 'Rental_History' };
 
 RentalSchema.index({ geometry: '2dsphere' });
 RentalSchema.index({ 'start.geometry.coordinates': '2dsphere' });
