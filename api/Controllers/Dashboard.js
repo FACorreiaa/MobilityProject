@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const Rental = mongoose.model('Rentals');
 const Places = mongoose.model('Places');
 const Pusher = require('pusher');
+const dashboardService = require('../Services/DashboardService');
 
 const pusher = new Pusher({
   appId: process.env.PUSHER_APP_ID,
@@ -11,43 +12,29 @@ const pusher = new Pusher({
   cluster: process.env.PUSHER_APP_CLUSTER,
   encrypted: true
 });
+
+
 //Situação atual dos lugares por lugar - occupancy rate - taxa de ocupação
 exports.get_occupancy_rate = async function(req, res) {
-  Places.aggregate([
-    { $project: {
-        capacity: 1, 
-        quantity: 1, 
-        street:1,
-        _id:0,
-        occupancy: { $multiply: [
-          { $divide: [
-              "$quantity", "$capacity"
-          ]},
-          100
-      ]}
-    }}
-    ], function(err, places) {
-   
-    var datapointsArray = [];
-    var i;
-    for (i = 0; i < places.length; i++) {
-      var place = places[i];
-      var street = place.street;
-      var occupancy = place.occupancy;
-      var datapoint = {label: street,  y: occupancy};
-      //console.log(datapoint);
-      datapointsArray.push(datapoint);
-    }
-    //pusher.trigger('client-occupancy', 'places', datapointsArray);
-    pusher.trigger('my-channel', 'my-event', {
-      datapointsArray
-    });
-    if (err) res.status(400).send(err);
-    console.log(datapointsArray);
-    res.json(datapointsArray);
-  });
+    dashboardService.getoccupancy(req,res)
+    .then(occupancy => {
+      res.json(occupancy);
+    })
+    .catch(e => {
+      res.status(400).json(e)});
+  
 };
 
+exports.set_occupancy_trigger = async function(req, res) {
+  dashboardService.getoccupancy(req,res)
+  .then(datapointsArray => {
+    pusher.trigger('occupancy', 'update-places', {
+      datapointsArray
+    });
+  })
+  .catch(e => {
+    console.log(e)});
+}
 
 //checkin overtime
 exports.getCheckinByDay = async function(req, res) {
