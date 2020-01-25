@@ -9,16 +9,50 @@ import {
 } from '../../actions/clientActions';
 import ClientNav from './ClientNav';
 import { TextInput, Button, Icon } from 'react-materialize';
-
+import ReactNotification from 'react-notifications-component';
+import 'react-notifications-component/dist/theme.css';
+import { store } from 'react-notifications-component';
+import Notify from './utils/Notify';
 class Balance extends Component {
-  componentWillMount() {
-    this.props.getBalance(this.props.auth.user._id);
-  }
-
   constructor(props) {
     super(props);
     this.state = { clicked: false, balance: 0, disabled: true };
   }
+
+  componentWillMount() {
+    this.props.getBalance(this.props.auth.user._id);
+    this.timer = setInterval(() => this.getItems(), 2000);
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.timer);
+    this.timer = null; // here...
+  }
+
+  getItems = () => {
+    const balanceValue = this.props.clients.balance.balance;
+    console.log('balanceValue', balanceValue);
+    if (balanceValue < 400) {
+      return (
+        <div className='app-container'>
+          <ReactNotification />
+          {store.addNotification({
+            title: 'Balance!',
+            message: 'Your balance is getting to 0',
+            type: 'warning',
+            insert: 'top',
+            container: 'top-right',
+            animationIn: ['animated', 'flash'],
+            animationOut: ['animated', 'zoomOut'],
+            dismiss: {
+              duration: 1000,
+              onScreen: true
+            }
+          })}
+        </div>
+      );
+    }
+  };
 
   onclick(type) {
     this.setState(prevState => {
@@ -115,6 +149,7 @@ class Balance extends Component {
               </Button>
             </div>
           </div>
+          {this.getItems()}
         </div>
       </>
     );

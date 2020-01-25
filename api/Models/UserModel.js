@@ -71,6 +71,9 @@ let UserSchema = new Schema({
     education: String,
     school: String,
     bio: String
+  },
+  validParking: {
+    type: Boolean
   }
 });
 
