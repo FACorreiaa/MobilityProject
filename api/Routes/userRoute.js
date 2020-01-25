@@ -16,7 +16,7 @@ module.exports = function(auth, app) {
    * @returns {Array} 200 - Returns UserSchema model
    * @returns {Error} 500
    */
-  app.route('/api/v1/users/:id').get(auth, routeUser.getUserById);
+  app.route('/api/v1/users/:id').get(routeUser.getUserById);
 
   /**
    * @route GET /users/:id/validation
@@ -36,6 +36,8 @@ module.exports = function(auth, app) {
   app
     .route('/api/v1/users/admin/waitvalidation')
     .get(routeUser.getUsersForValidation);
+
+  app.route('/api/v1/users/func/validUsers').get(routeUser.getValidUsers);
 
   app
     .route('/api/v1/users/:id/rentals')

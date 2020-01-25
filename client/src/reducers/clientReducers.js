@@ -7,7 +7,8 @@ import {
   POST_CHECKIN,
   GET_CONSULT,
   PUT_CHECKOUT,
-  PUT_PAYMENT
+  PUT_PAYMENT,
+  GET_USER_NOTIFIED
 } from '../actions/types';
 
 const initialState = {
@@ -20,7 +21,8 @@ const initialState = {
   isCheckedIn: false,
   consult: [],
   checkout: [],
-  payment: []
+  payment: [],
+  notifiedUser: {}
 };
 
 export default function(state = initialState, action) {
@@ -66,12 +68,17 @@ export default function(state = initialState, action) {
         ...state,
         checkout: action.payload
       };
-    default:
-      return state;
+    case GET_USER_NOTIFIED:
+      return {
+        ...state,
+        notifiedUser: action.payload
+      };
     case PUT_PAYMENT:
       return {
         ...state,
         payment: action.payload
       };
+    default:
+      return state;
   }
 }

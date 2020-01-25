@@ -12,7 +12,6 @@ import { TextInput, Button, Icon } from 'react-materialize';
 import ReactNotification from 'react-notifications-component';
 import 'react-notifications-component/dist/theme.css';
 import { store } from 'react-notifications-component';
-import Notify from './utils/Notify';
 class Balance extends Component {
   constructor(props) {
     super(props);

@@ -22,6 +22,8 @@ import Checkout from '../components/Clients/Checkout';
 import ValidateUsers from './Admin/ValidateUsers';
 import CheckParkingData from './Admin/CheckParkingData';
 import MapParkings from './Admin/MapParkings';
+import NotifyUsers from './Func/NotifyUsers';
+import Logout from './Clients/Logout';
 // Check for token to keep user logged in
 if (localStorage.jwtToken) {
   // Set auth token header auth
@@ -48,12 +50,13 @@ class App extends Component {
         <Router>
           <div className='App'>
             <Navbar />
+            <Route exact path='/logout' component={Logout} />
             <Route exact path='/' component={Landing} />
             <Route exact path='/register' component={Register} />
             <Route exact path='/login' component={Login} />
             <Route exact path='/places' component={Places} />
-            <Route exact path='/charts' component={Charts} />
             <Switch>
+              <PrivateRoute exact path='/charts' component={Charts} />
               <PrivateRoute exact path='/dashboard' component={Dashboard} />
               <PrivateRoute exact path='/main' component={Clients} />
               <PrivateRoute exact path='/profile' component={Profile} />
@@ -76,6 +79,7 @@ class App extends Component {
                 component={CheckParkingData}
               />
               <PrivateRoute exact path='/marParkings' component={MapParkings} />
+              <PrivateRoute exact path='/notifyUsers' component={NotifyUsers} />
             </Switch>
           </div>
         </Router>

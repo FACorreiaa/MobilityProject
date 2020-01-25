@@ -11,6 +11,9 @@ export default function ClientNav() {
           </a>
           <ul id='nav-mobile' className='center hide-on-med-and-down'>
             <li>
+              <Link to='/main'>List of Vehicles</Link>
+            </li>
+            <li>
               <Link to='/searchVehicles'>Search Vehicles</Link>
             </li>
             <li>
@@ -20,11 +23,12 @@ export default function ClientNav() {
               <Link to='/checkin'>Checkin</Link>
             </li>
             <li>
-              <Link to='/consult'>Consult</Link>
+              <Link to='/logout'>Logout</Link>
             </li>
-            <li>
+
+            {/* <li>
               <Link to='/profile'>Profile</Link>
-            </li>
+            </li> */}
           </ul>
         </div>
       </nav>

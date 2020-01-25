@@ -58,6 +58,15 @@ exports.getUsersForValidation = function(req, res) {
   });
 };
 
+exports.getValidUsers = function(req, res) {
+  User.find({ waitValidation: { $ne: true } }, async function(err, user) {
+    if (err) {
+      return res.send(err);
+    }
+    await res.json(user);
+  });
+};
+
 // update user "valid = true"
 // registeredby id user
 // "waitValidation = false"
@@ -82,17 +91,6 @@ exports.validateUser = function(req, res) {
   );
   /*   });
    */
-};
-
-exports.getUserById = function(req, res) {
-  validateAdminAuth(req, res, (req, res, utilizadorId) => {
-    User.findById(req.params.id, function(err, user) {
-      if (err) {
-        return res.send(err);
-      }
-      return res.json(user);
-    });
-  });
 };
 
 exports.getUserRentals = async function(req, res) {
@@ -140,6 +138,15 @@ exports.getUserBalanceById = async function(req, res) {
   let query = { _id: _id };
   let balance = { balance: 1 };
   User.findById(query, balance, async function(err, doc) {
+    if (err) return await res.send(err);
+    return await res.send(doc);
+  });
+};
+
+exports.getUserById = async function(req, res) {
+  let _id = mongoose.Types.ObjectId(req.params.id);
+  let query = { _id: _id };
+  User.findById(query, async function(err, doc) {
     if (err) return await res.send(err);
     return await res.send(doc);
   });

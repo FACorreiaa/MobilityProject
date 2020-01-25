@@ -41,7 +41,7 @@ class SearchVehicles extends Component {
     console.log(this.state);
     const style = {
       height: '400px',
-      width: '800px'
+      width: '100%'
     };
     // center
     const initialCenter = { lat: 41.53113384600326, lng: -8.619018495082855 };
@@ -100,7 +100,9 @@ class SearchVehicles extends Component {
 
     return (
       <div>
-        <ClientNav />
+        <ClientNav>
+          <button>oi</button>
+        </ClientNav>
         <div style={{ textAlign: 'center' }}>
           <h4>Search for Vehicles</h4>
           <p className='flow-text grey-text text-darken-1'>

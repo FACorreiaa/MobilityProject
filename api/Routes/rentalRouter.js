@@ -118,4 +118,6 @@ module.exports = function(app) {
     .get(routeRental.validateVehiclesInRental);
 
   app.route('/api/v1/rental/check').get(routeRental.getRentalData);
+
+  app.route('/api/v1/notify/:id').put(routeRental.notifyUser);
 };

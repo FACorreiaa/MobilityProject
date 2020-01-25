@@ -360,6 +360,7 @@ exports.payment = async function(req, res) {
       const lat = rental.end.geometry.coordinates[0];
       const lon = rental.end.geometry.coordinates[1];
       const checker = await Place.comparePlaceWithFinalPlace(lat, lon);
+      const query = { _id: rental.client };
       console.log('CHECKER' + checker);
       console.log('PLACE', place);
       console.log(lat, lon); //40.73061 -73.935242
@@ -367,10 +368,10 @@ exports.payment = async function(req, res) {
       if (rental.rentalMethod == 'minutes') {
         rental.finalCost = rental.price + timeSpentInMinutes * 0.15;
         if (checker.length > 0) {
-          console.log('MINUTES');
           rental.hasDiscount = true;
           rental.finalCost = rental.price + timeSpentInMinutes * 0.15 - 0.5;
         } else {
+          User.findOneAndUpdate(query, { $set: { validParking: false } });
           console.log('CONSEGUI');
           rental.hasDiscount = false;
           rental.finalCost = rental.price + timeSpentInMinutes * 0.15;
@@ -388,6 +389,8 @@ exports.payment = async function(req, res) {
           rental.hasDiscount = true;
           rental.finalCost = rental.finalCost - 0.5;
         } else {
+          User.findOneAndUpdate(query, { $set: { validParking: false } });
+
           console.log('CONSEGUI');
           rental.hasDiscount = false;
           rental.finalCost = rental.finalCost;
@@ -544,6 +547,18 @@ exports.getRentalData = async function(req, res) {
       return await res.send(rental);
     }
   );
+};
+
+exports.notifyUser = async function(req, res) {
+  let _id = mongoose.Types.ObjectId(req.params.id);
+  let query = { _id: _id };
+  User.findByIdAndUpdate(query, { $set: { notified: true } }, async function(
+    error,
+    user
+  ) {
+    if (error) return await res.send(error);
+    return await res.send(user);
+  });
 };
 
 /* exports.getUserCheckInData = async function(req, res) {

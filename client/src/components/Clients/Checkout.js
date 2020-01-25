@@ -159,7 +159,7 @@ class Checkout extends Component {
   render() {
     const style = {
       height: '400px',
-      width: '800px'
+      width: '100%'
     };
 
     const initialCenter = { lat: 41.53113384600326, lng: -8.619018495082855 };

@@ -73,7 +73,11 @@ let UserSchema = new Schema({
     bio: String
   },
   validParking: {
-    type: Boolean
+    type: Boolean,
+    default: true
+  },
+  notified: {
+    default: false
   }
 });
 

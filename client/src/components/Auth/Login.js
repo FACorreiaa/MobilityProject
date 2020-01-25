@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { loginUser } from '../../actions/authActions';
 import classnames from 'classnames';
+import { Redirect } from 'react-router-dom';
 
 class Login extends Component {
   constructor() {
@@ -14,18 +15,57 @@ class Login extends Component {
       errors: {}
     };
   }
-
+  //employee
+  //admin
   componentDidMount() {
+    /* if (!this.props.auth.isAuthenticated) {
+      this.props.history.push('/places');
+    } */
     // If logged in and user navigates to Login page, should redirect them to dashboard
-    if (this.props.auth.isAuthenticated) {
-      this.props.history.push('/dashboard');
+    if (
+      this.props.auth.isAuthenticated &&
+      this.props.auth.user.role == 'client'
+    ) {
+      this.props.history.push('/searchVehicles');
+    }
+
+    if (
+      this.props.auth.isAuthenticated &&
+      this.props.auth.user.role == 'employee'
+    ) {
+      this.props.history.push('/notifyUsers');
+    }
+
+    if (
+      this.props.auth.isAuthenticated &&
+      this.props.auth.user.role == 'admin'
+    ) {
+      this.props.history.push('/validateUsers');
     }
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.auth.isAuthenticated) {
-      this.props.history.push('/dashboard'); // push user to dashboard when they login
+    /* if (!nextProps.auth.isAuthenticated) {
+      this.props.history.push('/places');
+    } */
+    if (
+      nextProps.auth.isAuthenticated &&
+      nextProps.auth.user.role == 'client'
+    ) {
+      this.props.history.push('/searchVehicles'); // push user to dashboard when they login
     }
+
+    if (
+      nextProps.auth.isAuthenticated &&
+      nextProps.auth.user.role == 'employee'
+    ) {
+      this.props.history.push('/notifyUsers'); // push user to dashboard when they login
+    }
+
+    if (nextProps.auth.isAuthenticated && nextProps.auth.user.role == 'admin') {
+      this.props.history.push('/validateUsers'); // push user to dashboard when they login
+    }
+
     if (nextProps.errors) {
       this.setState({
         errors: nextProps.errors

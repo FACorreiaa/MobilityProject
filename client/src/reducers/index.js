@@ -4,7 +4,8 @@ import errorReducer from './errorReducers';
 import placeReducer from './placeReducers';
 import clientReducers from './clientReducers';
 import dashReducers from './dashReducers';
-import funcReducers from './adminreducers';
+import adminReducers from './adminreducers';
+import funcReducers from './funcReducers';
 export default combineReducers({
   auth: authReducer,
   errors: errorReducer,
@@ -12,7 +13,9 @@ export default combineReducers({
   charts_places: dashReducers,
   charts_checkin: dashReducers,
   clients: clientReducers,
-  validUsers: funcReducers,
-  updateUser: funcReducers,
-  rental: funcReducers
+  validUsers: adminReducers,
+  updateUser: adminReducers,
+  rental: adminReducers,
+  validated: funcReducers,
+  users: funcReducers
 });

@@ -18,7 +18,8 @@ import {
   PUT_CHECKOUT,
   CHECKOUT_ERROR,
   PUT_PAYMENT,
-  PAYMENT_ERROR
+  PAYMENT_ERROR,
+  GET_USER_NOTIFIED
 } from './types';
 
 export const getVehicles = () => {
@@ -174,6 +175,26 @@ export const updatePayment = id => {
       .catch(err =>
         dispatch({
           type: PAYMENT_ERROR,
+          payload: err
+        })
+      );
+  };
+};
+
+///api/v1/users/:id
+export const getNotifiedUser = id => {
+  return dispatch => {
+    return axios
+      .get(`http://localhost:5002/api/v1/users/${id}`)
+      .then(notifiedUser => {
+        return dispatch({
+          type: GET_USER_NOTIFIED,
+          payload: notifiedUser.data
+        });
+      })
+      .catch(err =>
+        dispatch({
+          type: CONSULT_ERROR,
           payload: err
         })
       );

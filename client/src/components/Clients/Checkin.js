@@ -7,12 +7,16 @@ import {
   getVehicles,
   getRentalMethods,
   postCheckIn,
-  getConsult
+  getConsult,
+  getNotifiedUser
 } from '../../actions/clientActions';
 import Dropdown from 'react-dropdown';
 import 'react-dropdown/style.css';
 import ClientNav from './ClientNav';
 import { Button, Icon, Modal, Row, Col, Card } from 'react-materialize';
+import ReactNotification from 'react-notifications-component';
+import 'react-notifications-component/dist/theme.css';
+import { store } from 'react-notifications-component';
 
 //const options = ['one', 'two', 'three'];
 //const rental = ['minutes', 'pack'];
@@ -20,6 +24,9 @@ class Checkin extends Component {
   componentWillMount() {
     this.props.getVehicles();
     this.props.getRentalMethods();
+    this.props.getNotifiedUser(this.props.auth.user._id);
+    this.timer = setInterval(() => this.getNotification(), 2000);
+
     navigator.geolocation.getCurrentPosition(position => {
       this.setState({
         lat: position.coords.latitude,
@@ -27,6 +34,36 @@ class Checkin extends Component {
       });
     });
   }
+
+  componentWillUnmount() {
+    clearInterval(this.timer);
+    this.timer = null; // here...
+  }
+
+  getNotification = () => {
+    const notified = this.props.clients.notifiedUser.notified;
+    console.log('balanceValue', notified);
+    if (notified) {
+      return (
+        <div className='app-container'>
+          <ReactNotification />
+          {store.addNotification({
+            title: 'Wrong Parking!',
+            message: 'Your vehicle is in the wrong place',
+            type: 'warning',
+            insert: 'top',
+            container: 'top-right',
+            animationIn: ['animated', 'zoomIn'],
+            animationOut: ['animated', 'zoomOut'],
+            dismiss: {
+              duration: 1000,
+              onScreen: true
+            }
+          })}
+        </div>
+      );
+    }
+  };
 
   constructor(props) {
     super(props);
@@ -98,9 +135,10 @@ class Checkin extends Component {
     const { vehicles } = this.props.clients;
     const { methods } = this.props.clients;
     const { consult } = this.props.clients;
+    const { notifiedUser } = this.props.clients;
     console.log('state' + this.state);
     console.log('props' + this.props);
-    console.log(consult);
+    console.log(notifiedUser);
 
     const getAvailables = vehicles.filter(
       vechicle => vechicle.available === true
@@ -178,6 +216,7 @@ class Checkin extends Component {
                 Checkin
                 <Icon right>send</Icon>
               </Button>
+              {this.getNotification()}
             </div>
           </section>
           <div className='flow-text grey-text text-darken-2'>
@@ -262,7 +301,8 @@ Checkin.propTypes = {
   getVehicles: PropTypes.func.isRequired,
   getRentalMethods: PropTypes.func.isRequired,
   postCheckIn: PropTypes.func.isRequired,
-  getConsult: PropTypes.func.isRequired
+  getConsult: PropTypes.func.isRequired,
+  getNotifiedUser: PropTypes.func.isRequired
 };
 const mapStateToProps = state => ({
   auth: state.auth,
@@ -270,7 +310,8 @@ const mapStateToProps = state => ({
   methods: state.methods,
   checkin: state.checkin,
   consult: state.consult,
-  clients: state.clients
+  clients: state.clients,
+  notifiedUser: state.notifiedUser
 });
 
 export default connect(mapStateToProps, {
@@ -278,5 +319,6 @@ export default connect(mapStateToProps, {
   getVehicles,
   getRentalMethods,
   postCheckIn,
-  getConsult
+  getConsult,
+  getNotifiedUser
 })(Checkin);
