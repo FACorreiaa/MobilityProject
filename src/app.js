@@ -10,17 +10,20 @@ const rentalRouter = require('../api/Routes/rentalRouter');
 const userRouter = require('../api/Routes/userRoute');
 const DashboardRouter = require('../api/Routes/DashboardRoute');
 const rentalMethodRouter = require('../api/Routes/rentalMethodRoute');
+
+
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 
-require('../api/Models/RentalModel');
-require('../api/Models/VehicleModel');
+const RentalModel = require('../api/Models/RentalModel');
 const Place = require('../api/Models/PlaceModel');
+require('../api/Models/VehicleModel');
 const Rental = require('../api/Models/RentalModel');
 require('../api/Models/UserModel');
 require('../api/Models/RentalMethodsModel');
 
+const dashController = require('../api/Controllers/Dashboard');
 const app = express();
 const port = process.env.PORT || 8000;
 const server = require('http').Server(app);
@@ -35,9 +38,21 @@ app.use(
     extended: false
   })
 );
+
+app.use((req, res, next) => {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
+  next();
+});
+
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+
 app.use(express.static(path.join(__dirname, 'public')));
 server.listen(port, () => {
   console.log('App is running on port ' + port);
+  
 });
 
 const jwt = require('express-jwt');
@@ -62,9 +77,25 @@ mongoose
     useFindAndModify: false
   })
   .catch(err => console.log(err));
+
+
 mongoose.connection
-  .once('open', () => console.log('Connected to MongoLab instance.'))
-  .on('error', error => console.log('Error connecting to MongoLab:', error));
+  .on('error', error => console.log('Error connecting to MongoLab:', error))
+  .once('open', () => {
+    console.log('Connected to MongoLab instance.');
+   
+    const taskCollection = mongoose.connection.collection('Places');
+    const changeStream = taskCollection.watch();
+
+    changeStream.on('change', (change) => {
+      console.log('change = '+ JSON.stringify(change));
+      if(change.operationType === 'update' | change.operationType === 'replace')
+        
+      dashController.set_occupancy_trigger();
+    });
+  });
+
+
 Place.createIndexes();
 Rental.createIndexes();
 vehicleRouter(app);

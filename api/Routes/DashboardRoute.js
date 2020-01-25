@@ -2,7 +2,7 @@ module.exports = function(app) {
   const dashRoute = require('../Controllers/Dashboard');
   const express = require('express');
   const router = express.Router();
-  const Pusher = require('pusher');
+  /*const Pusher = require('pusher');
   
   var pusher = new Pusher({
     appId: '465033',
@@ -10,7 +10,7 @@ module.exports = function(app) {
     secret: '170e91139139db484d47',
     cluster: 'us2',
     encrypted: true
-  });
+  });*/
   
   /**
    * @route GET /dashboard/places/:lat/:lon/occupancy_rate
