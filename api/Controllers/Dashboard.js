@@ -17,8 +17,21 @@ const pusher = new Pusher({
 //Situação atual dos lugares por lugar - occupancy rate - taxa de ocupação
 exports.get_occupancy_rate = async function(req, res) {
     dashboardService.getoccupancy(req,res)
-    .then(occupancy => {
-      res.json(occupancy);
+    .then(places => {
+      var labels = [];
+      var values = [];
+      var i;
+      for (i = 0; i < places.length; i++) {
+      var place = places[i];
+      labels.push(place.street);
+      values.push(place.occupancy);
+      }
+  
+    let datapointsArray = {
+    "labels": labels,
+     "data": values
+    };
+      res.json(datapointsArray);
     })
     .catch(e => {
       res.status(400).json(e)});
@@ -27,9 +40,22 @@ exports.get_occupancy_rate = async function(req, res) {
 
 exports.set_occupancy_trigger = async function(req, res) {
   dashboardService.getoccupancy(req,res)
-  .then(datapointsArray => {
+  .then(places => {
+    var labels = [];
+      var values = [];
+      var i;
+      for (i = 0; i < places.length; i++) {
+      var place = places[i];
+      labels.push(place.street);
+      values.push(place.occupancy);
+      }
+  
+    let datapointsArray = {
+    "labels": labels,
+     "data": values
+    };
     pusher.trigger('occupancy', 'update-places', {
-      datapointsArray
+      values
     });
   })
   .catch(e => {

@@ -3,8 +3,13 @@ const Places = mongoose.model('Places');
 
 
 const getoccupancy = async function (req, res) {
+  var place;
+var street;
+var occupancy;
+var labels = [];
+const values = [];
   try {
-    let datapointsArray = Places.aggregate([
+    return  Places.aggregate([
       {
         $project: {
           capacity: 1,
@@ -23,19 +28,7 @@ const getoccupancy = async function (req, res) {
           }
         }
       }
-    ], function (err, places) {
-      var datapointsArray = [];
-      var i;
-      for (i = 0; i < places.length; i++) {
-        var place = places[i];
-        var street = place.street;
-        var occupancy = place.occupancy;
-        var datapoint = { label: street, y: occupancy };
-        datapointsArray.push(datapoint);
-      }
-    })
-    console.log('service output: ' + JSON.stringify(datapointsArray));
-    return datapointsArray;
+    ])
   }
   catch (e) {
     return e;

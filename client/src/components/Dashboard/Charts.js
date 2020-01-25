@@ -3,131 +3,49 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { logoutUser } from '../../actions/authActions';
 import { getOccupancy,getCheckinDash } from '../../actions/dashActions';
-import CanvasJSReact from '../../assets/canvasjs.react';
 import Pusher from 'pusher-js';
-var CanvasJSChart = CanvasJSReact.CanvasJSChart;
-var CanvasJS = CanvasJSReact.CanvasJS;
+import { Bar } from 'react-chartjs-2';
+
 
 Pusher.logToConsole = true;
-var options = {};
-var channel;
-var atualizado = [];
+
+let channel;
+
 
 class Charts extends Component {
   constructor(props) {
-    super(props);
-    this.state = {dataPoints: this.props.charts_places};
+    super(props);  
+    this.state= {options: []};
   }
 
- 
-  //componentWillMount() {
     componentDidMount(){
-    const { user } = this.props.auth;
+    this.props.getOccupancy();
+    const { charts_places } = this.props.charts_places;
     
+
     var pusher = new Pusher('da84b590e82a4f23838b', {
       cluster: 'eu',
       forceTLS: true
     });
-    console.log('aqui' );
-    this.props.getOccupancy();
-    this.props.getCheckinDash();
+     channel = pusher.subscribe('occupancy');
+     channel.bind('update-places', res => {
 
-    /*const channel = pusher.subscribe('client-occupancy');
-    channel.bind('places', this.props.charts_places);*/
+      //alert(JSON.stringify(res));
+     let array = [10,10];
+      console.log('no pusher res = ' + array);
+     
+      this.setState({ options: array });
 
-     channel = pusher.subscribe('my-channel');
-     channel.bind('my-event', function(data) {
-      alert(JSON.stringify(data.datapointsArray));
-      console.log('1- '+JSON.stringify(data.datapointsArray));
-      atualizado = data.datapointsArray;
-      
-      console.log('1 atualizado- '+JSON.stringify(atualizado));
-
-      /*this.setState({
-        dataPoints: atualizado
-      });*/
-
-      this.setState({
-        dataPoints: new Date()
-      });
-    }).bind(this);
-    
-
+    });
   }
- 
-  
-
  
 
   render() {
-
     const { charts_places } = this.props.charts_places;
-    const { charts_checkin } = this.props.charts_checkin;
-   
-   console.log('2-'+JSON.stringify(atualizado));
-   
-    
-   options = {
-    title: {
-      text: "Occupancy tax"
-    },
-    data: [{				
-        type: "column",
-        dataPoints: charts_places
-     }]
- }
-
- 
-
-
-   /** CHECKIN COUNTING CHART */
-
-   var datapointsArray = [];
-    var i;
-    for (i = 0; i < charts_checkin.length; i++) {
-      var checkin = charts_checkin[i];
-      var checkinDt = checkin._id;
-      var count = checkin.count;
-      var datapoint = {x: new Date(checkinDt),  y: count};
-      datapointsArray.push(datapoint);
-    }
-
-   const options2 = {
-    animationEnabled: true,
-    theme: "light2",
-    title:{
-      text: "Number of checkins overtime"
-    },
-    axisX:{
-      valueFormatString: "DD MMM",
-      crosshair: {
-        enabled: true,
-        snapToDataPoint: true
-      }
-    },
-    axisY: {
-      title: "Checkin count overtime",
-      includeZero: true,
-      valueFormatString: "##0",
-      crosshair: {
-        enabled: true,
-        snapToDataPoint: true,
-        labelFormatter: function(e) {
-          return CanvasJS.formatNumber(e.value, "##0");
-        }
-      }
-    },
-    data: [{
-      type: "area",
-      xValueFormatString: "DD MMM",
-      yValueFormatString: "##0",
-      dataPoints: 
-      datapointsArray 
-    }]
-  }
-
- 
- 
+    console.log('dentro do render charts_places.data: '+ charts_places.data)
+    this.state = { options: charts_places.data};
+    //this.state = {options: charts_places.data };
+    console.log('this.state.options no render = ' + this.state.options );
 
     const { user } = this.props.auth;
     return (
@@ -148,13 +66,31 @@ class Charts extends Component {
         <div class="container">
         </div>
         <br></br>
-        <h5 id="chartTitle">Chart</h5>
         <div>
-        <CanvasJSChart options = {options}
-            onRef = {ref => this.chart = ref} 
-        />
-        <CanvasJSChart options = {options2}
-            onRef = {ref => this.chart = ref} 
+        <Bar
+          data= {{
+            labels: ['January', 'February'],
+            datasets: [
+              {
+                label: 'Rainfall',
+                backgroundColor: 'rgba(75,192,192,1)',
+                borderColor: 'rgba(0,0,0,1)',
+                borderWidth: 2,
+                data: this.state.options
+              }
+            ]
+          }}
+          options={{
+            title:{
+              display:true,
+              text:'Average Rainfall per month',
+              fontSize:20
+            },
+            legend:{
+              display:true,
+              position:'right'
+            }
+          }}
         />
         </div>
      </div>
@@ -166,13 +102,13 @@ class Charts extends Component {
 Charts.propTypes = {
   logoutUser: PropTypes.func.isRequired,
   auth: PropTypes.object.isRequired,
+  charts_places: PropTypes.object.isRequired,
   getOccupancy: PropTypes.func.isRequired,
   getCheckinDash: PropTypes.func.isRequired
 };
 const mapStateToProps = state => ({
   auth: state.auth,
-  charts_places: state.charts_places,
-  charts_checkin: state.charts_checkin
+  charts_places: state.charts_places
 });
 //connect to redux
 export default connect(mapStateToProps, { logoutUser,getOccupancy, getCheckinDash })(Charts);
