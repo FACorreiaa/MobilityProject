@@ -5,6 +5,7 @@ import { logoutUser } from '../../actions/authActions';
 import { getOccupancy, getCheckinDash } from '../../actions/dashActions';
 import Pusher from 'pusher-js';
 import { Bar } from 'react-chartjs-2';
+import axios from 'axios';
 
 Pusher.logToConsole = true;
 
@@ -16,8 +17,18 @@ class Charts extends Component {
     this.state = { options: [] };
   }
 
-  componentDidMount() {
-    this.props.getOccupancy();
+  componentWillMount() {
+    axios.get(`http://localhost:5002/api/v1/dashboard/places/occupancy_rate`)
+      .then((result) => {
+        console.log("COMPONENT WILL Mount messages : ", result.data.data);
+        this.setState({ options: result.data.data });
+
+        //this.state = { options: result };
+  })
+}
+
+   componentDidMount() {
+     
     var pusher = new Pusher('da84b590e82a4f23838b', {
       cluster: 'eu',
       forceTLS: true
@@ -29,11 +40,11 @@ class Charts extends Component {
 
       console.log('statSTATEEEEEEEEEEEEEEEEE' + JSON.stringify(this.state));
     });
-  }
+  } 
 
   render() {
     const { charts_places } = this.props.charts_places;
-    console.log(this.state);
+    console.log('state render ' + JSON.stringify(this.state));
     const { user } = this.props.auth;
     return (
       <div style={{ height: '75vh' }}>
