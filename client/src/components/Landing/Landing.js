@@ -20,26 +20,36 @@ class Landing extends Component {
               <Link
                 to='/register'
                 style={{
-                  width: '140px',
                   borderRadius: '3px',
                   letterSpacing: '1.5px'
                 }}
-                className='btn btn-large waves-effect waves-light hoverable blue accent-3'
+                className='btn btn-large waves-effect waves-light hoverable grey accent-3'
               >
                 Register
               </Link>
             </div>
-            <div className='col s6'>
+            <div className='col s3'>
               <Link
                 to='/login'
                 style={{
-                  width: '140px',
                   borderRadius: '3px',
                   letterSpacing: '1.5px'
                 }}
-                className='btn btn-large btn-flat waves-effect white black-text'
+                className='btn btn-large waves-effect waves-light hoverable grey accent-3'
               >
                 Log In
+              </Link>
+            </div>
+            <div className='col s3'>
+              <Link
+                to='/places'
+                style={{
+                  borderRadius: '3px',
+                  letterSpacing: '1.5px'
+                }}
+                className='btn btn-large waves-effect waves-light hoverable grey accent-3'
+              >
+                Free version
               </Link>
             </div>
           </div>

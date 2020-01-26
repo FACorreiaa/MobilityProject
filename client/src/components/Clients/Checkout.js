@@ -289,13 +289,13 @@ class Checkout extends Component {
                           </strong>
                         </p>
                         <p>
-                          <label>Payment Method: </label>
+                          <label>Preview Cost: </label>
                           <strong>
                             <span>{`${this.state.previewCost}€`}</span>
                           </strong>
                         </p>
                         <p>
-                          <label>Payment Method: </label>
+                          <label>Time Spent: </label>
                           <strong>
                             <span>{this.state.timeSpent}</span>
                           </strong>

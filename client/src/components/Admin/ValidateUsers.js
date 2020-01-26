@@ -6,7 +6,7 @@ import { getValidUsers, updateUsers } from '../../actions/adminActions';
 import { Table, Button, Icon, Checkbox } from 'react-materialize';
 import Navbar from './NavBar';
 class ValidateUsers extends Component {
-  componentWillMount() {
+  UNSAFE_componentWillMount() {
     this.props.getValidUsers();
   }
 

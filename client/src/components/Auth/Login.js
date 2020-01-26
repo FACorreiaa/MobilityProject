@@ -18,27 +18,30 @@ class Login extends Component {
   //employee
   //admin
   componentDidMount() {
-    /* if (!this.props.auth.isAuthenticated) {
-      this.props.history.push('/places');
-    } */
+    if (!this.props.auth.isAuthenticated) {
+      this.props.history.push('/login');
+    }
     // If logged in and user navigates to Login page, should redirect them to dashboard
     if (
       this.props.auth.isAuthenticated &&
-      this.props.auth.user.role == 'client'
+      this.props.auth.user.role == 'client' &&
+      !this.props.auth.user.waitValidation
     ) {
       this.props.history.push('/searchVehicles');
     }
 
     if (
       this.props.auth.isAuthenticated &&
-      this.props.auth.user.role == 'employee'
+      this.props.auth.user.role == 'employee' &&
+      !this.props.auth.user.waitValidation
     ) {
       this.props.history.push('/notifyUsers');
     }
 
     if (
       this.props.auth.isAuthenticated &&
-      this.props.auth.user.role == 'admin'
+      this.props.auth.user.role == 'admin' &&
+      !this.props.auth.user.waitValidation
     ) {
       this.props.history.push('/validateUsers');
     }

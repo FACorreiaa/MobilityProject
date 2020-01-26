@@ -14,7 +14,7 @@ import pinIcon from '../../assets/pin.svg';
 import ClientNav from './ClientNav';
 
 class SearchVehicles extends Component {
-  componentWillMount() {
+  UNSAFE_componentWillMount() {
     this.props.getPlaces();
   }
 

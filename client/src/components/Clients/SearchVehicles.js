@@ -13,7 +13,7 @@ import PlacesAutocomplete, {
   getLatLng
 } from 'react-places-autocomplete';
 class SearchVehicles extends Component {
-  componentWillMount() {
+  UNSAFE_componentWillMount() {
     this.props.getPlaces();
   }
 
@@ -104,7 +104,6 @@ class SearchVehicles extends Component {
           <button>oi</button>
         </ClientNav>
         <div style={{ textAlign: 'center' }}>
-          <h4>Search for Vehicles</h4>
           <p className='flow-text grey-text text-darken-1'>
             Input the name of the street
           </p>

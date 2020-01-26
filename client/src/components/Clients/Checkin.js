@@ -21,12 +21,11 @@ import { store } from 'react-notifications-component';
 //const options = ['one', 'two', 'three'];
 //const rental = ['minutes', 'pack'];
 class Checkin extends Component {
-  componentWillMount() {
+  UNSAFE_componentWillMount() {
     this.props.getVehicles();
     this.props.getRentalMethods();
     this.props.getNotifiedUser(this.props.auth.user._id);
     this.timer = setInterval(() => this.getNotification(), 2000);
-
     navigator.geolocation.getCurrentPosition(position => {
       this.setState({
         lat: position.coords.latitude,
@@ -42,7 +41,6 @@ class Checkin extends Component {
 
   getNotification = () => {
     const notified = this.props.clients.notifiedUser.notified;
-    console.log('balanceValue', notified);
     if (notified) {
       return (
         <div className='app-container'>
@@ -136,9 +134,6 @@ class Checkin extends Component {
     const { methods } = this.props.clients;
     const { consult } = this.props.clients;
     const { notifiedUser } = this.props.clients;
-    console.log('state' + this.state);
-    console.log('props' + this.props);
-    console.log(notifiedUser);
 
     const getAvailables = vehicles.filter(
       vechicle => vechicle.available === true
@@ -161,9 +156,9 @@ class Checkin extends Component {
       <>
         <ClientNav />
         <div style={{ textAlign: 'center' }}>
-          <h3 className='flow-text grey-text text-darken-1'>
+          <p className='flow-text grey-text text-darken-1'>
             Hello {user.username}! Checkin with us now!
-          </h3>
+          </p>
 
           <div className='row'>
             <section>

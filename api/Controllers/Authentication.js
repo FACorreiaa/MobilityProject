@@ -38,8 +38,6 @@ exports.register = async function(req, res) {
       .status(400)
       .json({ message: 'Necessário preencher todos os campos!' });
   }
-  console.log(params);
-  //console.log('req.firstname ' + req.firstname);
   const newUser = new User();
   newUser.username = req.body.username;
   newUser.firstname = req.body.firstname;
@@ -49,7 +47,6 @@ exports.register = async function(req, res) {
   newUser.dadosPassword = { hash: '', salt: '' };
   newUser.setDadosPassword(req.body.password);
   newUser.role = req.body.role;
-  console.log(newUser);
   newUser.save(err => {
     if (err) {
       res.status(500).json(err);

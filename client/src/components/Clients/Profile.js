@@ -7,7 +7,7 @@ import { TextInput, Button, Icon } from 'react-materialize';
 import ClientNav from './ClientNav';
 
 class Profile extends Component {
-  componentWillMount() {
+  UNSAFE_componentWillMount() {
     this.props.getVehicles();
   }
 
