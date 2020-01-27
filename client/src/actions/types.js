@@ -28,3 +28,4 @@ export const GET_RENTAL_DATA = 'GET_RENTAL_DATA';
 export const NOTIFY_USER = 'NOTIFY_USER';
 export const GET_VALID_USERS = 'GET_VALID_USERS';
 export const GET_USER_NOTIFIED = 'GET_USER_NOTIFIED';
+export const GET_OCCUPANCY = 'GET_OCCUPANCY';

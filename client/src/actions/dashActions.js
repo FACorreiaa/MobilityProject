@@ -3,9 +3,9 @@ import axios from 'axios';
 import {
   GET_CHARTS_PLACES,
   GET_ERRORS,
-  GET_CHECKIN_DASH
+  GET_CHECKIN_DASH,
+  GET_OCCUPANCY
 } from './types';
-
 
 //see dashboard charts
 export const getOccupancy = () => {
@@ -13,7 +13,7 @@ export const getOccupancy = () => {
     return axios
       .get('http://localhost:5002/api/v1/dashboard/places/occupancy_rate')
       .then(charts_places => {
-       // console.log(charts_places.data);
+        // console.log(charts_places.data);
         return dispatch({
           type: GET_CHARTS_PLACES,
           payload: charts_places.data
@@ -49,6 +49,3 @@ export const getCheckinDash = () => {
       );
   };
 };
-
-
-

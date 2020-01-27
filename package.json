@@ -8,7 +8,7 @@
     "clean": "rimfat dist",
     "build": "babel ./src --out-dir dist",
     "prod": "NODE_ENV=production npm-run-all clean build server:prod",
-    "start:commit": "git add . && git commit -m 'auto message' && git push origin master",
+    "start:commit": "git add . && npm run commit && git push origin master",
     "watch": "nodemon ./src/app.js",
     "lines": "cloc lines api",
     "server": "nodemon ./src/app.js",

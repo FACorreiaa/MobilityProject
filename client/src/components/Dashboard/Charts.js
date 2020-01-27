@@ -14,21 +14,14 @@ let channel;
 class Charts extends Component {
   constructor(props) {
     super(props);
-    this.state = { options: [] };
+    this.state = { options: '' };
   }
 
   componentWillMount() {
-    axios.get(`http://localhost:5002/api/v1/dashboard/places/occupancy_rate`)
-      .then((result) => {
-        console.log("COMPONENT WILL Mount messages : ", result.data.data);
-        this.setState({ options: result.data.data });
+    this.props.getOccupancy();
+  }
 
-        //this.state = { options: result };
-  })
-}
-
-   componentDidMount() {
-     
+  componentDidMount() {
     var pusher = new Pusher('da84b590e82a4f23838b', {
       cluster: 'eu',
       forceTLS: true
@@ -40,11 +33,15 @@ class Charts extends Component {
 
       console.log('statSTATEEEEEEEEEEEEEEEEE' + JSON.stringify(this.state));
     });
-  } 
+  }
 
   render() {
     const { charts_places } = this.props.charts_places;
     console.log('state render ' + JSON.stringify(this.state));
+    console.log(
+      'charts_places HUE' +
+        JSON.stringify(this.props.charts_places.charts_places.data)
+    );
     const { user } = this.props.auth;
     return (
       <div style={{ height: '75vh' }}>
@@ -67,18 +64,33 @@ class Charts extends Component {
         <br></br>
         <div>
           <Bar
-            data={{
-              labels: ['January', 'February'],
-              datasets: [
-                {
-                  label: 'Rainfall',
-                  backgroundColor: 'rgba(75,192,192,1)',
-                  borderColor: 'rgba(0,0,0,1)',
-                  borderWidth: 2,
-                  data: this.state.options
-                }
-              ]
-            }}
+            data={
+              this.state.options === ''
+                ? {
+                    labels: ['January', 'February'],
+                    datasets: [
+                      {
+                        label: 'Rainfall',
+                        backgroundColor: 'rgba(75,192,192,1)',
+                        borderColor: 'rgba(0,0,0,1)',
+                        borderWidth: 2,
+                        data: this.props.charts_places.charts_places.data
+                      }
+                    ]
+                  }
+                : {
+                    labels: ['January', 'February'],
+                    datasets: [
+                      {
+                        label: 'Rainfall',
+                        backgroundColor: 'rgba(75,192,192,1)',
+                        borderColor: 'rgba(0,0,0,1)',
+                        borderWidth: 2,
+                        data: this.state.options
+                      }
+                    ]
+                  }
+            }
             options={{
               title: {
                 display: true,
