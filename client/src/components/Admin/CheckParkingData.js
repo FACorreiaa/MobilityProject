@@ -6,7 +6,7 @@ import { getRentalData } from '../../actions/adminActions';
 import { Table, Button, Icon, Checkbox } from 'react-materialize';
 import Navbar from './NavBar';
 class CheckParkingData extends Component {
-  UNSAFE_componentWillMount() {
+  componentDidMount() {
     this.props.getRentalData();
   }
 

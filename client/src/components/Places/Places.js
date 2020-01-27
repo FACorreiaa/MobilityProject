@@ -7,7 +7,7 @@ import MapContainer from '../MapAux/MapContainer';
 import Navbar from './Navbar';
 
 class Places extends Component {
-  UNSAFE_componentWillMount() {
+  componentDidMount() {
     this.props.getPlaces();
   }
 

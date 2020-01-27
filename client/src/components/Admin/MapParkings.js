@@ -8,7 +8,7 @@ import MapContainer from '../Clients/MapContainer';
 
 import Navbar from './NavBar';
 class MapParkings extends Component {
-  UNSAFE_componentWillMount() {
+  componentDidMount() {
     this.props.getRentalData();
   }
 

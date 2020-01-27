@@ -21,7 +21,7 @@ import { store } from 'react-notifications-component';
 //const options = ['one', 'two', 'three'];
 //const rental = ['minutes', 'pack'];
 class Checkin extends Component {
-  UNSAFE_componentWillMount() {
+  componentDidMount() {
     this.props.getVehicles();
     this.props.getRentalMethods();
     this.props.getNotifiedUser(this.props.auth.user._id);

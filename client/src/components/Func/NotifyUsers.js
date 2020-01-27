@@ -6,7 +6,7 @@ import { updateNotifications, validUsers } from '../../actions/funcActions';
 import { Table, Button, Icon, Checkbox } from 'react-materialize';
 import Navbar from './NavBar';
 class NotifyUsers extends Component {
-  UNSAFE_componentWillMount() {
+  componentDidMount() {
     this.props.validUsers();
   }
 

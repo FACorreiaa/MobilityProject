@@ -7,7 +7,7 @@ import { Table } from 'react-materialize';
 import ClientNav from './ClientNav';
 
 class Clients extends Component {
-  UNSAFE_componentWillMount() {
+  componentDidMount() {
     this.props.getVehicles();
   }
 

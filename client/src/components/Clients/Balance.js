@@ -18,7 +18,7 @@ class Balance extends Component {
     this.state = { clicked: false, balance: 0, disabled: true };
   }
 
-  UNSAFE_componentWillMount() {
+  componentDidMount() {
     this.props.getBalance(this.props.auth.user._id);
     this.timer = setInterval(() => this.getItems(), 2000);
   }

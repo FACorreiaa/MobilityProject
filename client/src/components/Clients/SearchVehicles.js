@@ -13,7 +13,7 @@ import PlacesAutocomplete, {
   getLatLng
 } from 'react-places-autocomplete';
 class SearchVehicles extends Component {
-  UNSAFE_componentWillMount() {
+  componentDidMount() {
     this.props.getPlaces();
   }
 
