@@ -13,7 +13,8 @@ import Typography from '@material-ui/core/Typography';
 import Navbar from '../Admin/NavBar';
 //Pusher.logToConsole = true;
 
-let channel;
+let occupancyChannel;
+let checkinChannel;
 
 class Charts extends Component {
   constructor(props) {
@@ -34,38 +35,33 @@ class Charts extends Component {
       cluster: 'eu',
       forceTLS: true
     });
-    channel = pusher.subscribe('occupancy');
-    channel.bind('update-places', res => {
-      console.log('RES', res);
+    occupancyChannel = pusher.subscribe('occupancy');
+    occupancyChannel.bind('update-places', res => {
+      console.log('RES', res.datapointsArray);
       this.setState({
-        barValues: res.data,
-        barLabels: res.labels
+        barValues: res.datapointsArray.data,
+        barLabels: res.datapointsArray.labels
+      });
+    });
+
+    checkinChannel = pusher.subscribe('checkinByDay');
+    checkinChannel.bind('update-rentals', res => {
+      this.setState({
+        lineValues: res.datapointsArray.data,
+        lineLabels: res.datapointsArray.labels
       });
     });
   }
 
   render() {
-    console.log('this.props = ' + JSON.stringify(this.props));
+    console.log('this.props = ' + JSON.stringify(this.props.charts_places));
+    console.log('this.state = ' + JSON.stringify(this.state));
     const { user } = this.props.auth;
     return (
       <>
         <div className={classes.root}>
           <Navbar />
-          <div className='row'>
-            <div>
-              <h4>
-                <b style={{ display: 'flex' }}> Hey there, {user.username}</b>
-                <p
-                  style={{ display: 'flex' }}
-                  className='flow-text grey-text text-darken-1'
-                >
-                  Mobility Charts Dashboard
-                </p>
-              </h4>
-              <br></br>
-              <div></div>
-            </div>
-          </div>
+          <br></br>
           <Grid container spacing={3}>
             <Grid item xs={6}>
               <Paper className={classes.paper}>
@@ -115,7 +111,7 @@ class Charts extends Component {
               <Paper className={classes.paper}>
                 <Line
                   data={
-                    this.state.barValues === ''
+                    this.state.lineValues === ''
                       ? {
                           labels: this.props.charts_checkin.charts_checkin
                             .labels,

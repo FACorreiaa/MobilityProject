@@ -1,7 +1,5 @@
 import { GET_CHARTS_PLACES,GET_CHECKIN_DASH } from '../actions/types';
 
-const isEmpty = require('is-empty');
-
 const initialState = {
   charts_places: [],
   charts_checkin: [],

@@ -18,72 +18,66 @@ const pusher = new Pusher({
 exports.get_occupancy_rate = async function(req, res) {
     dashboardService.getoccupancy(req,res)
     .then(places => {
-      var labels = [];
-      var values = [];
-      var i;
-      for (i = 0; i < places.length; i++) {
-      var place = places[i];
-      labels.push(place.street);
-      values.push(place.occupancy);
-      }
-  
-    let datapointsArray = {
-    "labels": labels,
-     "data": values
-    };
-      res.json(datapointsArray);
+      res.json(places);
     })
     .catch(e => {
       res.status(400).json(e)});
-  
 };
 
 exports.set_occupancy_trigger = async function(req, res) {
   dashboardService.getoccupancy(req,res)
   .then(places => {
-    var labels = [];
-      var values = [];
-      var i;
-      for (i = 0; i < places.length; i++) {
-      var place = places[i];
-      labels.push(place.street);
-      values.push(place.occupancy);
-      }
-  
+    
+    let labels = [];
+    let values = [];
+    for (let i = 0; i < places.length; i++) {
+      let place = places[i];
+      labels[i] = place.street;
+      values[i] = place.occupancy;
+    }
     let datapointsArray = {
-    "labels": labels,
+     "labels": labels,
      "data": values
     };
     pusher.trigger('occupancy', 'update-places', {
-      values
+      datapointsArray
     });
   })
   .catch(e => {
     console.log(e)});
 }
 
-
 //checkin overtime
 exports.getCheckinByDay = async function (req, res) {
   dashboardService.getCheckinCount(req, res)
     .then(checkins => {
-      console.log('aqui')
-      console.log(checkins)
+      res.json(checkins);
+    })
+    .catch(e => {
+      res.status(400).json(e)
+    });
+};
+
+
+exports.setCheckinByDayTrigger = async function (req, res) {
+  dashboardService.getCheckinCount(req, res)
+    .then(checkins => {
 
       let labels = [];
       let values = [];
       for (let i = 0; i < checkins.length; i++) {
         let checkin = checkins[i];
-        labels.push(checkin._id.date);
-        values.push(checkin.count);
+        labels[i] = checkin._id.date;
+        values[i] = checkin.count;
       }
 
       let datapointsArray = {
         "labels": labels,
         "data": values
       };
-
-      res.json(datapointsArray);
+      pusher.trigger('checkinByDay', 'update-rentals', {
+        datapointsArray
+      });
     })
     .catch(e => {
       res.status(400).json(e)

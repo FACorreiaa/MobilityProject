@@ -84,15 +84,26 @@ mongoose.connection
   .once('open', () => {
     console.log('Connected to MongoLab instance.');
    
-    const taskCollection = mongoose.connection.collection('Places');
-    const changeStream = taskCollection.watch();
+    const placeCollection = mongoose.connection.collection('Places');
+    const placeStream = placeCollection.watch();
 
-    changeStream.on('change', (change) => {
+    placeStream.on('change', (change) => {
       console.log('change = '+ JSON.stringify(change));
       if(change.operationType === 'update' | change.operationType === 'replace')
         
       dashController.set_occupancy_trigger();
     });
+
+    const rentalCollection = mongoose.connection.collection('Rentals');
+    const rentalStream = rentalCollection.watch();
+
+    rentalStream.on('change', (change) => {
+      console.log('change = '+ JSON.stringify(change));
+      if(change.operationType === 'insert')
+        
+      dashController.setCheckinByDayTrigger();
+    });
+
   });
 
 
