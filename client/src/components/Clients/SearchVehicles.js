@@ -37,25 +37,34 @@ class SearchVehicles extends Component {
       .catch(error => console.error('Error', error));
   };
 
+  getCoords = () => {
+    const firstCenter = this.props.places.places.map(place => {
+      return {
+        lat: place.center[0],
+        lng: place.center[1]
+      };
+    });
+    let coords = { ...firstCenter[0] };
+    return coords;
+  };
+
   render() {
     console.log(this.state);
     const style = {
       height: '400px',
       width: '100%'
     };
-    // center
-    const initialCenter = { lat: 41.53113384600326, lng: -8.619018495082855 };
 
-    //marker
-    //let position = { lat: 41.53113384600326, lng: -8.619018495082855 };
-    /* const position = this.props.places.places.map(element => {
-      const obg = { lat: 0, lng: 0 };
-      obg.lat = element.center[0];
-      obg.lng = element.center[1];
-      console.log('obj', obg);
-      return obg;
+    // center
+    const firstCenter = this.props.places.places.map(place => {
+      return {
+        lat: place.center[0],
+        lng: place.center[1]
+      };
     });
-    console.log(position); */
+
+    const initialCenter = this.getCoords();
+    //marker
     const centers = this.props.places.places.map(place => {
       return {
         lat: place.center[0],

@@ -5,18 +5,56 @@ import { logoutUser } from '../../actions/authActions';
 import { getRentalData } from '../../actions/adminActions';
 import { Table, Button, Icon, Checkbox } from 'react-materialize';
 import MapContainer from '../Clients/MapContainer';
+import { getPlaces } from '../../actions/placeActions';
+import { classes } from '../Contants/constants/graph';
+import Paper from '@material-ui/core/Paper';
 
 import Navbar from './NavBar';
 class MapParkings extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      lat: 0,
+      lng: 0
+    };
+  }
   componentDidMount() {
     this.props.getRentalData();
+    this.props.getPlaces();
   }
+
+  getCoords = () => {
+    const firstCenter = this.props.places.places.map(place => {
+      return {
+        lat: place.center[0],
+        lng: place.center[1]
+      };
+    });
+    let coords = { ...firstCenter[0] };
+    return coords;
+  };
 
   render() {
     const { user } = this.props.auth;
     const { rental } = this.props.rental;
-    console.log(this.props);
-    const initialCenter = { lat: 41.53113384600326, lng: -8.619018495082855 };
+
+    //teste
+    /*  const firstCenter = this.props.places.places.map(place => {
+      return {
+        lat: place.center[0],
+        lng: place.center[1]
+      };
+    }); */
+    const firstCenter = this.props.places.places.map(place => {
+      return {
+        lat: place.center[0],
+        lng: place.center[1]
+      };
+    });
+    let coords = { ...firstCenter[0] };
+
+    let initialCenter = this.getCoords();
+
     const style = {
       height: '400px',
       width: '100%'
@@ -31,12 +69,13 @@ class MapParkings extends Component {
     return (
       <div>
         <Navbar />
-        oi
-        <MapContainer
-          markerPositions={centers}
-          initialCenter={initialCenter}
-          style={style}
-        />
+        <Paper className={classes.paper}>
+          <MapContainer
+            markerPositions={centers}
+            initialCenter={initialCenter}
+            style={style}
+          />
+        </Paper>
       </div>
     );
   }
@@ -44,7 +83,8 @@ class MapParkings extends Component {
 MapParkings.propTypes = {
   logoutUser: PropTypes.func.isRequired,
   auth: PropTypes.object.isRequired,
-  getRentalData: PropTypes.func.isRequired
+  getRentalData: PropTypes.func.isRequired,
+  getPlaces: PropTypes.func.isRequired
 };
 const mapStateToProps = state => ({
   auth: state.auth,
@@ -53,5 +93,6 @@ const mapStateToProps = state => ({
 });
 export default connect(mapStateToProps, {
   logoutUser,
-  getRentalData
+  getRentalData,
+  getPlaces
 })(MapParkings);

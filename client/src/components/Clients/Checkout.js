@@ -16,6 +16,8 @@ import PlacesAutocomplete, {
   getLatLng
 } from 'react-places-autocomplete';
 import { Button, Icon, Row, Col, Card } from 'react-materialize';
+import Typography from '@material-ui/core/Typography';
+import { typo } from '../Contants/constants/typo';
 
 class Checkout extends Component {
   constructor(props) {
@@ -156,13 +158,31 @@ class Checkout extends Component {
     );
   };
 
+  getCoords = () => {
+    const firstCenter = this.props.places.places.map(place => {
+      return {
+        lat: place.center[0],
+        lng: place.center[1]
+      };
+    });
+    let coords = { ...firstCenter[0] };
+    return coords;
+  };
+
   render() {
     const style = {
       height: '400px',
       width: '100%'
     };
 
-    const initialCenter = { lat: 41.53113384600326, lng: -8.619018495082855 };
+    /* const firstCenter = this.props.places.places.map(place => {
+      return {
+        lat: place.center[0],
+        lng: place.center[1]
+      };
+    }); */
+
+    const initialCenter = this.getCoords();
     const position = {
       lat: this.state.lat,
       lng: this.state.lng
@@ -312,18 +332,22 @@ class Checkout extends Component {
         </div>
 
         {this.state.finalCost > 0 ? (
-          <div>
-            {this.state.hasDiscount ? (
-              <div>Discount applied for valid Park.</div>
-            ) : (
-              <div>No discount</div>
-            )}
-            <div>{`Payment of ${this.state.finalCost}€ Successful!`}</div>
+          <div style={{ textAlign: 'center' }}>
+            <Typography className={typo.root} variant='h6' gutterBottom>
+              {this.state.hasDiscount ? (
+                <div>Discount applied for valid Park.</div>
+              ) : (
+                <div>No discount</div>
+              )}
+              <div>{`Payment of ${this.state.finalCost}€ Successful!`}</div>
 
-            <div>{this.redirectNow()}</div>
+              <div>{this.redirectNow()}</div>
+            </Typography>
           </div>
         ) : (
-          <div>No payment has been made</div>
+          <Typography className={typo.root} variant='h6' gutterBottom>
+            <div style={{ textAlign: 'center' }}>No payment has been made</div>
+          </Typography>
         )}
 
         <div className='m12'>

@@ -22,25 +22,20 @@ class Login extends Component {
       this.props.history.push('/searchVehicles');
     } */
     // If logged in and user navigates to Login page, should redirect them to dashboard
-    if (
-      this.props.auth.isAuthenticated ||
-      this.props.auth.user.waitValidation
-    ) {
+    if (this.props.auth.isAuthenticated) {
       this.props.history.push('/searchVehicles');
     }
 
     if (
       this.props.auth.isAuthenticated &&
-      this.props.auth.user.role == 'employee' &&
-      !this.props.auth.user.waitValidation
+      this.props.auth.user.role == 'employee'
     ) {
       this.props.history.push('/notifyUsers');
     }
 
     if (
       this.props.auth.isAuthenticated &&
-      this.props.auth.user.role == 'admin' &&
-      !this.props.auth.user.waitValidation
+      this.props.auth.user.role == 'admin'
     ) {
       this.props.history.push('/validateUsers');
     }
