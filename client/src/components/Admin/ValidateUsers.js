@@ -45,6 +45,10 @@ class ValidateUsers extends Component {
     window.location.reload();
   };
 
+  onDashboardClick = () => {
+    this.props.history.push('/charts');
+ }
+
   render() {
     console.log(this.props);
 
@@ -96,6 +100,19 @@ class ValidateUsers extends Component {
             </tbody>
           ))}
         </Table>
+        <button
+              style={{
+                width: '150px',
+                borderRadius: '3px',
+                letterSpacing: '1.5px',
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center"
+              }}
+              onClick={this.onDashboardClick}
+              className='btn btn-large waves-effect waves-light hoverable blue accent-3'>
+              DASHBOARD
+        </button>
       </div>
     );
   }

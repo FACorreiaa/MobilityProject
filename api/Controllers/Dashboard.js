@@ -62,22 +62,32 @@ exports.set_occupancy_trigger = async function(req, res) {
     console.log(e)});
 }
 
+
 //checkin overtime
-exports.getCheckinByDay = async function(req, res) {
+exports.getCheckinByDay = async function (req, res) {
+  dashboardService.getCheckinCount(req, res)
+    .then(checkins => {
+      console.log('aqui')
+      console.log(checkins)
 
-    Rental.aggregate([
-    
-      { $match: {} },
-                { $group: { _id: { $dateToString: { format: "%Y-%m-%d", date: "$start.date" } }, count: { $sum: 1 } } },
-               
+      let labels = [];
+      let values = [];
+      for (let i = 0; i < checkins.length; i++) {
+        let checkin = checkins[i];
+        labels.push(checkin._id.date);
+        values.push(checkin.count);
+      }
 
-    ], function(err, rentals) {
+      let datapointsArray = {
+        "labels": labels,
+        "data": values
+      };
 
-    if (err) res.send(err);
-    res.json(rentals);
-  });
-  console.log('count:' + rentals);
+      res.json(datapointsArray);
+    })
+    .catch(e => {
+      res.status(400).json(e)
+    });
 };
-
 
 
