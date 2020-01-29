@@ -9,6 +9,7 @@ module.exports = function(auth, app) {
    */
   app.route('/api/v1/users').get(auth, routeUser.getUsers);
 
+  //DEIXAR
   /**
    * @route GET /users/:id
    * @group Users - Operations about users
@@ -18,6 +19,7 @@ module.exports = function(auth, app) {
    */
   app.route('/api/v1/users/:id').get(routeUser.getUserById);
 
+  //DEIXAR
   /**
    * @route GET /users/:id/validation
    * @group Users - Operations about users
@@ -33,17 +35,15 @@ module.exports = function(auth, app) {
    * @returns {Array} 200 - Returns UserSchema model
    * @returns {Error} 500
    */
+  //DEIXAR
   app
     .route('/api/v1/users/admin/waitvalidation')
     .get(routeUser.getUsersForValidation);
-
+  //DEIXAR
   app.route('/api/v1/users/func/validUsers').get(routeUser.getValidUsers);
 
-  app
-    .route('/api/v1/users/:id/rentals')
-    .get(routeUser.getUserRentals)
-    .post(routeUser.postUserRental);
-
+  //DEIXAR
   app.route('/api/v1/users/:id/balance/:balance').put(routeUser.updateBalance);
+  //DEIXAR
   app.route('/api/v1/users/:id/balance').get(routeUser.getUserBalanceById);
 };

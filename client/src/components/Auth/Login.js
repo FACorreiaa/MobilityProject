@@ -25,7 +25,7 @@ class Login extends Component {
     if (
       this.props.auth.isAuthenticated &&
       this.props.auth.user.role == 'client' &&
-      !this.props.auth.user.waitValidation
+      this.props.auth.user.waitValidation
     ) {
       this.props.history.push('/searchVehicles');
     }

@@ -20,7 +20,7 @@ class Balance extends Component {
 
   componentDidMount() {
     this.props.getBalance(this.props.auth.user._id);
-    this.timer = setInterval(() => this.getItems(), 2000);
+    this.timer = setInterval(() => this.getItems(), 5000);
   }
 
   componentWillUnmount() {
@@ -31,7 +31,7 @@ class Balance extends Component {
   getItems = () => {
     const balanceValue = this.props.clients.balance.balance;
     console.log('balanceValue', balanceValue);
-    if (balanceValue < 400) {
+    if (balanceValue < 5) {
       return (
         <div className='app-container'>
           <ReactNotification />

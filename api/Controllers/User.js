@@ -2,38 +2,6 @@
 const mongoose = require('mongoose');
 const User = mongoose.model('Users');
 
-// função auxiliar para obter o _id do utilizador a partir do JWT enviado no pedido
-/* const validateAdminAuth = (req, res, callback) => {
-  // validar que os dados do JWT estão no request
-  console.log(
-    'token username:' + req.payload.username + ' role:' + req.payload.role
-  );
-
-  if (req.payload && req.payload.username && req.payload.role) {
-    User.find(
-      { username: req.payload.username }
-      //, {"role": req.payload.role}
-    ).exec((err, utilizador) => {
-      if (err) {
-        console.log(err);
-        return res.status(500).json(err);
-      } else if (!utilizador) {
-        return res.status(404).json({ message: 'Utilizador não encontrado!' });
-      } else if (req.payload.role !== 'admin') {
-        console.log('Utilizador sem permissões de administrador!');
-        return res
-          .status(401)
-          .json({ message: 'Utilizador sem permissões de administrador!' });
-      }
-      // executar o "callback", indicando qual é o utilizador
-      callback(req, res, utilizador[0]._id);
-      console.log('utilizador ID ' + utilizador[0]._id);
-    });
-  } else {
-    return res.status(404).json({ message: 'Token inválido!' });
-  }
-}; */
-
 //gets all users on db
 exports.getUsers = function(req, res) {
   validateAdminAuth(req, res, (req, res, utilizadorId) => {
@@ -91,31 +59,6 @@ exports.validateUser = function(req, res) {
   );
   /*   });
    */
-};
-
-exports.getUserRentals = async function(req, res) {
-  User.findById(req.params.id, async function(err, user) {
-    if (err) {
-      await res.send(err);
-    }
-    let rentals = await user.rentals;
-    Rental.find({ _id: { $in: rentals } }, async function(err, rental) {
-      await res.json(rental);
-    });
-  });
-};
-
-//add new rental
-exports.postUserRental = async function(req, res) {
-  var newRental = new Rental(req.body);
-  newRental
-    .save()
-    .then(result => {
-      res.status(201).jsonp(newRental);
-    })
-    .catch(err => {
-      res.status(500).jsonp({ error: { message: err.message } });
-    });
 };
 
 //increment user Balance
