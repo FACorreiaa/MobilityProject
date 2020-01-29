@@ -6,7 +6,6 @@ import { setCurrentUser, logoutUser } from '../actions/authActions';
 import { Provider } from 'react-redux';
 import store from '../store';
 import Navbar from '../components/Navbar/Navbar';
-import Landing from '../components/Landing/Landing';
 import Register from '../components/Auth/Register';
 import Login from '../components/Auth/Login';
 import PrivateRoute from '../components/PrivateRoute/PrivateRoute';
@@ -23,7 +22,6 @@ import ValidateUsers from './Admin/ValidateUsers';
 import CheckParkingData from './Admin/CheckParkingData';
 import MapParkings from './Admin/MapParkings';
 import NotifyUsers from './Func/NotifyUsers';
-import Logout from './Clients/Logout';
 // Check for token to keep user logged in
 if (localStorage.jwtToken) {
   // Set auth token header auth
@@ -39,7 +37,7 @@ if (localStorage.jwtToken) {
     // Logout user
     store.dispatch(logoutUser());
     // Redirect to login
-    window.location.href = './places';
+    window.location.href = './searchVehicles';
   }
 }
 
@@ -50,11 +48,11 @@ class App extends Component {
         <Router>
           <div className='App'>
             <Navbar />
-            <Route exact path='/logout' component={Logout} />
-            <Route exact path='/' component={Landing} />
+            <Route exact path='/' component={SearchVehicles} />
             <Route exact path='/register' component={Register} />
             <Route exact path='/login' component={Login} />
             <Route exact path='/places' component={Places} />
+            <Route exact path='/searchVehicles' component={SearchVehicles} />
             <Switch>
               <PrivateRoute exact path='/charts' component={Charts} />
               <PrivateRoute exact path='/dashboard' component={Dashboard} />
@@ -63,11 +61,7 @@ class App extends Component {
               <PrivateRoute exact path='/balance' component={Balance} />
               <PrivateRoute exact path='/checkin' component={CheckIn} />
               <PrivateRoute exact path='/checkout' component={Checkout} />
-              <PrivateRoute
-                exact
-                path='/searchVehicles'
-                component={SearchVehicles}
-              />
+
               <PrivateRoute
                 exact
                 path='/validateusers'

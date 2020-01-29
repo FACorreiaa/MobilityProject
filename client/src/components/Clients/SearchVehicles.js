@@ -100,9 +100,7 @@ class SearchVehicles extends Component {
 
     return (
       <div>
-        <ClientNav>
-          <button>oi</button>
-        </ClientNav>
+        <ClientNav />
         <div style={{ textAlign: 'center' }}>
           <p className='flow-text grey-text text-darken-1'>
             Input the name of the street

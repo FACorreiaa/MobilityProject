@@ -18,13 +18,12 @@ class Login extends Component {
   //employee
   //admin
   componentDidMount() {
-    if (!this.props.auth.isAuthenticated) {
-      this.props.history.push('/login');
-    }
+    /* if (!this.props.auth.isAuthenticated) {
+      this.props.history.push('/searchVehicles');
+    } */
     // If logged in and user navigates to Login page, should redirect them to dashboard
     if (
-      this.props.auth.isAuthenticated &&
-      this.props.auth.user.role == 'client' &&
+      this.props.auth.isAuthenticated ||
       this.props.auth.user.waitValidation
     ) {
       this.props.history.push('/searchVehicles');
@@ -47,35 +46,6 @@ class Login extends Component {
     }
   }
 
-  componentWillReceiveProps(nextProps) {
-    /* if (!nextProps.auth.isAuthenticated) {
-      this.props.history.push('/places');
-    } */
-    if (
-      nextProps.auth.isAuthenticated &&
-      nextProps.auth.user.role == 'client'
-    ) {
-      this.props.history.push('/searchVehicles'); // push user to dashboard when they login
-    }
-
-    if (
-      nextProps.auth.isAuthenticated &&
-      nextProps.auth.user.role == 'employee'
-    ) {
-      this.props.history.push('/notifyUsers'); // push user to dashboard when they login
-    }
-
-    if (nextProps.auth.isAuthenticated && nextProps.auth.user.role == 'admin') {
-      this.props.history.push('/validateUsers'); // push user to dashboard when they login
-    }
-
-    if (nextProps.errors) {
-      this.setState({
-        errors: nextProps.errors
-      });
-    }
-  }
-
   onChange = e => {
     this.setState({ [e.target.id]: e.target.value });
   };
@@ -94,7 +64,7 @@ class Login extends Component {
       <div className='container'>
         <div style={{ marginTop: '4rem' }} className='row'>
           <div className='col s8 offset-s2'>
-            <Link to='/' className='btn-flat waves-effect'>
+            <Link to='/searchVehicles' className='btn-flat waves-effect'>
               <i className='material-icons left'>keyboard_backspace</i> Back to
               home
             </Link>
