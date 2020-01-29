@@ -4,24 +4,28 @@ import { connect } from 'react-redux';
 import { logoutUser } from '../../actions/authActions';
 import { getOccupancy, getCheckinDash } from '../../actions/dashActions';
 import Pusher from 'pusher-js';
-import { Bar } from 'react-chartjs-2';
-import axios from 'axios';
+import { Bar , Line } from 'react-chartjs-2';
 
-Pusher.logToConsole = true;
+
+//Pusher.logToConsole = true;
 
 let channel;
 
 class Charts extends Component {
   constructor(props) {
     super(props);
-    this.state = { options: '' };
-  }
-
-  componentWillMount() {
-    this.props.getOccupancy();
+    this.state = {
+      barValues: '',
+      barLabels: '',
+      lineValues: '',
+      lineLabels: ''
+    };
   }
 
   componentDidMount() {
+    this.props.getOccupancy();
+    this.props.getCheckinDash();
+
     var pusher = new Pusher('da84b590e82a4f23838b', {
       cluster: 'eu',
       forceTLS: true
@@ -29,19 +33,15 @@ class Charts extends Component {
     channel = pusher.subscribe('occupancy');
     channel.bind('update-places', res => {
       console.log('RES', res);
-      this.setState({ options: res.values });
-
-      console.log('statSTATEEEEEEEEEEEEEEEEE' + JSON.stringify(this.state));
+      this.setState({
+        barValues: res.data,
+        barLabels: res.labels
+      });
     });
   }
 
   render() {
-    const { charts_places } = this.props.charts_places;
-    console.log('state render ' + JSON.stringify(this.state));
-    console.log(
-      'charts_places HUE' +
-        JSON.stringify(this.props.charts_places.charts_places.data)
-    );
+    console.log('this.props = ' + JSON.stringify(this.props));
     const { user } = this.props.auth;
     return (
       <div style={{ height: '75vh' }}>
@@ -60,41 +60,41 @@ class Charts extends Component {
             <div></div>
           </div>
         </div>
-        <div class='container'></div>
+        <div className='container'></div>
         <br></br>
         <div>
           <Bar
             data={
-              this.state.options === ''
+              this.state.barValues === ''
                 ? {
-                    labels: ['January', 'February'],
-                    datasets: [
-                      {
-                        label: 'Rainfall',
-                        backgroundColor: 'rgba(75,192,192,1)',
-                        borderColor: 'rgba(0,0,0,1)',
-                        borderWidth: 2,
-                        data: this.props.charts_places.charts_places.data
-                      }
-                    ]
-                  }
+                  labels: this.props.charts_places.charts_places.labels,
+                  datasets: [
+                    {
+                      label: '% Occupancy tax',
+                      backgroundColor: 'rgb(255, 0, 0)',
+                      borderColor: 'rgba(0,0,0,1)',
+                      borderWidth: 2,
+                      data: this.props.charts_places.charts_places.data
+                    }
+                  ]
+                }
                 : {
-                    labels: ['January', 'February'],
-                    datasets: [
-                      {
-                        label: 'Rainfall',
-                        backgroundColor: 'rgba(75,192,192,1)',
-                        borderColor: 'rgba(0,0,0,1)',
-                        borderWidth: 2,
-                        data: this.state.options
-                      }
-                    ]
-                  }
+                  labels: this.state.barLabels,
+                  datasets: [
+                    {
+                      label: '% Occupancy tax',
+                      backgroundColor: 'rgb(255, 0, 0)',
+                      borderColor: 'rgba(0,0,0,1)',
+                      borderWidth: 2,
+                      data: this.state.barValues
+                    }
+                  ]
+                }
             }
             options={{
               title: {
                 display: true,
-                text: 'Average Rainfall per month',
+                text: 'Places occupancy percentage (%)',
                 fontSize: 20
               },
               legend: {
@@ -103,6 +103,46 @@ class Charts extends Component {
               }
             }}
           />
+          <Line
+          data={
+            this.state.barValues === ''
+              ? {
+                labels: this.props.charts_checkin.charts_checkin.labels,
+                datasets: [
+                  {
+                    label: 'Number of checkins',
+                    backgroundColor: 'rgba(75,192,192,1)',
+                    borderColor: 'rgba(0,0,0,1)',
+                    borderWidth: 2,
+                    data: this.props.charts_checkin.charts_checkin.data
+                  }
+                ]
+              }
+              : {
+                labels: this.state.lineLabels,
+                datasets: [
+                  {
+                    label: 'Number of checkins',
+                    backgroundColor: 'rgba(75,192,192,1)',
+                    borderColor: 'rgba(0,0,0,1)',
+                    borderWidth: 2,
+                    data: this.state.lineValues
+                  }
+                ]
+              }
+          }
+          options={{
+            title:{
+              display:true,
+              text:'Number of checkins by day',
+              fontSize:20
+            },
+            legend:{
+              display:true,
+              position:'right'
+            }
+          }}
+        />
         </div>
       </div>
     );
@@ -113,12 +153,14 @@ Charts.propTypes = {
   logoutUser: PropTypes.func.isRequired,
   auth: PropTypes.object.isRequired,
   charts_places: PropTypes.object.isRequired,
+  charts_checkin: PropTypes.object.isRequired,
   getOccupancy: PropTypes.func.isRequired,
   getCheckinDash: PropTypes.func.isRequired
 };
 const mapStateToProps = state => ({
   auth: state.auth,
-  charts_places: state.charts_places
+  charts_places: state.charts_places,
+  charts_checkin: state.charts_checkin
 });
 //connect to redux
 export default connect(mapStateToProps, {

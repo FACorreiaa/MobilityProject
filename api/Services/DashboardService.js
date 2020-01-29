@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const Places = mongoose.model('Places');
+const Rental = mongoose.model('Rentals');
 
 
 const getoccupancy = async function (req, res) {
@@ -35,5 +36,19 @@ const values = [];
   }
 };
 
+const getCheckinCount = async function () {
+  try {
+    return Rental.aggregate([
+      { $group: { _id: { date: {$dateToString: { format: "%Y-%m-%d", date: "$start.date" }} }, 
+                  count: { $sum: 1 } 
+                } 
+      },
+    ]);
+  } catch (e) {
+    return e;
+  }
+};
+
 
 module.exports.getoccupancy = getoccupancy;
+module.exports.getCheckinCount = getCheckinCount;
