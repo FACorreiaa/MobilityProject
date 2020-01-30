@@ -23,7 +23,7 @@ class Login extends Component {
     } */
     // If logged in and user navigates to Login page, should redirect them to dashboard
     if (this.props.auth.isAuthenticated) {
-      this.props.history.push('/searchVehicles');
+      this.props.history.push('/main');
     }
 
     if (
@@ -38,6 +38,32 @@ class Login extends Component {
       this.props.auth.user.role == 'admin'
     ) {
       this.props.history.push('/validateUsers');
+    }
+  }
+
+  componentWillReceiveProps(nextProps) {
+    /* if (!nextProps.auth.isAuthenticated) {
+      this.props.history.push('/places');
+    } */
+    if (nextProps.auth.isAuthenticated) {
+      this.props.history.push('/main'); // push user to dashboard when they login
+    }
+
+    if (
+      nextProps.auth.isAuthenticated &&
+      nextProps.auth.user.role == 'employee'
+    ) {
+      this.props.history.push('/notifyUsers'); // push user to dashboard when they login
+    }
+
+    if (nextProps.auth.isAuthenticated && nextProps.auth.user.role == 'admin') {
+      this.props.history.push('/validateUsers'); // push user to dashboard when they login
+    }
+
+    if (nextProps.errors) {
+      this.setState({
+        errors: nextProps.errors
+      });
     }
   }
 

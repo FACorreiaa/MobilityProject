@@ -20,10 +20,7 @@ class Clients extends Component {
       <>
         <ClientNav />
         <div style={{ textAlign: 'center' }}>
-          <h4>List of Vehicles</h4>
-          <p className='flow-text grey-text text-darken-1'>
-            Want to use one? Just check in now here!
-          </p>
+          <p className='flow-text grey-text text-darken-1'>List of Vehicles</p>
         </div>
         <Table centered='true' responsible='true'>
           <thead>

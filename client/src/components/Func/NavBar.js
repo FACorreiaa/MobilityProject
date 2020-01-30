@@ -49,6 +49,14 @@ export class NavBar extends Component {
                   <button onClick={this.onLogoutClick}>Logout</button>
                 </li>
               </ul>
+              <ul className='right'>
+                <li>
+                  <span style={{ display: 'flex' }}>
+                    {' '}
+                    <strong>Hey there, {user.username}</strong>
+                  </span>
+                </li>
+              </ul>
             </div>
           </nav>
         )}

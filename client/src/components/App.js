@@ -9,7 +9,6 @@ import Navbar from '../components/Navbar/Navbar';
 import Register from '../components/Auth/Register';
 import Login from '../components/Auth/Login';
 import PrivateRoute from '../components/PrivateRoute/PrivateRoute';
-import Dashboard from '../components/Dashboard/Dashboard';
 import Charts from '../components/Dashboard/Charts';
 import Places from '../components/Places/Places';
 import Clients from '../components/Clients/Clients';
@@ -22,7 +21,6 @@ import ValidateUsers from './Admin/ValidateUsers';
 import CheckParkingData from './Admin/CheckParkingData';
 import MapParkings from './Admin/MapParkings';
 import NotifyUsers from './Func/NotifyUsers';
-// Check for token to keep user logged in
 if (localStorage.jwtToken) {
   // Set auth token header auth
   const token = localStorage.jwtToken;
@@ -55,7 +53,6 @@ class App extends Component {
             <Route exact path='/searchVehicles' component={SearchVehicles} />
             <Switch>
               <PrivateRoute exact path='/charts' component={Charts} />
-              <PrivateRoute exact path='/dashboard' component={Dashboard} />
               <PrivateRoute exact path='/main' component={Clients} />
               <PrivateRoute exact path='/profile' component={Profile} />
               <PrivateRoute exact path='/balance' component={Balance} />

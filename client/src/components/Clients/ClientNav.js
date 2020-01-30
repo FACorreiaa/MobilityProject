@@ -9,13 +9,6 @@ export class ClientNav extends Component {
   onLogoutClick = e => {
     e.preventDefault();
     this.props.logoutUser();
-    //this.props.history.push('/searchVehicles');
-    return (
-      <Redirect
-        to={'/searchVehicles'}
-        state={this.props.auth.isAuthenticated === false}
-      />
-    );
   };
 
   render() {
@@ -57,6 +50,14 @@ export class ClientNav extends Component {
 
                 <li>
                   <button onClick={this.onLogoutClick}>Logout</button>
+                </li>
+              </ul>
+              <ul className='right'>
+                <li>
+                  <span style={{ display: 'flex' }}>
+                    {' '}
+                    <strong>Hey there, {user.username}</strong>
+                  </span>
                 </li>
               </ul>
             </div>
