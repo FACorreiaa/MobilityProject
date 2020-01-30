@@ -1,10 +1,4 @@
-import {
-  Map,
-  InfoWindow,
-  Marker,
-  GoogleApiWrapper,
-  Polygon
-} from 'google-maps-react';
+import { Map, Marker, GoogleApiWrapper, Polygon } from 'google-maps-react';
 import React, { Component } from 'react';
 
 export class MapContainer extends Component {
@@ -28,12 +22,10 @@ export class MapContainer extends Component {
   render() {
     const coords = this.props.initialCenter;
     const markerPositions = this.props.markerPositions;
-    const polygonPositions = this.props.polygonPositions;
     const style = this.props.style;
     const center = this.props.center;
     const paths = this.props.paths;
 
-    console.log(this.props);
     return (
       <Map
         google={this.props.google}

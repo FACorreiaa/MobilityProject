@@ -46,7 +46,6 @@ exports.register = async function(req, res) {
   newUser.email = req.body.email;
   newUser.dadosPassword = { hash: '', salt: '' };
   newUser.setDadosPassword(req.body.password);
-  newUser.role = req.body.role;
   newUser.save(err => {
     if (err) {
       res.status(500).json(err);

@@ -13,7 +13,7 @@ import {
 import Dropdown from 'react-dropdown';
 import 'react-dropdown/style.css';
 import ClientNav from './ClientNav';
-import { Button, Icon, Modal, Row, Col, Card } from 'react-materialize';
+import { Button, Icon } from 'react-materialize';
 import ReactNotification from 'react-notifications-component';
 import 'react-notifications-component/dist/theme.css';
 import { store } from 'react-notifications-component';
@@ -132,8 +132,6 @@ class Checkin extends Component {
     const { user } = this.props.auth;
     const { vehicles } = this.props.clients;
     const { methods } = this.props.clients;
-    const { consult } = this.props.clients;
-    const { notifiedUser } = this.props.clients;
 
     const getAvailables = vehicles.filter(
       vechicle => vechicle.available === true

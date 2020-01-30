@@ -11,21 +11,9 @@ class Profile extends Component {
     this.props.getVehicles();
   }
 
-  /* profile: {
-    age: Number,
-    street: String,
-    contact: String,
-    city: String,
-    education: String,
-    school: String,
-    bio: String
-  } */
-
   render() {
     const { user } = this.props.auth;
-    const { vehicles } = this.props.clients;
 
-    console.log(this.props);
     return (
       <>
         <ClientNav />

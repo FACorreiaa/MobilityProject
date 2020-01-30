@@ -7,7 +7,6 @@ export const updateNotifications = id => {
     return axios
       .put(`http://localhost:5002/api/v1/notify/${id}`)
       .then(user => {
-        console.log('USER' + user);
         return dispatch({
           type: NOTIFY_USER,
           payload: user

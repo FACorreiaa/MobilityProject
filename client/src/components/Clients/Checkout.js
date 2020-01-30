@@ -50,7 +50,6 @@ class Checkout extends Component {
     geocodeByAddress(address)
       .then(results => getLatLng(results[0]))
       .then(latLng => {
-        console.log('latlng' + latLng);
         this.setState({
           lat: latLng.lat,
           lng: latLng.lng,
@@ -110,7 +109,6 @@ class Checkout extends Component {
     const payment = {
       id: this.props.clients.checkout._id
     };
-    console.log(payment);
 
     this.props.updatePayment(payment.id);
 
@@ -201,7 +199,6 @@ class Checkout extends Component {
     if (this.state.lat !== '' && this.state.lng !== '') {
       center = { lat, lng };
     }
-    console.log(this.props);
 
     return (
       <div>
@@ -270,13 +267,7 @@ class Checkout extends Component {
             Checkout
             <Icon right>send</Icon>
           </Button>
-          {console.log('1' + this.props.clients.checkout.checkout)}
 
-          {console.log('2' + this.props.clients.checkout.paymentComplete)}
-          {console.log(
-            '3' + this.props.clients.checkout.checkout &&
-              this.props.clients.checkout.paymentComplete
-          )}
           {this.props.clients.checkout.checkout &&
           !this.props.clients.checkout.paymentComplete ? (
             <div>

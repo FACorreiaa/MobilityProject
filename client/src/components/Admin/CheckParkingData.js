@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { logoutUser } from '../../actions/authActions';
 import { getRentalData } from '../../actions/adminActions';
-import { Table, Button, Icon, Checkbox } from 'react-materialize';
+import { Table } from 'react-materialize';
 import Navbar from './NavBar';
 class CheckParkingData extends Component {
   componentDidMount() {
@@ -11,9 +11,6 @@ class CheckParkingData extends Component {
   }
 
   render() {
-    console.log(this.props);
-
-    const { user } = this.props.auth;
     const { rental } = this.props.rental;
     return (
       <div>

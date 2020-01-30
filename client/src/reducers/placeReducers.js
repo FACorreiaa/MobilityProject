@@ -1,7 +1,5 @@
 import { GET_PLACES, PLACES_LOADING } from '../actions/types';
 
-const isEmpty = require('is-empty');
-
 const initialState = {
   places: [],
   loading: false

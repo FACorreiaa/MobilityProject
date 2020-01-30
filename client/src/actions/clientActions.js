@@ -2,10 +2,7 @@ import axios from 'axios';
 
 import {
   GET_VEHICLES,
-  VEHICLES_LOADING,
   GET_ERRORS,
-  GET_USER,
-  USER_ERROR,
   GET_BALANCE,
   UPDATE_BALANCE,
   BALANCE_ERROR,

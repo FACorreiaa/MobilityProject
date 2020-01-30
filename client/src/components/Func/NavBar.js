@@ -20,7 +20,7 @@ export class NavBar extends Component {
 
   render() {
     const { user } = this.props.auth;
-    console.log('AUTH', this.props.auth);
+
     return (
       <div>
         {!this.props.auth.isAuthenticated ? (

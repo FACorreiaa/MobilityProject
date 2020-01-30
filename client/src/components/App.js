@@ -21,6 +21,8 @@ import ValidateUsers from './Admin/ValidateUsers';
 import CheckParkingData from './Admin/CheckParkingData';
 import MapParkings from './Admin/MapParkings';
 import NotifyUsers from './Func/NotifyUsers';
+import routesConfig from './PrivateRoute/routesConfig';
+
 if (localStorage.jwtToken) {
   // Set auth token header auth
   const token = localStorage.jwtToken;
@@ -45,32 +47,22 @@ class App extends Component {
       <Provider store={store}>
         <Router>
           <div className='App'>
+            {console.log(routesConfig)}
             <Navbar />
-            <Route exact path='/' component={SearchVehicles} />
-            <Route exact path='/register' component={Register} />
-            <Route exact path='/login' component={Login} />
-            <Route exact path='/places' component={Places} />
-            <Route exact path='/searchVehicles' component={SearchVehicles} />
-            <Switch>
-              <PrivateRoute exact path='/charts' component={Charts} />
-              <PrivateRoute exact path='/main' component={Clients} />
-              <PrivateRoute exact path='/profile' component={Profile} />
-              <PrivateRoute exact path='/balance' component={Balance} />
-              <PrivateRoute exact path='/checkin' component={CheckIn} />
-              <PrivateRoute exact path='/checkout' component={Checkout} />
 
-              <PrivateRoute
-                exact
-                path='/validateusers'
-                component={ValidateUsers}
-              />
-              <PrivateRoute
-                exact
-                path='/checkParkings'
-                component={CheckParkingData}
-              />
-              <PrivateRoute exact path='/marParkings' component={MapParkings} />
-              <PrivateRoute exact path='/notifyUsers' component={NotifyUsers} />
+            <Switch>
+              {routesConfig.routes.map(({ component, roles, url }) =>
+                roles.length ? (
+                  <PrivateRoute
+                    exact
+                    path={url}
+                    component={component}
+                    roles={roles}
+                  />
+                ) : (
+                  <Route exact path={url} component={component} />
+                )
+              )}
             </Switch>
           </div>
         </Router>

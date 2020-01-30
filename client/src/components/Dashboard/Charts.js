@@ -6,10 +6,8 @@ import { getOccupancy, getCheckinDash } from '../../actions/dashActions';
 import Pusher from 'pusher-js';
 import { Bar, Line } from 'react-chartjs-2';
 import { classes } from '../Contants/constants/graph';
-import { typo } from '../Contants/constants/typo';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
-import Typography from '@material-ui/core/Typography';
 import Navbar from '../Admin/NavBar';
 //Pusher.logToConsole = true;
 
@@ -37,7 +35,6 @@ class Charts extends Component {
     });
     occupancyChannel = pusher.subscribe('occupancy');
     occupancyChannel.bind('update-places', res => {
-      console.log('RES', res.datapointsArray);
       this.setState({
         barValues: res.datapointsArray.data,
         barLabels: res.datapointsArray.labels
@@ -54,9 +51,6 @@ class Charts extends Component {
   }
 
   render() {
-    console.log('this.props = ' + JSON.stringify(this.props.charts_places));
-    console.log('this.state = ' + JSON.stringify(this.state));
-    const { user } = this.props.auth;
     return (
       <>
         <div className={classes.root}>

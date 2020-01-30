@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { logoutUser } from '../../actions/authActions';
 import { updateNotifications, validUsers } from '../../actions/funcActions';
-import { Table, Button, Icon, Checkbox } from 'react-materialize';
+import { Table, Button, Checkbox } from 'react-materialize';
 import Navbar from './NavBar';
 class NotifyUsers extends Component {
   componentDidMount() {
@@ -28,9 +28,6 @@ class NotifyUsers extends Component {
       checkedItems: prevState.checkedItems.set(item, isChecked),
       item
     }));
-
-    console.log(this.state);
-    console.log(item);
   }
 
   updateUser = e => {
@@ -41,9 +38,6 @@ class NotifyUsers extends Component {
   };
 
   render() {
-    console.log(this.props);
-
-    const { user } = this.props.auth;
     const { validated } = this.props.validated;
     return (
       <div>

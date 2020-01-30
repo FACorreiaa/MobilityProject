@@ -41,7 +41,6 @@ exports.checkin = async function(req, res) {
     /* if (placeData.checkin === true && placeData.checkout === false) {
         return await res.json('YOU ALREADY CHECKED IN');
       } */
-    console.log('placeData' + placeData);
     let rental;
     let date = new Date();
     let rentalMethod = req.params.rentalMethod;
@@ -53,12 +52,6 @@ exports.checkin = async function(req, res) {
     if (error) {
       return await res.json(error);
     }
-    console.log(
-      placeData === null ||
-        placeData === undefined ||
-        (placeData.length === 0 && placeData.checkin === true)
-    );
-    console.log(placeData);
     if (
       placeData === null ||
       placeData === undefined ||
@@ -187,16 +180,12 @@ exports.payment = async function(req, res) {
     { upsert: true, new: true },
 
     async function(err, rental) {
-      console.log(rental);
       const timeSpentInMinutes = (rental.end.date - rental.start.date) / 60000;
       const timeSpentInHours = (rental.end.date - rental.start.date) / 3600000;
       const lat = rental.end.geometry.coordinates[0];
       const lon = rental.end.geometry.coordinates[1];
       const checker = await Place.comparePlaceWithFinalPlace(lat, lon);
       const query = { _id: rental.client };
-      console.log('CHECKER' + checker);
-      console.log('PLACE', place);
-      console.log(lat, lon); //40.73061 -73.935242
       rental.price = 1;
       if (rental.rentalMethod == 'minutes') {
         rental.finalCost = rental.price + timeSpentInMinutes * 0.15;
@@ -205,7 +194,6 @@ exports.payment = async function(req, res) {
           rental.finalCost = rental.price + timeSpentInMinutes * 0.15 - 0.5;
         } else {
           User.findOneAndUpdate(query, { $set: { validParking: false } });
-          console.log('CONSEGUI');
           rental.hasDiscount = false;
           rental.finalCost = rental.price + timeSpentInMinutes * 0.15;
         }
@@ -218,13 +206,10 @@ exports.payment = async function(req, res) {
           rental.finalCost = 10;
         else rental.finalCost = 25;
         if (checker.length > 0) {
-          console.log('HOURS');
           rental.hasDiscount = true;
           rental.finalCost = rental.finalCost - 0.5;
         } else {
           User.findOneAndUpdate(query, { $set: { validParking: false } });
-
-          console.log('CONSEGUI');
           rental.hasDiscount = false;
           rental.finalCost = rental.finalCost;
         }

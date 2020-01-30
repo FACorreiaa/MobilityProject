@@ -12,10 +12,7 @@ class Places extends Component {
   }
 
   render() {
-    console.log(this.props);
-
     const { user } = this.props.auth;
-    const { places } = this.props.places;
     const center = { lat: 41.53113384600326, lng: -8.619018495082855 };
     const position = { lat: 41.53113384600326, lng: -8.619018495082855 };
     const paths = [

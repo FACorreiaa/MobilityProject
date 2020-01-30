@@ -3,8 +3,6 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { logoutUser } from '../../actions/authActions';
 import { getPlaces } from '../../actions/placeActions';
-import { Navbar, NavItem, Icon } from 'react-materialize';
-import { Map, InfoWindow, GoogleApiWrapper, Marker } from 'google-maps-react';
 
 import ClientNav from './ClientNav';
 import MapContainer from './MapContainer';
@@ -32,9 +30,8 @@ class SearchVehicles extends Component {
       .then(results => getLatLng(results[0]))
       .then(latLng => {
         this.setState({ lat: latLng.lat, lng: latLng.lng });
-        console.log(this.state);
       })
-      .catch(error => console.error('Error', error));
+      .catch(error => error);
   };
 
   getCoords = () => {
@@ -49,19 +46,18 @@ class SearchVehicles extends Component {
   };
 
   render() {
-    console.log(this.state);
     const style = {
       height: '400px',
       width: '100%'
     };
 
     // center
-    const firstCenter = this.props.places.places.map(place => {
+    /* const firstCenter = this.props.places.places.map(place => {
       return {
         lat: place.center[0],
         lng: place.center[1]
       };
-    });
+    }); */
 
     const initialCenter = this.getCoords();
     //marker
@@ -71,7 +67,6 @@ class SearchVehicles extends Component {
         lng: place.center[1]
       };
     });
-    console.log(centers);
 
     const polygon = this.props.places.places.map(place => {
       return place.location.coordinates.map(values =>
@@ -80,8 +75,6 @@ class SearchVehicles extends Component {
         })
       );
     });
-
-    console.log('POLYGON', polygon[0]);
 
     const paths = polygon[0];
 

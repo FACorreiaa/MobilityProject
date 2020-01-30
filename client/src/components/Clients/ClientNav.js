@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Link, Redirect } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
@@ -13,7 +13,7 @@ export class ClientNav extends Component {
 
   render() {
     const { user } = this.props.auth;
-    console.log('AUTH', this.props.auth);
+
     return (
       <div>
         {!this.props.auth.isAuthenticated ? (
