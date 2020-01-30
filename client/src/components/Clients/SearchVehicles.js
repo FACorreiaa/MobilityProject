@@ -83,30 +83,7 @@ class SearchVehicles extends Component {
 
     console.log('POLYGON', polygon[0]);
 
-    //for (let i = 0; i < centers.length; i++) position = centers[i];
-    //const position = centers[1];
-    //console.log('centers', ...centers);
-
-    //polygon
-    /* const paths = [
-      { lat: 41.53113384600326, lng: -8.619018495082855 },
-      { lat: 41.53113384600326, lng: -8.61851692199707 },
-      { lat: 41.53129447698251, lng: -8.61851692199707 },
-      { lat: 41.53129447698251, lng: -8.619018495082855 },
-      { lat: 41.53113384600326, lng: -8.619018495082855 }
-    ]; */
     const paths = polygon[0];
-
-    /* const paths = this.props.places.places.map(place => {
-      return place.location.coordinates
-        .map((c, i) => {
-          return c.map(x => ({
-            lat: x[i],
-            lng: x[i]
-          }));
-        })
-        .flat();
-    }); */
 
     //center
     let lat = this.state.lat;
