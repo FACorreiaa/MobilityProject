@@ -73,18 +73,29 @@ class SearchVehicles extends Component {
     });
     console.log(centers);
 
+    const polygon = this.props.places.places.map(place => {
+      return place.location.coordinates.map(values =>
+        values.map(data => {
+          return { lat: data[0], lng: data[1] };
+        })
+      );
+    });
+
+    console.log('POLYGON', polygon[0]);
+
     //for (let i = 0; i < centers.length; i++) position = centers[i];
     //const position = centers[1];
     //console.log('centers', ...centers);
 
     //polygon
-    const paths = [
+    /* const paths = [
       { lat: 41.53113384600326, lng: -8.619018495082855 },
       { lat: 41.53113384600326, lng: -8.61851692199707 },
       { lat: 41.53129447698251, lng: -8.61851692199707 },
       { lat: 41.53129447698251, lng: -8.619018495082855 },
       { lat: 41.53113384600326, lng: -8.619018495082855 }
-    ];
+    ]; */
+    const paths = polygon[0];
 
     /* const paths = this.props.places.places.map(place => {
       return place.location.coordinates
@@ -97,7 +108,6 @@ class SearchVehicles extends Component {
         .flat();
     }); */
 
-    console.log('t', JSON.stringify(paths));
     //center
     let lat = this.state.lat;
     let lng = this.state.lng;
