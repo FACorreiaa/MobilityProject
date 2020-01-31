@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
@@ -9,6 +9,7 @@ export class ClientNav extends Component {
   onLogoutClick = e => {
     e.preventDefault();
     this.props.logoutUser();
+    return <Redirect to='/searchVehicles' />;
   };
 
   render() {

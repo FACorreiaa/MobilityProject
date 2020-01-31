@@ -6,18 +6,9 @@ const logger = require('morgan');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const cors = require('cors');
-const vehicleRouter = require('../api_vehicle/Routes/vehicleRoute');
-const placeRouter = require('../api_place/Routes/placeRouter');
-const authRouter = require('../api_auth/Routes/authenticationRoute');
-const rentalRouter = require('../api_rental/Routes/rentalRouter');
-const userRouter = require('../api_user/Routes/userRoute');
-const DashboardRouter = require('../api_dash/Routes/DashboardRoute');
-const Place = require('../api_place/Models/PlaceModel');
-require('../api_vehicle/Models/VehicleModel');
-const Rental = require('../api_rental/Models/RentalModel');
-require('../api_user/Models/UserModel');
+const vehicleRouter = require('./src/Routes/vehicleRoute');
+require('./src/Models/VehicleModel');
 
-const dashController = require('../api_dash/Controllers/Dashboard');
 const app = express();
 const port = process.env.PORT || 8000;
 const server = require('http').Server(app);
@@ -47,8 +38,8 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use(express.static(path.join(__dirname, 'public')));
-server.listen(port, () => {
-  console.log('App is running on port ' + port);
+server.listen(process.env.PORT, () => {
+  console.log('App is running on port ' + process.env.PORT);
 });
 
 const jwt = require('express-jwt');
@@ -78,37 +69,9 @@ mongoose.connection
   .on('error', error => console.log('Error connecting to MongoLab:', error))
   .once('open', () => {
     console.log('Connected to MongoLab instance.');
-
-    const placeCollection = mongoose.connection.collection('Places');
-    const placeStream = placeCollection.watch();
-
-    placeStream.on('change', change => {
-      console.log('change = ' + JSON.stringify(change));
-      if (
-        (change.operationType === 'update') |
-        (change.operationType === 'replace')
-      )
-        dashController.set_occupancy_trigger();
-    });
-
-    const rentalCollection = mongoose.connection.collection('Rentals');
-    const rentalStream = rentalCollection.watch();
-
-    rentalStream.on('change', change => {
-      console.log('change = ' + JSON.stringify(change));
-      if (change.operationType === 'insert')
-        dashController.setCheckinByDayTrigger();
-    });
   });
 
-Place.createIndexes();
-Rental.createIndexes();
 vehicleRouter(app);
-placeRouter(app);
-authRouter(app);
-rentalRouter(app);
-DashboardRouter(app);
-userRouter(auth, app);
 
 module.exports = app;
 

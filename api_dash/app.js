@@ -6,18 +6,10 @@ const logger = require('morgan');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const cors = require('cors');
-const vehicleRouter = require('../api_vehicle/Routes/vehicleRoute');
-const placeRouter = require('../api_place/Routes/placeRouter');
-const authRouter = require('../api_auth/Routes/authenticationRoute');
-const rentalRouter = require('../api_rental/Routes/rentalRouter');
-const userRouter = require('../api_user/Routes/userRoute');
-const DashboardRouter = require('../api_dash/Routes/DashboardRoute');
-const Place = require('../api_place/Models/PlaceModel');
-require('../api_vehicle/Models/VehicleModel');
-const Rental = require('../api_rental/Models/RentalModel');
-require('../api_user/Models/UserModel');
-
-const dashController = require('../api_dash/Controllers/Dashboard');
+const Place = require('./src/Models/PlaceModel');
+const Rental = require('./src/Models/RentalModel');
+const DashboardRouter = require('./src/Routes/DashboardRoute');
+const dashController = require('./src/Controllers/Dashboard');
 const app = express();
 const port = process.env.PORT || 8000;
 const server = require('http').Server(app);
@@ -47,8 +39,8 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use(express.static(path.join(__dirname, 'public')));
-server.listen(port, () => {
-  console.log('App is running on port ' + port);
+server.listen(process.env.PORT, () => {
+  console.log('App is running on port ' + process.env.PORT);
 });
 
 const jwt = require('express-jwt');
@@ -103,12 +95,7 @@ mongoose.connection
 
 Place.createIndexes();
 Rental.createIndexes();
-vehicleRouter(app);
-placeRouter(app);
-authRouter(app);
-rentalRouter(app);
 DashboardRouter(app);
-userRouter(auth, app);
 
 module.exports = app;
 
@@ -140,4 +127,4 @@ let options = {
 };
 
 expressSwagger(options);
-app.listen(5001);
+app.listen(5041);

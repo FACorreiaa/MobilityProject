@@ -1,0 +1,55 @@
+version: '3'
+services:
+  api_dash:
+    image: dbwebapp_image
+    container_name: dash
+    build: './api_dash'
+    restart: unless-stopped
+    ports:
+      - '6005:4001'
+
+  api_place:
+    image: dbwebapp_image
+    container_name: place
+    build: './api_place'
+    restart: unless-stopped
+    ports:
+      - '6004:4001'
+
+  api_rental:
+    image: dbwebapp_image
+    container_name: rental
+    build: './api_rental'
+    restart: unless-stopped
+    ports:
+      - '6003:4001'
+
+  api_user:
+    image: dbwebapp_image
+    container_name: user
+    build: './api_user'
+    restart: unless-stopped
+    ports:
+      - '6002:4001'
+
+  api_vehicle:
+    image: dbwebapp_image
+    container_name: vehicle
+    build: './api_vehicle'
+    restart: unless-stopped
+    ports:
+      - '6001:4001'
+
+  nginx:
+    image: nginx:latest
+    ports:
+      - '8080:8080'
+    volumes:
+      - ./web/public:/srv/www/static
+      - ./default.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - api_user
+      - api_vehicle
+      - api_dash
+      - api_place
+      - api_rental

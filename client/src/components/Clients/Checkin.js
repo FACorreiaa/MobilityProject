@@ -134,12 +134,11 @@ class Checkin extends Component {
     const { user } = this.props.auth;
     const { vehicles } = this.props.clients;
     const { methods } = this.props.clients;
-
+    const rental = methods;
     const getAvailables = vehicles.filter(
       vechicle => vechicle.available === true
     );
 
-    const rental = methods.map(m => m.rentalMethod);
     const defaultVehicleOption = this.state.vehicle;
     const defaultMethodOption = this.state.rentalMethod;
 
