@@ -15,7 +15,7 @@
     "client": "npm start --prefix client --port 3001",
     "dev": "concurrently \"npm run server\" \"npm run client\"",
     "stop-linux": "killall node",
-    "commit": "npx git-cz"
+    "commit": "sudo git add . && npx git-cz && sudo git push origin master"
   },
   "dependencies": {
     "@material-ui/core": "^4.9.0",
