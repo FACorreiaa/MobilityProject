@@ -1,7 +1,20 @@
 module.exports = function(app) {
   const routePlace = require('../Controllers/Place');
 
-  //deixar
+    /**
+   * @route POST /api/v1/place
+   * @group Places
+   * @summary Insert new Parking place
+   * @returns {Array} 200
+   * @returns {Error}  500
+   */
+   /**
+   * @route GET /api/v1/place
+   * @group Places
+   * @summary List all places
+   * @returns {Array} 200
+   * @returns {Error}  500
+   */
   app
     .route('/api/v1/place')
     .post(routePlace.newPlace)

@@ -23,7 +23,7 @@ class Dashboard extends Component {
               <b>Hey there,</b> {user.username}
               <p className='flow-text grey-text text-darken-1'>
                 You are logged into a full-stack{' '}
-                <span style={{ fontFamily: 'monospace' }}>MERN</span> app 👏
+                <span style={{ fontFamily: 'monospace' }}>MOBILITY CITY</span> app 👏
               </p>
             </h4>
             <button

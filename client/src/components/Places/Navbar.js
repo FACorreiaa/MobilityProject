@@ -7,7 +7,7 @@ export default function NavBar() {
       <nav style={{ fontFamily: 'monospace' }}>
         <div className='nav-wrapper'>
           <a href='#' className='brand-logo right'>
-            MERN
+          MOBILITY CITY
           </a>
           <ul id='nav-mobile' className='center hide-on-med-and-down'>
             <li>

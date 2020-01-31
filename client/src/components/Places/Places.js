@@ -64,7 +64,7 @@ class Places extends Component {
                 ? 'Guest'
                 : user.username}
               <p className='flow-text grey-text text-darken-1'>
-                <span style={{ fontFamily: 'monospace' }}>MERN</span> app 👏
+                <span style={{ fontFamily: 'monospace' }}>MOBILITY CITY</span> app 👏
               </p>
               <b>Check our places</b>
               <p>Or Register here to have full access</p>

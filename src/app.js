@@ -89,8 +89,7 @@ mongoose.connection
 
     placeStream.on('change', (change) => {
       console.log('change = '+ JSON.stringify(change));
-      if(change.operationType === 'update' | change.operationType === 'replace')
-        
+     
       dashController.set_occupancy_trigger();
     });
 
@@ -99,8 +98,7 @@ mongoose.connection
 
     rentalStream.on('change', (change) => {
       console.log('change = '+ JSON.stringify(change));
-      if(change.operationType === 'insert')
-        
+      
       dashController.setCheckinByDayTrigger();
     });
 
@@ -145,6 +143,6 @@ let options = {
   basedir: __dirname, //app absolute path
   files: ['../api/Routes/**.js', '../api/Models/**.js'] //Path to the API handle folder
 };
-
+//http://localhost:5001/api-docs
 expressSwagger(options);
 app.listen(5001);
