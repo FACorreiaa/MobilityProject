@@ -7,10 +7,8 @@ exports.getUsers = function(req, res) {
   validateAdminAuth(req, res, (req, res, utilizadorId) => {
     User.find({}, function(error, users) {
       if (error) {
-        console.log(err);
         return res.json(error);
       }
-      //console.log(users);
       return res.json(users);
     });
   });
@@ -40,10 +38,8 @@ exports.getValidUsers = function(req, res) {
 // "waitValidation = false"
 // insert new client
 exports.validateUser = function(req, res) {
-  /* validateAdminAuth(req, res, (req, res, utilizadorId) => {
-    console.log('utilizadorId:' + utilizadorId); */
   let userId = req.params.userId;
-  console.log(userId);
+
   User.updateMany(
     { _id: req.params.id },
     {

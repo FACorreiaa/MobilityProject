@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Link, Redirect } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
@@ -14,7 +14,7 @@ export class NavBar extends Component {
 
   render() {
     const { user } = this.props.auth;
-    console.log('AUTH', this.props.auth);
+
     return (
       <div>
         {!this.props.auth.isAuthenticated ? (
@@ -33,8 +33,6 @@ export class NavBar extends Component {
         ) : (
           <nav style={{ fontFamily: 'monospace' }}>
             <div className='nav-wrapper'>
-              {/*             <b>Hey there,</b> {user.username}
-               */}{' '}
               <ul id='nav-mobile' className='center hide-on-med-and-down'>
                 <li>
                   <Link to='/validateUsers'>Validate Users</Link>
@@ -50,6 +48,14 @@ export class NavBar extends Component {
                 </li>
                 <li>
                   <button onClick={this.onLogoutClick}>Logout</button>
+                </li>
+              </ul>
+              <ul className='right'>
+                <li>
+                  <span style={{ display: 'flex' }}>
+                    {' '}
+                    <strong>Hey there, {user.username}</strong>
+                  </span>
                 </li>
               </ul>
             </div>

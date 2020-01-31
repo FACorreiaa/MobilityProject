@@ -3,7 +3,9 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { logoutUser } from '../../actions/authActions';
 import { getValidUsers, updateUsers } from '../../actions/adminActions';
-import { Table, Button, Icon, Checkbox } from 'react-materialize';
+import { Table, Button, Checkbox } from 'react-materialize';
+import Typography from '@material-ui/core/Typography';
+import { typo } from '../Contants/constants/typo';
 import Navbar from './NavBar';
 class ValidateUsers extends Component {
   componentDidMount() {
@@ -28,9 +30,6 @@ class ValidateUsers extends Component {
       checkedItems: prevState.checkedItems.set(item, isChecked),
       item
     }));
-
-    console.log(this.state);
-    console.log(item);
   }
 
   updateUser = e => {
@@ -46,12 +45,8 @@ class ValidateUsers extends Component {
   };
 
   render() {
-    console.log(this.props);
-
-    const { user } = this.props.auth;
-    const { places } = this.props.clients;
     const { validUsers } = this.props.validUsers;
-    console.log(validUsers);
+
     return (
       <div>
         <Navbar />
@@ -64,37 +59,44 @@ class ValidateUsers extends Component {
               <th data-field='valid'>Validate</th>
             </tr>
           </thead>
-          {validUsers.map(user => (
-            <tbody key={user._id}>
-              <tr>
-                <td>{user.role}</td>
-                <td>{user.username}</td>
-                <td>{user.email}</td>
-                <td>
-                  <Checkbox
-                    style={{ margin: '1em' }}
-                    id={user._id}
-                    label=''
-                    value='Red'
-                    onChange={this.handleChange}
-                    checked={this.state.checkedItems.get(user._id)}
-                    onChange={this.handleChange}
-                  />
-                  <Button
-                    node='a'
-                    small
-                    style={{
-                      marginRight: '5px',
-                      marginBottom: '1.6em'
-                    }}
-                    onClick={this.updateUser}
-                  >
-                    Validate
-                  </Button>
-                </td>
-              </tr>
-            </tbody>
-          ))}
+          {validUsers.length > 0 ? (
+            validUsers.map(user => (
+              <tbody key={user._id}>
+                <tr>
+                  <td>{user.role}</td>
+                  <td>{user.username}</td>
+                  <td>{user.email}</td>
+                  <td>
+                    <Checkbox
+                      style={{ margin: '1em' }}
+                      id={user._id}
+                      label=''
+                      value='Red'
+                      onChange={this.handleChange}
+                      checked={this.state.checkedItems.get(user._id)}
+                    />
+                    <Button
+                      node='a'
+                      small
+                      style={{
+                        marginRight: '5px',
+                        marginBottom: '1.6em'
+                      }}
+                      onClick={this.updateUser}
+                    >
+                      Validate
+                    </Button>
+                  </td>
+                </tr>
+              </tbody>
+            ))
+          ) : (
+            <div style={{ textAlign: 'left' }}>
+              <Typography className={typo.root} variant='h6' gutterBottom>
+                No users to validate!
+              </Typography>
+            </div>
+          )}
         </Table>
       </div>
     );

@@ -20,7 +20,7 @@ export class NavBar extends Component {
 
   render() {
     const { user } = this.props.auth;
-    console.log('AUTH', this.props.auth);
+
     return (
       <div>
         {!this.props.auth.isAuthenticated ? (
@@ -47,6 +47,14 @@ export class NavBar extends Component {
                 </li>
                 <li>
                   <button onClick={this.onLogoutClick}>Logout</button>
+                </li>
+              </ul>
+              <ul className='right'>
+                <li>
+                  <span style={{ display: 'flex' }}>
+                    {' '}
+                    <strong>Hey there, {user.username}</strong>
+                  </span>
                 </li>
               </ul>
             </div>

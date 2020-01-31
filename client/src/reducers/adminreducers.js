@@ -5,8 +5,6 @@ import {
   GET_RENTAL_DATA
 } from '../actions/types';
 
-const isEmpty = require('is-empty');
-
 const initialState = {
   isAuthenticated: false,
   user: {},

@@ -30,7 +30,7 @@ class Balance extends Component {
 
   getItems = () => {
     const balanceValue = this.props.clients.balance.balance;
-    console.log('balanceValue', balanceValue);
+
     if (balanceValue < 5) {
       return (
         <div className='app-container'>
@@ -56,7 +56,7 @@ class Balance extends Component {
   onclick(type) {
     this.setState(prevState => {
       return {
-        balance: type == 'add' ? prevState.balance + 1 : prevState.balance - 1
+        balance: type === 'add' ? prevState.balance + 1 : prevState.balance - 1
       };
     });
   }

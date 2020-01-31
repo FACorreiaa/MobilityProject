@@ -1,11 +1,6 @@
 import axios from 'axios';
 
-import {
-  GET_CHARTS_PLACES,
-  GET_ERRORS,
-  GET_CHECKIN_DASH,
-  GET_OCCUPANCY
-} from './types';
+import { GET_CHARTS_PLACES, GET_ERRORS, GET_CHECKIN_DASH } from './types';
 
 //see dashboard charts
 export const getOccupancy = () => {
@@ -21,8 +16,8 @@ export const getOccupancy = () => {
           values[i] = place.occupancy;
         }
         let charts_places = {
-        "labels": labels,
-        "data": values
+          labels: labels,
+          data: values
         };
         return dispatch({
           type: GET_CHARTS_PLACES,
@@ -53,8 +48,8 @@ export const getCheckinDash = () => {
         }
 
         let charts_checkin = {
-          "labels": labels,
-          "data": values
+          labels: labels,
+          data: values
         };
         return dispatch({
           type: GET_CHECKIN_DASH,

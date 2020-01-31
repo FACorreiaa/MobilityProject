@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Link, Redirect } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
@@ -9,18 +9,11 @@ export class ClientNav extends Component {
   onLogoutClick = e => {
     e.preventDefault();
     this.props.logoutUser();
-    //this.props.history.push('/searchVehicles');
-    return (
-      <Redirect
-        to={'/searchVehicles'}
-        state={this.props.auth.isAuthenticated === false}
-      />
-    );
   };
 
   render() {
     const { user } = this.props.auth;
-    console.log('AUTH', this.props.auth);
+
     return (
       <div>
         {!this.props.auth.isAuthenticated ? (
@@ -57,6 +50,14 @@ export class ClientNav extends Component {
 
                 <li>
                   <button onClick={this.onLogoutClick}>Logout</button>
+                </li>
+              </ul>
+              <ul className='right'>
+                <li>
+                  <span style={{ display: 'flex' }}>
+                    {' '}
+                    <strong>Hey there, {user.username}</strong>
+                  </span>
                 </li>
               </ul>
             </div>

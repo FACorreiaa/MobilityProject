@@ -60,7 +60,6 @@ PlaceSchema.statics.comparePlaceWithFinalPlace = async function(lat, lon) {
     },
     async function(error, places) {
       if (error) {
-        console.log('ERRRRRRRRRRRR', error);
         return await error;
       }
       if (places) {

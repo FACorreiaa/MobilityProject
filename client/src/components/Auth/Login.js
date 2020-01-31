@@ -4,7 +4,6 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { loginUser } from '../../actions/authActions';
 import classnames from 'classnames';
-import { Redirect } from 'react-router-dom';
 
 class Login extends Component {
   constructor() {
@@ -23,7 +22,7 @@ class Login extends Component {
     } */
     // If logged in and user navigates to Login page, should redirect them to dashboard
     if (this.props.auth.isAuthenticated) {
-      this.props.history.push('/searchVehicles');
+      this.props.history.push('/main');
     }
 
     if (
@@ -41,17 +40,53 @@ class Login extends Component {
     }
   }
 
+  componentWillReceiveProps(nextProps) {
+    /* if (!nextProps.auth.isAuthenticated) {
+      this.props.history.push('/places');
+    } */
+    if (nextProps.auth.isAuthenticated) {
+      this.props.history.push('/main'); // push user to dashboard when they login
+    }
+
+    if (
+      nextProps.auth.isAuthenticated &&
+      nextProps.auth.user.role == 'employee'
+    ) {
+      this.props.history.push('/notifyUsers'); // push user to dashboard when they login
+    }
+
+    if (nextProps.auth.isAuthenticated && nextProps.auth.user.role == 'admin') {
+      this.props.history.push('/validateUsers'); // push user to dashboard when they login
+    }
+
+    if (nextProps.errors) {
+      this.setState({
+        errors: nextProps.errors
+      });
+    }
+  }
+
   onChange = e => {
     this.setState({ [e.target.id]: e.target.value });
   };
   onSubmit = e => {
+    let { from } = this.props.location.state || { from: { pathname: '/' } };
     e.preventDefault();
     const userData = {
       username: this.state.username,
       password: this.state.password
     };
-    console.log(userData);
+
     this.props.loginUser(userData);
+    //
+    if (this.props.auth.user.role === 'client') {
+      this.props.history.replace(from);
+    }
+    if (this.props.auth.user.role == 'admin') {
+      this.props.history.push('/marParkings');
+    } else if (this.props.auth.user.role == 'employee') {
+      this.props.history.push('/notifyUsers'); // push user to dashboard when they login
+    }
   };
   render() {
     const { errors } = this.state;

@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { logoutUser } from '../../actions/authActions';
 import { getRentalData } from '../../actions/adminActions';
-import { Table, Button, Icon, Checkbox } from 'react-materialize';
 import MapContainer from '../Clients/MapContainer';
 import { getPlaces } from '../../actions/placeActions';
 import { classes } from '../Contants/constants/graph';
@@ -35,8 +34,8 @@ class MapParkings extends Component {
   };
 
   render() {
-    const { user } = this.props.auth;
-    const { rental } = this.props.rental;
+    /*     const { user } = this.props.auth;
+     */ const { rental } = this.props.rental;
 
     //teste
     /*  const firstCenter = this.props.places.places.map(place => {
@@ -45,14 +44,14 @@ class MapParkings extends Component {
         lng: place.center[1]
       };
     }); */
-    const firstCenter = this.props.places.places.map(place => {
+    /* const firstCenter = this.props.places.places.map(place => {
       return {
         lat: place.center[0],
         lng: place.center[1]
       };
-    });
-    let coords = { ...firstCenter[0] };
-
+    }); */
+    /*     let coords = { ...firstCenter[0] };
+     */
     let initialCenter = this.getCoords();
 
     const style = {
@@ -65,7 +64,7 @@ class MapParkings extends Component {
         lng: r.end.geometry.coordinates[1]
       };
     });
-    console.log(centers);
+
     return (
       <div>
         <Navbar />
