@@ -101,7 +101,6 @@ userRouter(app);
 
 module.exports = app;
 
-/*
 const expressSwagger = require('express-swagger-generator')(app);
 
 //SWAGGER
@@ -131,4 +130,3 @@ let options = {
 //http://localhost:5001/api-docs
 expressSwagger(options);
 app.listen(5001);
-*/
