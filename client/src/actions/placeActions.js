@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 import { GET_PLACES, PLACES_LOADING, GET_ERRORS } from './types';
-let apiUrl = 'http://localhost:5002/api/v1/place';
+let apiUrl = `${REACT_APP_HOST}:${REACT_APP_PORT}/api/v1/place`;
 
 export const getPlaces = () => {
   return dispatch => {

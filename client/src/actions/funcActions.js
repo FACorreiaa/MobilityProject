@@ -5,7 +5,7 @@ import { NOTIFY_USER, UPDATE_ERROS, GET_VALID_USERS } from './types';
 export const updateNotifications = id => {
   return dispatch => {
     return axios
-      .put(`http://localhost:5002/api/v1/notify/${id}`)
+      .put(`${REACT_APP_HOST}:${REACT_APP_PORT}/api/v1/notify/${id}`)
       .then(user => {
         return dispatch({
           type: NOTIFY_USER,
@@ -25,7 +25,7 @@ export const updateNotifications = id => {
 export const validUsers = () => {
   return dispatch => {
     return axios
-      .get('http://localhost:5002/api/v1/users/func/validUsers')
+      .get(`${REACT_APP_HOST}:${REACT_APP_PORT}/api/v1/users/func/validUsers`)
       .then(validated => {
         return dispatch({
           type: GET_VALID_USERS,
