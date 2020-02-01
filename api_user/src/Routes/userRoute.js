@@ -45,7 +45,7 @@ module.exports = function(app) {
 
   
   /**
-   * @route GET /users/:id/validation/:userId
+   * @route PUT /users/:id/validation/:userId
    * @group Users - Operations about users
    * @summary Validates user
    * @param {string} id.param.required

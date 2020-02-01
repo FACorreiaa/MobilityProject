@@ -51,9 +51,6 @@ const auth = jwt({
 
 //BD SETUP
 const MONGO_URI = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0-krbnl.mongodb.net/MobilityProject?retryWrites=true&w=majority`;
-//const MONGO_URI = 'mongodb://localhost:27017/MobilityProject';
-
-//mongoose.connect('mongodb://localhost/Mobility');
 
 mongoose.Promise = global.Promise;
 
@@ -70,18 +67,6 @@ mongoose.connection
   .on('error', error => console.log('Error connecting to MongoLab:', error))
   .once('open', () => {
     console.log('Connected to MongoLab instance.');
-
-    const placeCollection = mongoose.connection.collection('Places');
-    const placeStream = placeCollection.watch();
-
-    placeStream.on('change', change => {
-      console.log('change = ' + JSON.stringify(change));
-      if (
-        (change.operationType === 'update') |
-        (change.operationType === 'replace')
-      )
-        dashController.set_occupancy_trigger();
-    });
   });
 
 Place.createIndexes();
@@ -99,7 +84,7 @@ let options = {
       title: 'Swagger',
       version: '1.0.0'
     },
-    host: 'localhost:8000',
+    host: '',
     basePath: '/api/v1/',
     produces: ['application/json', 'application/xml'],
     schemes: ['http', 'https'],
@@ -113,8 +98,10 @@ let options = {
     }
   },
   basedir: __dirname, //app absolute path
-  files: ['../api/Routes/**.js', '../api/Models/**.js'] //Path to the API handle folder
+  files: ['./src/Routes/**.js', './src/Models/**.js'] //Path to the API handle folder
 };
 
 expressSwagger(options);
-app.listen(5031);
+app.listen(process.env.SWAGGER_PORT, () => {
+  console.log('SWAGGER is running on port ' + process.env.SWAGGER_PORT);
+});

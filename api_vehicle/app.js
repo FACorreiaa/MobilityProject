@@ -99,7 +99,7 @@ let options = {
     }
   },
   basedir: __dirname, //app absolute path
-  files: ['../api/Routes/**.js', '../api/Models/**.js'] //Path to the API handle folder
+  files: ['../api_vehicle/src/Routes/**.js', '../api_vehicle/src/Models/**.js'] //Path to the API handle folder
 };
 
 expressSwagger(options);

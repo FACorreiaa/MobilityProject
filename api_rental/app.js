@@ -56,9 +56,6 @@ const auth = jwt({
 
 //BD SETUP
 const MONGO_URI = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0-krbnl.mongodb.net/MobilityProject?retryWrites=true&w=majority`;
-//const MONGO_URI = 'mongodb://localhost:27017/MobilityProject';
-
-//mongoose.connect('mongodb://localhost/Mobility');
 
 mongoose.Promise = global.Promise;
 
@@ -93,7 +90,7 @@ let options = {
       title: 'Swagger',
       version: '1.0.0'
     },
-    host: 'localhost:8000',
+    host: '',
     basePath: '/api/v1/',
     produces: ['application/json', 'application/xml'],
     schemes: ['http', 'https'],
@@ -107,8 +104,10 @@ let options = {
     }
   },
   basedir: __dirname, //app absolute path
-  files: ['../api/Routes/**.js', '../api/Models/**.js'] //Path to the API handle folder
+  files: ['./src/Routes/**.js', './src/Models/**.js'] //Path to the API handle folder
 };
 
 expressSwagger(options);
-app.listen(5021);
+app.listen(process.env.SWAGGER_PORT, () => {
+  console.log('SWAGGER is running on port ' + process.env.SWAGGER_PORT);
+});
