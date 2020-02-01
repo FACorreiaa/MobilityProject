@@ -1,0 +1,9 @@
+version: "3"
+services:
+  api_dash:
+    image: dbwebapp_image
+    container_name: dash
+    build: "./api_dash"
+    restart: unless-stopped
+    ports:
+      - "6005:4001"

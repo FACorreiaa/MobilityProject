@@ -1,8 +1,8 @@
 FROM node:10-slim
 
-COPY . /api_place
+COPY . /app
 
-WORKDIR /api_place
+WORKDIR /app
 
 RUN npm install --production
 

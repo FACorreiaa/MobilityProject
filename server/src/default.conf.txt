@@ -1,14 +1,26 @@
-version: '3'
-services:
-  api_dash:
-    image: dbwebapp_image
-    container_name: dash
-    build: './api_dash'
-    restart: unless-stopped
-    ports:
-      - '6005:4001'
+server {
+  listen 8080;
+  root /srv/www/static;
 
-  api_place:
+  location /api/v1/vehicle {
+    proxy_pass http://vehicle:4001;
+  }
+  location /api/v1/user {
+    proxy_pass http://user:4001;
+  }
+  location /api/v1/rental {
+    proxy_pass http://rental:4001;
+  }
+  location /api/v1/place {
+    proxy_pass http://place:4001;
+  }
+  location /api/v1/dash {
+    proxy_pass http://dash:4001;
+  }
+}
+
+
+api_place:
     image: dbwebapp_image
     container_name: place
     build: './api_place'
