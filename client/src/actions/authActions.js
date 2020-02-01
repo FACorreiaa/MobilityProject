@@ -7,7 +7,10 @@ import { GET_ERRORS, USER_LOADING, SET_CURRENT_USER } from './types';
 //Register user
 export const registerUser = (userData, history) => dispatch => {
   axios
-    .post(`${REACT_APP_HOST}:${REACT_APP_PORT}/api/v1/register`, userData)
+    .post(
+      `${process.env.REACT_APP_HOST}:${process.env.REACT_APP_PORT}/api/v1/register`,
+      userData
+    )
     .then(res => history.push('/login'))
     .catch(err =>
       dispatch({
@@ -20,7 +23,10 @@ export const registerUser = (userData, history) => dispatch => {
 //login
 export const loginUser = userData => dispatch => {
   axios
-    .post(`${REACT_APP_HOST}:${REACT_APP_PORT}/api/v1/login`, userData)
+    .post(
+      `${process.env.REACT_APP_HOST}:${process.env.REACT_APP_PORT}/api/v1/login`,
+      userData
+    )
     .then(res => {
       //Save to localstorage
       //Set token to localStorage

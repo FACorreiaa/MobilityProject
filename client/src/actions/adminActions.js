@@ -12,7 +12,7 @@ export const getValidUsers = () => {
   return dispatch => {
     return axios
       .get(
-        `${REACT_APP_HOST}:${REACT_APP_PORT}/api/v1/users/admin/waitvalidation`
+        `${process.env.REACT_APP_HOST}:${process.env.REACT_APP_PORT}/api/v1/users/admin/waitvalidation`
       )
       .then(validUsers => {
         return dispatch({
@@ -34,7 +34,7 @@ export const updateUsers = (id, userId) => {
   return dispatch => {
     return axios
       .put(
-        `${REACT_APP_HOST}:${REACT_APP_PORT}/api/v1/users/${id}/validation/${userId}`
+        `${process.env.REACT_APP_HOST}:${process.env.REACT_APP_PORT}/api/v1/users/${id}/validation/${userId}`
       )
       .then(updateUser => {
         return dispatch({
@@ -56,7 +56,9 @@ export const updateUsers = (id, userId) => {
 export const getRentalData = () => {
   return dispatch => {
     return axios
-      .get(`${REACT_APP_HOST}:${REACT_APP_PORT}/api/v1/rental/check`)
+      .get(
+        `${process.env.REACT_APP_HOST}:${process.env.REACT_APP_PORT}/api/v1/rental/check`
+      )
       .then(rental => {
         return dispatch({
           type: GET_RENTAL_DATA,

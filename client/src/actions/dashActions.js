@@ -7,7 +7,7 @@ export const getOccupancy = () => {
   return dispatch => {
     return axios
       .get(
-        `${REACT_APP_HOST}:${REACT_APP_PORT}/api/v1/dashboard/places/occupancy_rate`
+        `${process.env.REACT_APP_HOST}:${process.env.REACT_APP_PORT}/api/v1/dashboard/places/occupancy_rate`
       )
       .then(places => {
         let labels = [];
@@ -40,7 +40,7 @@ export const getCheckinDash = () => {
   return dispatch => {
     return axios
       .get(
-        `${REACT_APP_HOST}:${REACT_APP_PORT}/api/v1/dashboard/rentals/date/count`
+        `${process.env.REACT_APP_HOST}:${process.env.REACT_APP_PORT}/api/v1/dashboard/rentals/date/count`
       )
       .then(checkins => {
         let labels = [];
