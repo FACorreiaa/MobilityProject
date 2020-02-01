@@ -6,6 +6,6 @@ WORKDIR /app
 
 RUN npm install --production
 
-EXPOSE 4001
+#EXPOSE 4001
 
 CMD npm run start

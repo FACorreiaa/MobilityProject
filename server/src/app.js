@@ -15,7 +15,6 @@ require('./Models/UserModel');
 require('./Models/VehicleModel');
 const dashController = require('./Controllers/Dashboard');
 const app = express();
-const port = process.env.PORT || 8000;
 const server = require('http').Server(app);
 
 app.use(cors());
@@ -43,8 +42,8 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use(express.static(path.join(__dirname, 'public')));
-server.listen(port, () => {
-  console.log('App is running on port ' + port);
+server.listen(process.env.PORT, () => {
+  console.log('App is running on port ' + process.env.PORT);
 });
 
 const jwt = require('express-jwt');

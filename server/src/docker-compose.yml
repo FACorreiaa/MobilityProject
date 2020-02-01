@@ -6,4 +6,4 @@ services:
     build: .
     restart: unless-stopped
     ports:
-      - '4001:4001'
+      - 4001:4001
