@@ -45,7 +45,7 @@ export default {
     {
       component: Clients,
       url: '/main',
-      roles: []
+      roles: ['client']
     },
     {
       component: Balance,
@@ -70,6 +70,11 @@ export default {
     {
       component: SearchVehicles,
       url: '/searchVehicles',
+      roles: []
+    },
+    {
+      component: SearchVehicles,
+      url: '/',
       roles: []
     },
     {

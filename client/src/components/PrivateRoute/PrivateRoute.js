@@ -6,6 +6,7 @@ const PrivateRoute = ({
   component: Component,
   userRoles = [],
   roles = [],
+  auth,
   ...rest
 }) => {
   // check the route's roles to see if any match a role the user has
@@ -18,13 +19,22 @@ const PrivateRoute = ({
     <Route
       {...rest}
       render={props =>
-        hasRole ? <Component {...props} /> : <Redirect to='/login' />
+        auth.isAuthenticated === true && hasRole ? (
+          <Component {...props} />
+        ) : (
+          <Redirect to='/searchVehicles' />
+        )
       }
     />
   );
 };
 
+PrivateRoute.propTypes = {
+  auth: PropTypes.object.isRequired
+};
+
 const mapStateToProps = state => ({
-  userRoles: state.auth.user.role
+  userRoles: state.auth.user.role,
+  auth: state.auth
 });
 export default connect(mapStateToProps)(PrivateRoute);

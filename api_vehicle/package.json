@@ -1,21 +1,11 @@
 {
-  "name": "mobilityproject",
-  "version": "0.0.0",
-  "private": true,
+  "name": "api_vehicle",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
   "scripts": {
-    "start": "node app.js",
-    "server:prod": "node ./dist/bin/www",
-    "clean": "rimfat dist",
-    "build": "babel ./src --out-dir dist",
-    "prod": "NODE_ENV=production npm-run-all clean build server:prod",
-    "start:commit": "git add . && npm run commit && git push origin master",
-    "watch": "nodemon ./src/app.js",
-    "lines": "cloc lines api",
-    "server": "nodemon ./src/app.js",
-    "client": "npm start --prefix client --port 3001",
-    "dev": "concurrently \"npm run server\" \"npm run client\"",
-    "stop-linux": "killall node",
-    "commit": "sudo git add . && npx git-cz && sudo git push origin master"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node app.js"
   },
   "dependencies": {
     "@material-ui/core": "^4.9.0",
@@ -51,5 +41,7 @@
     "@babel/preset-env": "^7.7.6",
     "express-swagger-generator": "^1.1.15",
     "nodemon": "^2.0.2"
-  }
+  },
+  "author": "",
+  "license": "ISC"
 }

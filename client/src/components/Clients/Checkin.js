@@ -17,6 +17,8 @@ import { Button, Icon } from 'react-materialize';
 import ReactNotification from 'react-notifications-component';
 import 'react-notifications-component/dist/theme.css';
 import { store } from 'react-notifications-component';
+import '@material/react-snackbar/dist/snackbar.css';
+import { Snackbar } from '@material/react-snackbar';
 
 //const options = ['one', 'two', 'three'];
 //const rental = ['minutes', 'pack'];
@@ -132,12 +134,11 @@ class Checkin extends Component {
     const { user } = this.props.auth;
     const { vehicles } = this.props.clients;
     const { methods } = this.props.clients;
-
+    const rental = methods;
     const getAvailables = vehicles.filter(
       vechicle => vechicle.available === true
     );
 
-    const rental = methods.map(m => m.rentalMethod);
     const defaultVehicleOption = this.state.vehicle;
     const defaultMethodOption = this.state.rentalMethod;
 
@@ -215,13 +216,8 @@ class Checkin extends Component {
           <div className='flow-text grey-text text-darken-2'>
             {this.state.checkin ? (
               <div>
-                <div
-                  className='bg-blue-100 border-t border-b border-blue-500 text-blue-700 px-4 py-3'
-                  role='alert'
-                >
-                  <p className='font-bold'>Careful!</p>
-                  <p className='text-sm'>You are already checked in</p>
-                </div>
+                <Snackbar message='You are checked!' actionText='x' />
+
                 <Button node='button' type='submit' onClick={this.onConsult}>
                   Check your time estimative!
                   <Icon right>send</Icon>
@@ -272,13 +268,7 @@ class Checkin extends Component {
                 )}
               </div>
             ) : (
-              <div
-                className='bg-blue-100 border-t border-b border-blue-500 text-blue-700 px-4 py-3'
-                role='alert'
-              >
-                <p className='font-bold'>What are you waiting for?</p>
-                <p className='text-sm'>You are not checked in</p>
-              </div>
+              <Snackbar message='You are not checked in!' actionText='x' />
             )}
           </div>
         </div>
