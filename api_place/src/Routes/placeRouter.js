@@ -11,7 +11,7 @@ module.exports = function(app) {
    /**
    * @route GET /api/v1/place
    * @group Places
-   * @summary List all places
+   * @summary List all parking places
    * @returns {Array} 200
    * @returns {Error}  500
    */
