@@ -313,3 +313,27 @@ exports.getRentalMethods = async function(req, res) {
     return await res.json(rental);
   });
 };
+
+exports.listPlace = function(req, res) {
+  Place.find({}, function(err, list) {
+    if (err) res.send(err);
+    res.json(list);
+  });
+};
+
+exports.newPlace = function(req, res) {
+  var newPlace = new Place(req.body);
+  newPlace.save(function(err, place) {
+    if (err) res.send(err);
+    res.json(place);
+  });
+};
+
+exports.getVehicles = function(req, res) {
+  Vehicle.find({}, function(err, vehicle) {
+    if (err) {
+      return res.json(err);
+    }
+    return res.json(vehicle);
+  });
+};

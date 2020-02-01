@@ -6,18 +6,14 @@ const logger = require('morgan');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const cors = require('cors');
-const vehicleRouter = require('../api_vehicle/Routes/vehicleRoute');
-const placeRouter = require('../api_place/Routes/placeRouter');
-const authRouter = require('../api_auth/Routes/authenticationRoute');
-const rentalRouter = require('../api_rental/Routes/rentalRouter');
-const userRouter = require('../api_user/Routes/userRoute');
-const DashboardRouter = require('../api_dash/Routes/DashboardRoute');
-const Place = require('../api_place/Models/PlaceModel');
-require('../api_vehicle/Models/VehicleModel');
-const Rental = require('../api_rental/Models/RentalModel');
-require('../api_user/Models/UserModel');
-
-const dashController = require('../api_dash/Controllers/Dashboard');
+const rentalRouter = require('./Routes/rentalRouter');
+const userRouter = require('./Routes/userRoute');
+const DashboardRouter = require('./Routes/DashboardRoute');
+const Place = require('./Models/PlaceModel');
+const Rental = require('./Models/RentalModel');
+require('./Models/UserModel');
+require('./Models/VehicleModel');
+const dashController = require('./Controllers/Dashboard');
 const app = express();
 const port = process.env.PORT || 8000;
 const server = require('http').Server(app);
@@ -82,30 +78,27 @@ mongoose.connection
     const placeCollection = mongoose.connection.collection('Places');
     const placeStream = placeCollection.watch();
 
-    placeStream.on('change', (change) => {
-      console.log('change = '+ JSON.stringify(change));
-     
+    placeStream.on('change', change => {
+      console.log('change = ' + JSON.stringify(change));
+
       dashController.set_occupancy_trigger();
     });
 
     const rentalCollection = mongoose.connection.collection('Rentals');
     const rentalStream = rentalCollection.watch();
 
-    rentalStream.on('change', (change) => {
-      console.log('change = '+ JSON.stringify(change));
-      
+    rentalStream.on('change', change => {
+      console.log('change = ' + JSON.stringify(change));
+
       dashController.setCheckinByDayTrigger();
     });
   });
 
 Place.createIndexes();
 Rental.createIndexes();
-vehicleRouter(app);
-placeRouter(app);
-authRouter(app);
 rentalRouter(app);
 DashboardRouter(app);
-userRouter(auth, app);
+userRouter(app);
 
 module.exports = app;
 
