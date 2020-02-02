@@ -1,9 +1,8 @@
 FROM node:10-slim
 
-RUN cd /server
 COPY . /app
 
-WORKDIR /app
+WORKDIR /app/server
 
 RUN npm install --production
 
