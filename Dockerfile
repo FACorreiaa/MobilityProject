@@ -1,6 +1,6 @@
 FROM node:10-slim
 
-RUN cd /server/src
+RUN cd /server
 COPY . /app
 
 WORKDIR /app
