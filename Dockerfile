@@ -4,7 +4,7 @@ COPY . /app
 
 WORKDIR /app
 
-RUN npm install --production
+RUN npm install
 
 #EXPOSE 4001
 
