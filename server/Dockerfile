@@ -2,7 +2,7 @@ FROM node:10-slim
 
 COPY . /app
 
-WORKDIR /app/server
+WORKDIR /app
 
 RUN npm install --production
 
