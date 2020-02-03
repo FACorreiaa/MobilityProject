@@ -11,11 +11,11 @@ const userRouter = require('./Routes/userRoute');
 const DashboardRouter = require('./Routes/DashboardRoute');
 const Place = require('./Models/PlaceModel');
 const Rental = require('./Models/RentalModel');
-require('./Models/UserModel');
-require('./Models/VehicleModel');
 const dashController = require('./Controllers/Dashboard');
 const app = express();
 const server = require('http').Server(app);
+require('./Models/UserModel');
+require('./Models/VehicleModel');
 
 app.use(cors());
 app.use(logger('dev'));
@@ -125,7 +125,7 @@ let options = {
     }
   },
   basedir: __dirname, //app absolute path
-  files: ['../api/Routes/**.js', '../api/Models/**.js'] //Path to the API handle folder
+  files: ['../Routes/**.js', '../Models/**.js'] //Path to the API handle folder
 };
 //http://localhost:5001/api-docs
 expressSwagger(options);
