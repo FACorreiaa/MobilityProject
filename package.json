@@ -7,17 +7,7 @@
   },
   "scripts": {
     "start": "node app.js",
-    "server:prod": "node ./dist/bin/www",
     "clean": "rimfat dist",
-    "build": "babel ./src --out-dir dist",
-    "prod": "NODE_ENV=production npm-run-all clean build server:prod",
-    "start:commit": "git add . && npm run commit && git push origin master",
-    "watch": "nodemon ./src/app.js",
-    "lines": "cloc lines api",
-    "server": "nodemon ./src/app.js",
-    "client": "npm start --prefix client --port 3001",
-    "dev": "concurrently \"npm run server\" \"npm run client\"",
-    "stop-linux": "killall node",
     "commit": "sudo git add . && npx git-cz && sudo git push origin master"
   },
   "dependencies": {
