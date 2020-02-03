@@ -2,6 +2,7 @@
   "name": "mobilityproject",
   "version": "0.0.0",
   "private": true,
+<<<<<<< HEAD
   "scripts": {
     "start": "node app.js",
     "server:prod": "node ./dist/bin/www",
@@ -15,6 +16,14 @@
     "client": "npm start --prefix client --port 3001",
     "dev": "concurrently \"npm run server\" \"npm run client\"",
     "stop-linux": "killall node",
+=======
+  "engines": {
+    "node": "12.13.0"
+  },
+  "scripts": {
+    "start": "node app.js",
+    "clean": "rimfat dist",
+>>>>>>> beaad8dce433e70079bfdc46b49d8706446fcbfe
     "commit": "sudo git add . && npx git-cz && sudo git push origin master"
   },
   "dependencies": {
@@ -42,7 +51,12 @@
     "passport": "^0.4.1",
     "passport-local": "^1.0.0",
     "pusher": "^3.0.0",
+<<<<<<< HEAD
     "rimraf": "^3.0.0"
+=======
+    "rimraf": "^3.0.0",
+    "express-swagger-generator": "*"
+>>>>>>> beaad8dce433e70079bfdc46b49d8706446fcbfe
   },
   "devDependencies": {
     "@babel/cli": "^7.7.5",

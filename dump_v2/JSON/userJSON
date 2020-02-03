@@ -1,0 +1,2 @@
+{"_id":{"$oid":"5df8caf879ca3b3ecd23bf4a"},"username":"Jessie","email":"inertyouremail@mail.com","password":"admin","role":"admin","registerBy":{"$oid":"5df8caf879ca3b3ecd23bf4a"},"valid":true}
+{"_id":{"$oid":"5df8cb5b5d2b2b3ecdc476e3"},"username":"Fernando","email":"fernandocorreia316@gmail.com","password":"admin","role":"admin","registerBy":{"$oid":"5df8cb5b5d2b2b3ecdc476e3"},"valid":true}

@@ -1,0 +1,9 @@
+version: '3'
+services:
+  app:
+    image: dbwebapp_image
+    container_name: app
+    build: .
+    restart: unless-stopped
+    ports:
+      - 4001:4001
