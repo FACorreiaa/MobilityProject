@@ -1,0 +1,1 @@
+{"options":{},"indexes":[{"v":{"$numberInt":"2"},"key":{"_id":{"$numberInt":"1"}},"name":"_id_","ns":"MobilityProject.Vehicle"}],"uuid":"6797c51f0df841e7a3f76e297947e4d8"}
