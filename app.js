@@ -125,7 +125,7 @@ let options = {
     }
   },
   basedir: __dirname, //app absolute path
-  files: ['../Routes/**.js', '../Models/**.js'] //Path to the API handle folder
+  files: ['./Routes/**.js', './Models/**.js'] //Path to the API handle folder
 };
 //http://localhost:5001/api-docs
 expressSwagger(options);
