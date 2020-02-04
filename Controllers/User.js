@@ -130,7 +130,6 @@ exports.register = async function(req, res) {
   const newUser = new User();
   newUser.username = req.body.username;
   newUser.firstname = req.body.firstname;
-
   newUser.lastname = req.body.lastname;
   newUser.email = req.body.email;
   newUser.dadosPassword = { hash: '', salt: '' };
